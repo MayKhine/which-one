@@ -1,8 +1,10 @@
-import { Home } from "../components/Home"
+import App from "../App"
 import { Users } from "../components/Users"
+import { Route, Routes } from "react-router-dom"
 
-const Routes = () => {
- return ()
-}
-
-export default Routes
+export const AppRoutes = (
+  return <Routes>
+    <Route path="/home" element={<App />} />
+    <Route path="/users" element={<Users />} />
+  </Routes>
+)

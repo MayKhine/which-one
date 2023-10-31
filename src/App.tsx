@@ -1,35 +1,16 @@
-import { useEffect, useState } from "react"
-import classes from "./App.module.css"
-import { User, UserProps } from "./components/User"
+import { useState } from "react"
+import { Navigate } from "react-router-dom"
 
 function App() {
-  const [users, setUsers] = useState<Array<UserProps>>([])
-
-  const getUser = async () => {
-    const result = await fetch("http://localhost:3300/users")
-    const resultJson = await result.json()
-
-    setUsers(resultJson)
-    console.log("Users: ", users)
+  const [navigate, setNavigate] = useState(false)
+  const buttonHandler = () => {
+    setNavigate(!navigate)
   }
-
-  useEffect(() => {
-    getUser()
-  }, [])
   return (
-    <div className={classes.main}>
-      Hello hello
-      {users.map((user) => {
-        return (
-          <User
-            name={user.name}
-            year={user.year}
-            id={user.id}
-            password={user.password}
-            email={user.email}
-          />
-        )
-      })}
+    <div>
+      This is home page
+      <button onClick={buttonHandler}>Go to Users Page</button>
+      {navigate && <Navigate to="/users" replace={true}></Navigate>}{" "}
     </div>
   )
 }
