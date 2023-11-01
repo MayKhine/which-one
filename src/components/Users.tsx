@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { User, UserProps } from "./User"
-import { Navigate } from "react-router-dom"
-import { Button } from "../UI/Button"
-import { Header } from "../UI/HeaderBar"
-
+// import { Navigate } from "react-router-dom"
+// import { Button } from "../UI/Button"
+// import { Header } from "../UI/HeaderBar"
+import { MenuBar } from "../UI/MenuBar"
 export const Users = () => {
   const [users, setUsers] = useState<Array<UserProps>>([])
   const getUser = async () => {
@@ -13,10 +13,10 @@ export const Users = () => {
     console.log("Users: ", users)
   }
 
-  const [navigate, setNavigate] = useState(false)
-  const navToHomeButtonHandler = () => {
-    setNavigate(!navigate)
-  }
+  // const [navigate, setNavigate] = useState(false)
+  // const navToHomeButtonHandler = () => {
+  //   setNavigate(!navigate)
+  // }
 
   useEffect(() => {
     getUser()
@@ -24,11 +24,12 @@ export const Users = () => {
 
   return (
     <div>
-      <Header>
+      <MenuBar></MenuBar>
+      {/* <Header>
         <Button onClickFn={navToHomeButtonHandler} text="Home" />
-      </Header>
+      </Header> */}
       Users Page
-      {navigate && <Navigate to="/home" replace={true}></Navigate>}
+      {/* {navigate && <Navigate to="/home" replace={true}></Navigate>} */}
       {users.map((user) => {
         return (
           <User
