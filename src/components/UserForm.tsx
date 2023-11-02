@@ -21,6 +21,7 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
       year: "",
       password: "",
       password2: "",
+      id: "",
     })
   }
   const inputChangeHandler = (identifier: string, value: string | number) => {
@@ -57,9 +58,7 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
   }
 
   const validatePasswords = (password: string, password2: string) => {
-    // const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/
-
-    // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+    // Minimum 6 characters, at least one uppercase letter, one lowercase letter, one number and one special character:
     const notPasswordRegex = /^(.{0,6}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/
 
     if (notPasswordRegex.test(password)) {
@@ -94,6 +93,7 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
         year: enteredValues.year,
         password: enteredValues.password,
         email: enteredValues.email,
+        id: Math.random(),
       }
       registerNewUser(newUser)
       resetStates()

@@ -6,12 +6,6 @@ import { User, UserProps } from "./User"
 import { MenuBar } from "../UI/MenuBar"
 export const Users = () => {
   const [users, setUsers] = useState<Array<UserProps>>([])
-  const getUser = async () => {
-    const result = await fetch("http://localhost:3300/users")
-    const resultJson = await result.json()
-    setUsers(resultJson)
-    console.log("Users: ", users)
-  }
 
   // const [navigate, setNavigate] = useState(false)
   // const navToHomeButtonHandler = () => {
@@ -19,8 +13,14 @@ export const Users = () => {
   // }
 
   useEffect(() => {
+    const getUser = async () => {
+      const result = await fetch("http://localhost:3300/users")
+      const resultJson = await result.json()
+      setUsers(resultJson)
+      console.log("Users: ", users)
+    }
     getUser()
-  }, [])
+  }, [users])
 
   return (
     <div>
