@@ -1,8 +1,8 @@
 type ButtonProps = {
   text: string
-  onClickFn: () => void
+  onClickFn?: () => void
 }
 
 export const Button = ({ text, onClickFn }: ButtonProps) => {
-  return <button onClick={onClickFn}> {text}</button>
+  return <button onClick={onClickFn}>{text}</button>
 }
