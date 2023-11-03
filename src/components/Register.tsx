@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { MenuBar } from "../UI/MenuBar"
 import { UserForm } from "./UserForm"
 
@@ -12,7 +12,7 @@ export type NewUserProps = {
 
 export const Register = () => {
   // const [newUser, setNewUser] = useState({})
-
+  const [addUserResult, setAddUserResult] = useState("")
   const registerNewUser = (user: NewUserProps) => {
     console.log("User is in register", user)
     // setNewUser(user)
@@ -28,30 +28,23 @@ export const Register = () => {
       body: JSON.stringify(user),
     })
 
-    // const response = result.json()
-    console.log("result: ", result)
+    const response = await result.json()
+    console.log("response: ", response)
+    setAddUserResult(response.message)
   }
-
-  // useEffect(() => {
-  //   const addUser = async () => {
-  //     const result = await fetch("http://localhost:3300/register", {
-  //       method: "Post",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(newUser),
-  //     })
-  //     const response = result.json()
-  //     console.log("Response: ", response)
-  //   }
-  //   if (newUser) {
-  //     addUser()
-  //   }
-  // }, [newUser])
 
   return (
     <div>
       <MenuBar></MenuBar>
       Register Page
-      <UserForm registerNewUser={registerNewUser}></UserForm>
+      <div
+        onSelect={() => {
+          setAddUserResult("")
+        }}
+      >
+        <UserForm registerNewUser={registerNewUser}></UserForm>
+      </div>
+      <p>{addUserResult}</p>
     </div>
   )
 }

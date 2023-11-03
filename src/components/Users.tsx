@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react"
 import { User, UserProps } from "./User"
-// import { Navigate } from "react-router-dom"
-// import { Button } from "../UI/Button"
-// import { Header } from "../UI/HeaderBar"
+
 import { MenuBar } from "../UI/MenuBar"
 export const Users = () => {
   const [users, setUsers] = useState<Array<UserProps>>([])
 
-  // const [navigate, setNavigate] = useState(false)
-  // const navToHomeButtonHandler = () => {
-  //   setNavigate(!navigate)
-  // }
-
   useEffect(() => {
-    const getUser = async () => {
+    const getUsers = async () => {
       const result = await fetch("http://localhost:3300/users")
       const resultJson = await result.json()
       setUsers(resultJson)
       console.log("Users: ", users)
     }
-    getUser()
-  }, [users])
+    getUsers()
+  }, [])
 
   return (
     <div>
       <MenuBar></MenuBar>
-      {/* <Header>
-        <Button onClickFn={navToHomeButtonHandler} text="Home" />
-      </Header> */}
       Users Page
-      {/* {navigate && <Navigate to="/home" replace={true}></Navigate>} */}
       {users.map((user) => {
         return (
           <User
