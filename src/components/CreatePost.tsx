@@ -3,23 +3,30 @@ import { Button } from "../UI/Button"
 import { useState } from "react"
 import { MenuBar } from "../UI/MenuBar"
 import { InputDiv } from "../UI/InputDiv"
+import { PostProps } from "./Post"
 
 export const CreatePost = () => {
   const [enteredValues, setEnteredValues] = useState({})
   const [answerArr, setAnswerArr] = useState(["", "", ""])
+
+  const validateUser = async (userName: string) => {
+    const user = await fetch(`http://localhost:3300/users/${userName}`, {
+      method: "Get",
+    })
+    const response = await user.json()
+
+    if (response.result?.name == userName) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   const inputChangeHandler = (
     identifier: string | number,
     value: string | number,
     ansIndex?: number
   ) => {
-    console.log("Inputchange hangdler is triggered: ", value)
-
-    // setEnteredValues((preVal) => ({
-    //   ...preVal,
-    //   [identifier]: value,
-    // }))
-
     if (identifier == "ans") {
       const curAnsArr = enteredValues.ans
 
@@ -47,9 +54,21 @@ export const CreatePost = () => {
     }
   }
 
-  const submitButtonHandler = () => {
+  const submitButtonHandler = async () => {
     event?.preventDefault()
     console.log("Submit is clicked: ", enteredValues)
+    const validateUserResult = await validateUser(enteredValues.userName)
+    console.log("Validate user: ", validateUserResult)
+
+    const newPost = {
+      id: Math.random(),
+      userName: enteredValues.userName,
+      question: enteredValues.question,
+      answers: enteredValues.ans,
+      answerType: "text",
+      imgDesc: [],
+    }
+    console.log("new post : ", newPost)
   }
 
   return (
@@ -89,44 +108,14 @@ export const CreatePost = () => {
             />
           )
         })}
-        <button
-          onClick={() => {
+
+        <Button
+          type="add"
+          text="Add more answer option"
+          onClickFn={() => {
             setAnswerArr((prevVal) => [...prevVal, ""])
           }}
-        >
-          Add more answer
-        </button>
-
-        {/* <div>
-          <label>Answer 1</label>
-          <input
-            required
-            type="text"
-            onChange={(event) => {
-              inputChangeHandler(0, event?.target.value)
-            }}
-          ></input>
-        </div>
-        <div>
-          <label>Answer 2</label>
-          <input
-            required
-            type="text"
-            onChange={(event) => {
-              inputChangeHandler(1, event?.target.value)
-            }}
-          ></input>
-        </div>
-        <div>
-          <label>Answer 3</label>
-          <input
-            required
-            type="text"
-            onChange={(event) => {
-              inputChangeHandler(2, event?.target.value)
-            }}
-          ></input>
-        </div> */}
+        />
 
         <Button type="submit" text="Create" />
         <Button type="reset" text="Cancel" />
