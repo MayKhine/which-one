@@ -7,7 +7,8 @@ import { PostProps } from "./Post"
 
 export const CreatePost = () => {
   const [enteredValues, setEnteredValues] = useState({})
-  const [answerArr, setAnswerArr] = useState(["", "", ""])
+  const [answerArr, setAnswerArr] = useState(["", ""])
+  const [createPostResult, setCreatePostResult] = useState("")
 
   const validateUser = async (userName: string) => {
     const user = await fetch(`http://localhost:3300/users/${userName}`, {
@@ -27,6 +28,7 @@ export const CreatePost = () => {
     value: string | number,
     ansIndex?: number
   ) => {
+    setCreatePostResult("")
     if (identifier == "ans") {
       const curAnsArr = enteredValues.ans
 
@@ -54,7 +56,7 @@ export const CreatePost = () => {
     }
   }
 
-  const submitButtonHandler = async () => {
+  const submitButtonHandler = async (event) => {
     event?.preventDefault()
     console.log("Submit is clicked: ", enteredValues)
     const validateUserResult = await validateUser(enteredValues.userName)
@@ -69,6 +71,23 @@ export const CreatePost = () => {
       imgDesc: [],
     }
     console.log("new post : ", newPost)
+
+    const result = await fetch("http://localhost:3300/createpost", {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPost),
+    })
+
+    const response = await result.json()
+    console.log("Response from create post: ", response)
+    if (response.message == "success") {
+      setCreatePostResult("Question is posted!")
+      event?.target.reset()
+    } else {
+      setCreatePostResult("Cannot post question!")
+    }
   }
 
   return (
@@ -118,8 +137,15 @@ export const CreatePost = () => {
         />
 
         <Button type="submit" text="Create" />
-        <Button type="reset" text="Cancel" />
+        <Button
+          type="reset"
+          text="Cancel"
+          onClickFn={() => {
+            setAnswerArr(["", ""])
+          }}
+        />
       </form>
+      {createPostResult}
     </div>
   )
 }

@@ -26,7 +26,8 @@ export const Posts = () => {
             key={post.id}
             id={post.id}
             question={post.question}
-            userId={post.userId}
+            userName={post.userName}
+            answers={post.answers}
           ></Post>
         )
       })}
