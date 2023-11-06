@@ -1,5 +1,5 @@
 import App from "../App"
-import { Users } from "../components/Users"
+import { Users } from "../components/Users/Users"
 import { Route, Routes } from "react-router-dom"
 
 export const AppRoutes = (

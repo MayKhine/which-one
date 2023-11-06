@@ -1,9 +1,8 @@
 // import { PostProps } from "./Post"
-import { Button } from "../UI/Button"
+import { Button } from "../../UI/Button"
 import { useState } from "react"
-import { MenuBar } from "../UI/MenuBar"
-import { InputDiv } from "../UI/InputDiv"
-import { PostProps } from "./Post"
+import { MenuBar } from "../../UI/MenuBar"
+import { InputDiv } from "../../UI/InputDiv"
 
 export const CreatePost = () => {
   const [enteredValues, setEnteredValues] = useState({})
@@ -94,7 +93,7 @@ export const CreatePost = () => {
     }
 
     const newPost = {
-      id: Math.random(),
+      id: Math.random().toString(),
       userName: enteredValues.userName,
       question: enteredValues.question.trim(),
       answers: enteredValues.ans,

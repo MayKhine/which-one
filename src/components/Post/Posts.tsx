@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { MenuBar } from "../UI/MenuBar"
+import { MenuBar } from "../../UI/MenuBar"
 import { Post, PostProps } from "./Post"
 
 export const Posts = () => {
@@ -20,10 +20,10 @@ export const Posts = () => {
     <div>
       <MenuBar />
       This is posts page
-      {posts.map((post: PostProps) => {
+      {posts.map((post: PostProps, index) => {
         return (
           <Post
-            key={post.id}
+            key={index}
             id={post.id}
             question={post.question}
             userName={post.userName}
