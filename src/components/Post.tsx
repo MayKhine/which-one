@@ -18,7 +18,7 @@ export const Post = ({ question, userName, id, answers }: PostProps) => {
       {answers?.map((ans, index) => {
         return (
           <li>
-            <Answer key={index} answer={ans} />{" "}
+            <Answer key={index} answer={ans} />
           </li>
         )
       })}

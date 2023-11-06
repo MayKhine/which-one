@@ -23,6 +23,10 @@ export const CreatePost = () => {
     }
   }
 
+  const validateText = (text: string) => {
+    return text?.trim().length == 0 ? false : true
+  }
+
   const inputChangeHandler = (
     identifier: string | number,
     value: string | number,
@@ -31,7 +35,7 @@ export const CreatePost = () => {
     setCreatePostResult("")
     if (identifier == "ans") {
       const curAnsArr = enteredValues.ans
-
+      //if ans arrr ald exist and go to its index
       if (curAnsArr && ansIndex) {
         const curAnsArrUpdated = [...curAnsArr]
         curAnsArrUpdated[ansIndex] = value
@@ -59,13 +63,40 @@ export const CreatePost = () => {
   const submitButtonHandler = async (event) => {
     event?.preventDefault()
     console.log("Submit is clicked: ", enteredValues)
+    if (!validateText(enteredValues.userName)) {
+      setCreatePostResult("Error: username cannot be empty.")
+      return
+    }
+
     const validateUserResult = await validateUser(enteredValues.userName)
-    console.log("Validate user: ", validateUserResult)
+    console.log("Validate user result: ", validateUserResult)
+    if (!validateUserResult) {
+      setCreatePostResult("Error: username does not exists.")
+      return
+    }
+
+    if (!validateText(enteredValues.question)) {
+      setCreatePostResult("Error: question cannot be empty.")
+      return
+    }
+
+    const answerArr = enteredValues.ans
+    for (let i = 0; i <= answerArr.length; i++) {
+      if (!validateText(answerArr[i])) {
+        setCreatePostResult("Error: answer cannot be empty.")
+        return
+      }
+    }
+
+    if (answerArr.length <= 1) {
+      setCreatePostResult("Error: answer options have to be more than one.")
+      return
+    }
 
     const newPost = {
       id: Math.random(),
       userName: enteredValues.userName,
-      question: enteredValues.question,
+      question: enteredValues.question.trim(),
       answers: enteredValues.ans,
       answerType: "text",
       imgDesc: [],
