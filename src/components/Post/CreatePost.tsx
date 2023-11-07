@@ -1,4 +1,3 @@
-// import { PostProps } from "./Post"
 import { Button } from "../../UI/Button"
 import { useState } from "react"
 import { MenuBar } from "../../UI/MenuBar"
@@ -29,29 +28,34 @@ export const CreatePost = () => {
   const inputChangeHandler = (
     identifier: string | number,
     value: string | number,
-    ansIndex?: number
+    ansIndex: number
   ) => {
     setCreatePostResult("")
+
     if (identifier == "ans") {
       const curAnsArr = enteredValues.ans
+
       //if ans arrr ald exist and go to its index
-      if (curAnsArr && ansIndex) {
+      if (curAnsArr?.length > 0) {
+        console.log("IN 1")
         const curAnsArrUpdated = [...curAnsArr]
         curAnsArrUpdated[ansIndex] = value
-        console.log("curAnsArrUpdated: ", curAnsArrUpdated)
 
         setEnteredValues((preVal) => ({
           ...preVal,
-
           ans: [...curAnsArrUpdated],
         }))
       } else {
+        console.log("IN 1.2")
+
         setEnteredValues((prevVal) => ({
           ...prevVal,
           ans: [value],
         }))
       }
     } else {
+      console.log("IN 2")
+
       setEnteredValues((preVal) => ({
         ...preVal,
         [identifier]: value,
@@ -59,16 +63,18 @@ export const CreatePost = () => {
     }
   }
 
-  const submitButtonHandler = async (event) => {
+  const submitButtonHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event?.preventDefault()
     console.log("Submit is clicked: ", enteredValues)
+
     if (!validateText(enteredValues.userName)) {
       setCreatePostResult("Error: username cannot be empty.")
       return
     }
 
     const validateUserResult = await validateUser(enteredValues.userName)
-    console.log("Validate user result: ", validateUserResult)
     if (!validateUserResult) {
       setCreatePostResult("Error: username does not exists.")
       return
@@ -79,7 +85,11 @@ export const CreatePost = () => {
       return
     }
 
-    const answerArr = enteredValues.ans
+    const answerArr = enteredValues?.ans
+    if (!answerArr) {
+      setCreatePostResult("Error: answer cannot be empty.")
+      return
+    }
     for (let i = 0; i <= answerArr.length; i++) {
       if (!validateText(answerArr[i])) {
         setCreatePostResult("Error: answer cannot be empty.")
@@ -91,6 +101,7 @@ export const CreatePost = () => {
       setCreatePostResult("Error: answer options have to be more than one.")
       return
     }
+
     const ansOptionLength = enteredValues.ans.length
     const votingArr = new Array(ansOptionLength).fill([])
 
@@ -101,10 +112,8 @@ export const CreatePost = () => {
       answers: enteredValues.ans,
       answerType: "text",
       imgDesc: [],
-      // need to add voting
       voting: votingArr,
     }
-    console.log("new post : ", newPost)
 
     const result = await fetch("http://localhost:3300/createpost", {
       method: "Post",
@@ -115,12 +124,11 @@ export const CreatePost = () => {
     })
 
     const response = await result.json()
-    console.log("Response from create post: ", response)
     if (response.message == "success") {
       setCreatePostResult("Question is posted!")
       event?.target.reset()
     } else {
-      setCreatePostResult("Cannot post question!")
+      setCreatePostResult("Had an error posting the question!")
     }
   }
 
