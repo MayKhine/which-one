@@ -7,6 +7,7 @@ import { Users } from "./components/Users/Users.tsx"
 import { Register } from "./components/Users/Register.tsx"
 import { Posts } from "./components/Post/Posts.tsx"
 import { CreatePost } from "./components/Post/CreatePost.tsx"
+import { UserPage } from "./pages/UserPage.tsx"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -15,6 +16,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<App />} />
         <Route path="/home" element={<App />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/test" element={<UserPage userName="test" />} />
+
         <Route path="/register" element={<Register />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/createpost" element={<CreatePost />} />
