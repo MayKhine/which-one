@@ -49,13 +49,8 @@ export const Post = ({ question, userName, id, answers }: PostProps) => {
       <p>{question}</p>
       {answers?.map((ans, index) => {
         return (
-          <li>
-            <Answer
-              key={index}
-              index={index}
-              answer={ans}
-              selectedFn={setAns}
-            />
+          <li key={index}>
+            <Answer index={index} answer={ans} selectedFn={setAns} />
           </li>
         )
       })}

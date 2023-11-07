@@ -91,6 +91,8 @@ export const CreatePost = () => {
       setCreatePostResult("Error: answer options have to be more than one.")
       return
     }
+    const ansOptionLength = enteredValues.ans.length
+    const votingArr = new Array(ansOptionLength).fill([])
 
     const newPost = {
       id: Math.random().toString(),
@@ -99,6 +101,8 @@ export const CreatePost = () => {
       answers: enteredValues.ans,
       answerType: "text",
       imgDesc: [],
+      // need to add voting
+      voting: votingArr,
     }
     console.log("new post : ", newPost)
 
