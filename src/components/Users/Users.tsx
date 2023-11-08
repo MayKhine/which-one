@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { User, UserProps } from "./User"
 
-import { MenuBar } from "../../UI/MenuBar"
 export const Users = () => {
   const [users, setUsers] = useState<Array<UserProps>>([])
 
@@ -16,8 +15,6 @@ export const Users = () => {
 
   return (
     <div>
-      <MenuBar></MenuBar>
-      Users Page
       {users.map((user) => {
         return (
           <User

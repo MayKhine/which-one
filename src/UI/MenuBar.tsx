@@ -15,11 +15,12 @@ export const MenuBar = () => {
 
   return (
     <div style={{ backgroundColor: "pink" }}>
-      <Button onClickFn={navButtonHandler} text="Home" />
-      <Button onClickFn={navButtonHandler} text="Users" />
-      <Button onClickFn={navButtonHandler} text="Register" />
-      <Button onClickFn={navButtonHandler} text="Posts" />
-      <Button onClickFn={navButtonHandler} text="CreatePost" />
+      <Button onClickFn={navButtonHandler} text="home" />
+      <Button onClickFn={navButtonHandler} text="users" />
+      <Button onClickFn={navButtonHandler} text="register" />
+      <Button onClickFn={navButtonHandler} text="posts" />
+      <Button onClickFn={navButtonHandler} text="createpost" />
+      <Button onClickFn={navButtonHandler} text="colortest" />
 
       <p>Current User: {userName}</p>
       {navigate && <Navigate to={navigate} replace={true}></Navigate>}

@@ -3,11 +3,14 @@ import { PostProps } from "../components/Post/Post"
 import { MenuBar } from "../UI/MenuBar"
 import { useParams } from "react-router-dom"
 import { NoUser } from "../components/Users/NoUser"
+import { PostByUser } from "../components/Post/PostByUser"
 
 export const UserPage = () => {
   const [userExists, setUserExists] = useState<boolean>()
+  const [postsExists, setPostsExists] = useState<boolean>(false)
   const [posts, setPosts] = useState()
   const { userName } = useParams<{ userName: string }>()
+  // const [setPostsExist, setPostsExist] = useState<boolean>()
 
   useEffect(() => {
     const checkUserExist = async () => {
@@ -27,7 +30,13 @@ export const UserPage = () => {
         }
       )
       const response = await result.json()
-      setPosts(response.result)
+      console.log(response)
+      if (response.success) {
+        setPostsExists(true)
+        setPosts(response.result)
+      } else {
+        setPostsExists(false)
+      }
     }
 
     checkUserExist()
@@ -36,19 +45,24 @@ export const UserPage = () => {
     }
   }, [userName, userExists])
 
+  console.log("What is userName: ", userName, userExists, postsExists)
+
   return (
     <div>
       <MenuBar />
-      User Page
+      User Page User is {userName}
       {userExists &&
-        posts?.map((post: PostProps, index: number) => {
+        postsExists &&
+        posts.map((post: PostProps, index: number) => {
           return (
-            <div key={index}>
-              {post.userName}
-              {post.question}
-            </div>
+            <PostByUser post={post} key={index} />
+            // <div style={{ backgroundColor: "orange" }} key={index}>
+            //   {post.userName}
+            //   {post.question}
+            // </div>
           )
         })}
+      {userExists && !postsExists && <div> No posts by this user</div>}
       {!userExists && <NoUser userName={userName} />}
     </div>
   )
