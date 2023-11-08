@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react"
 import { PostProps } from "../components/Post/Post"
+import { MenuBar } from "../UI/MenuBar"
+import { useParams } from "react-router-dom"
+import { NoUser } from "../components/Users/NoUser"
 
-type UserPageProps = {
-  userName: string
-}
-export const UserPage = ({ userName }: UserPageProps) => {
+export const UserPage = () => {
+  const [userExists, setUserExists] = useState<boolean>()
   const [posts, setPosts] = useState()
+  const { userName } = useParams<{ userName: string }>()
 
   useEffect(() => {
+    const checkUserExist = async () => {
+      const result = await fetch(`http://localhost:3300/users/${userName}`, {
+        method: "Get",
+      })
+
+      const response = await result.json()
+      setUserExists(response.success)
+    }
+
     const getPostsByUser = async () => {
       const result = await fetch(
         `http://localhost:3300/users/${userName}/posts`,
@@ -17,22 +28,28 @@ export const UserPage = ({ userName }: UserPageProps) => {
       )
       const response = await result.json()
       setPosts(response.result)
-      console.log("RESPONSE: ", response.result)
     }
-    getPostsByUser()
-  }, [userName])
+
+    checkUserExist()
+    if (userExists) {
+      getPostsByUser()
+    }
+  }, [userName, userExists])
 
   return (
     <div>
+      <MenuBar />
       User Page
-      {posts?.map((post: PostProps, index: number) => {
-        return (
-          <div key={index}>
-            {post.userName}
-            {post.question}
-          </div>
-        )
-      })}
+      {userExists &&
+        posts?.map((post: PostProps, index: number) => {
+          return (
+            <div key={index}>
+              {post.userName}
+              {post.question}
+            </div>
+          )
+        })}
+      {!userExists && <NoUser userName={userName} />}
     </div>
   )
 }

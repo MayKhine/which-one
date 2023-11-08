@@ -20,6 +20,7 @@ export const MenuBar = () => {
       <Button onClickFn={navButtonHandler} text="Register" />
       <Button onClickFn={navButtonHandler} text="Posts" />
       <Button onClickFn={navButtonHandler} text="CreatePost" />
+
       <p>Current User: {userName}</p>
       {navigate && <Navigate to={navigate} replace={true}></Navigate>}
     </div>
