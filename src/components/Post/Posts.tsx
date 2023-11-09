@@ -8,10 +8,8 @@ export const Posts = () => {
   useEffect(() => {
     const getPosts = async () => {
       const result = await fetch("http://localhost:3300/posts")
-      console.log("result: ", result)
       const resultJson = await result.json()
       setPosts(resultJson)
-      console.log("Posts : ", resultJson)
     }
     getPosts()
   }, [])

@@ -37,7 +37,6 @@ export const CreatePost = () => {
 
       //if ans arrr ald exist and go to its index
       if (curAnsArr?.length > 0) {
-        console.log("IN 1")
         const curAnsArrUpdated = [...curAnsArr]
         curAnsArrUpdated[ansIndex] = value
 
@@ -46,16 +45,12 @@ export const CreatePost = () => {
           ans: [...curAnsArrUpdated],
         }))
       } else {
-        console.log("IN 1.2")
-
         setEnteredValues((prevVal) => ({
           ...prevVal,
           ans: [value],
         }))
       }
     } else {
-      console.log("IN 2")
-
       setEnteredValues((preVal) => ({
         ...preVal,
         [identifier]: value,

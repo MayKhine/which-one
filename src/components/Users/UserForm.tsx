@@ -78,7 +78,6 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
 
   const submitButtonHandler = () => {
     event?.preventDefault()
-    console.log("form  is clicked and enteredValues: ", enteredValues)
     const emailValidation = enteredValues.email.trim().length > 0
     const yearValidation = validateYearBorn(enteredValues.year)
     const passwordValidation = validatePasswords(
@@ -98,7 +97,7 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
       registerNewUser(newUser)
       resetStates()
       event?.target.reset()
-      return console.log("Check passed")
+      return
     }
     return console.log("Check failed")
   }

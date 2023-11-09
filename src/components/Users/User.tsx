@@ -17,7 +17,6 @@ export const User = ({ name, email, id, year, password }: UserProps) => {
   const userClickHandler = () => {
     console.log("This user is selected: ", name)
     const urlStr = `/users/${name}`
-    console.log("URL Str: ", urlStr)
     setNavigate(urlStr)
   }
 

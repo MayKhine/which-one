@@ -5,7 +5,6 @@ type AnswerProps = {
 }
 
 export const Answer = ({ answer, selectedFn, index }: AnswerProps) => {
-  // return <div> {answer}</div>
   return (
     <label>
       <input

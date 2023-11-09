@@ -17,8 +17,6 @@ export const Post = ({ question, userName, id, answers }: PostProps) => {
   const [ans, setAns] = useState<number>()
 
   const submitVoteHandler = () => {
-    console.log("Work on submit vote handler ")
-
     const votingData = {
       votingUser: votingUserName,
       answerIndex: ans,
@@ -26,7 +24,6 @@ export const Post = ({ question, userName, id, answers }: PostProps) => {
 
     const postID = id
 
-    console.log("post : ", votingData, postID)
     const sendData = async () => {
       const result = await fetch(`http://localhost:3300/posts/${postID}/vote`, {
         method: "PUT",
@@ -34,7 +31,7 @@ export const Post = ({ question, userName, id, answers }: PostProps) => {
         body: JSON.stringify(votingData),
       })
       const response = await result.json()
-      console.log("RESPONSE: ", response)
+      console.log("Post RESPONSE: ", response)
       return response
     }
 
