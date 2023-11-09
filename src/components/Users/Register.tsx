@@ -13,10 +13,12 @@ export type NewUserProps = {
 export const Register = () => {
   // const [newUser, setNewUser] = useState({})
   const [addUserResult, setAddUserResult] = useState("")
+
   const registerNewUser = (user: NewUserProps) => {
     console.log("User is in register", user)
     // setNewUser(user)
-    addUser(user)
+    const result = addUser(user)
+    return result
   }
 
   const addUser = async (user: NewUserProps) => {
@@ -29,8 +31,9 @@ export const Register = () => {
     })
 
     const response = await result.json()
-    console.log("response: ", response)
     setAddUserResult(response.message)
+    const responseResult = response.success
+    return responseResult
   }
 
   return (

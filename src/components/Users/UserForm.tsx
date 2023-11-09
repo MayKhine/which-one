@@ -2,7 +2,7 @@ import { useState } from "react"
 import { NewUserProps } from "./Register"
 
 type UserFormProps = {
-  registerNewUser: (user: NewUserProps) => void
+  registerNewUser: (user: NewUserProps) => boolean
 }
 
 export const UserForm = ({ registerNewUser }: UserFormProps) => {
@@ -76,7 +76,7 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
     return false
   }
 
-  const submitButtonHandler = () => {
+  const submitButtonHandler = async () => {
     event?.preventDefault()
     const emailValidation = enteredValues.email.trim().length > 0
     const yearValidation = validateYearBorn(enteredValues.year)
@@ -94,10 +94,15 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
         email: enteredValues.email,
         id: Math.random(),
       }
-      registerNewUser(newUser)
-      resetStates()
-      event?.target.reset()
-      return
+      const result = await registerNewUser(newUser)
+
+      if (result) {
+        resetStates()
+        event?.target.reset()
+        return
+      } else {
+        return
+      }
     }
     return console.log("Check failed")
   }
