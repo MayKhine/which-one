@@ -43,7 +43,7 @@ export const UserPage = () => {
     if (userExists) {
       getPostsByUser()
     }
-  }, [userName, userExists])
+  }, [userName, userExists, posts])
 
   console.log("What is userName: ", userName, userExists, postsExists)
 
