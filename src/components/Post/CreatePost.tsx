@@ -2,6 +2,7 @@ import { Button } from "../../UI/Button"
 import { useState } from "react"
 import { MenuBar } from "../../UI/MenuBar"
 import { InputDiv } from "../../UI/InputDiv"
+import { DateTime } from "luxon"
 
 export const CreatePost = () => {
   const [enteredValues, setEnteredValues] = useState({})
@@ -108,6 +109,7 @@ export const CreatePost = () => {
       answerType: "text",
       imgDesc: [],
       voting: votingArr,
+      createTime: DateTime.now(),
     }
 
     const result = await fetch("http://localhost:3300/createpost", {

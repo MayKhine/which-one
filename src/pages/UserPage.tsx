@@ -4,7 +4,7 @@ import { MenuBar } from "../UI/MenuBar"
 import { useParams } from "react-router-dom"
 import { NoUser } from "../components/Users/NoUser"
 import { PostByUser } from "../components/Post/PostByUser"
-
+import { UserPageLayout } from "../layout/UserPageLayout"
 export const UserPage = () => {
   // const { user } = useUserApi("user1")
   // const currentUserName = user?.name
@@ -80,6 +80,10 @@ export const UserPage = () => {
     postID: string,
     editPostData: any
   ) => {
+    //get current post data
+    //edit then
+    //send put
+
     const result = await fetch(
       `http://localhost:3300/users/${postUserName}/posts/${postID}?delete=true`,
       {
@@ -99,7 +103,6 @@ export const UserPage = () => {
     postID: string
   ) => {
     console.log("Edit Post Handler is called")
-    // if (userName == post.userName) {
     if (curUserName == postUserName) {
       console.log("Edit Post Handler")
       const editPostData = {
@@ -118,10 +121,31 @@ export const UserPage = () => {
   console.log("What is userName: ", userName, userExists, postsExists)
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <MenuBar />
       User Page User is {userName}
-      {!userExists && <NoUser userName={userName} />}
+      <UserPageLayout
+        userName={userName}
+        children={
+          <div>
+            {!userExists && <NoUser userName={userName} />}
+            {userExists &&
+              postsExists &&
+              posts.map((post: PostProps, index: number) => {
+                return (
+                  <PostByUser
+                    post={post}
+                    key={index}
+                    onDelete={deletePostHandler}
+                    onEdit={editPostHandler}
+                  />
+                )
+              })}
+            {userExists && !postsExists && <div> No posts by this user</div>}
+          </div>
+        }
+      />
+      {/* {!userExists && <NoUser userName={userName} />}
       {userExists &&
         postsExists &&
         posts.map((post: PostProps, index: number) => {
@@ -134,7 +158,7 @@ export const UserPage = () => {
             />
           )
         })}
-      {userExists && !postsExists && <div> No posts by this user</div>}
+      {userExists && !postsExists && <div> No posts by this user</div>} */}
     </div>
   )
 }
