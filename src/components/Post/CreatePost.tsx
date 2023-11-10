@@ -119,7 +119,9 @@ export const CreatePost = () => {
     })
 
     const response = await result.json()
-    if (response.message == "success") {
+
+    console.log("RESPONE: ", response.success)
+    if (response.success) {
       setCreatePostResult("Question is posted!")
       event?.target.reset()
     } else {
