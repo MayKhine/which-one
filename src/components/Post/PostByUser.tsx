@@ -5,11 +5,12 @@ import { useUserApi } from "../../hooks/useUserApi"
 type PostByUserProps = {
   post: PostProps
   onDelete: (curUserName: string, postUserName: string, postID: string) => void
+  onEdit: (curUserName: string, postUserName: string, postID: string) => void
 }
 
-export const PostByUser = ({ post, onDelete }: PostByUserProps) => {
+export const PostByUser = ({ post, onDelete, onEdit }: PostByUserProps) => {
   const { user } = useUserApi("user1")
-  const userName = user?.name
+  const userName = user?.name || ""
 
   // const deletePost = async () => {
   //   const result = await fetch(
@@ -42,9 +43,16 @@ export const PostByUser = ({ post, onDelete }: PostByUserProps) => {
       </div>
       <Button
         type="submit"
-        text="x"
+        text="DELETE"
         onClickFn={() => {
           onDelete(userName, post.userName, post.id)
+        }}
+      />
+      <Button
+        type="submit"
+        text="EDIT"
+        onClickFn={() => {
+          onEdit(userName, post.userName, post.id)
         }}
       />
     </div>

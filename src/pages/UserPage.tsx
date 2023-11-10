@@ -4,7 +4,6 @@ import { MenuBar } from "../UI/MenuBar"
 import { useParams } from "react-router-dom"
 import { NoUser } from "../components/Users/NoUser"
 import { PostByUser } from "../components/Post/PostByUser"
-import { useUserApi } from "../hooks/useUserApi"
 
 export const UserPage = () => {
   // const { user } = useUserApi("user1")
@@ -13,7 +12,7 @@ export const UserPage = () => {
   const [userExists, setUserExists] = useState<boolean>()
   const [postsExists, setPostsExists] = useState<boolean>(false)
   const [posts, setPosts] = useState()
-  const [deleteToggle, setDeleteToggle] = useState<boolean>(false)
+  const [actionToggle, setActionToggle] = useState<boolean>(false)
   const { userName } = useParams<{ userName: string }>()
 
   const checkUserExist = async () => {
@@ -49,15 +48,14 @@ export const UserPage = () => {
   }
 
   const deletePost = async (postUserName: string, postID: string) => {
-    // const deletePost = async () => {
     const result = await fetch(
       `http://localhost:3300/users/${postUserName}/posts/${postID}?delete=true`,
       {
         method: "Delete",
       }
     )
-    const response = await result
-    setDeleteToggle(!deleteToggle)
+    const response = await result.json()
+    setActionToggle(!actionToggle)
     console.log("Delete Response: ", response)
   }
 
@@ -77,9 +75,45 @@ export const UserPage = () => {
     }
   }
 
+  const editPost = async (
+    postUserName: string,
+    postID: string,
+    editPostData: any
+  ) => {
+    const result = await fetch(
+      `http://localhost:3300/users/${postUserName}/posts/${postID}?delete=true`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editPostData),
+      }
+    )
+    const response = await result.json()
+    setActionToggle(!actionToggle)
+    console.log("Edit Response: ", response)
+  }
+
+  const editPostHandler = (
+    curUserName: string,
+    postUserName: string,
+    postID: string
+  ) => {
+    console.log("Edit Post Handler is called")
+    // if (userName == post.userName) {
+    if (curUserName == postUserName) {
+      console.log("Edit Post Handler")
+      const editPostData = {
+        question: "NEW QUESTIONS",
+      }
+      editPost(postUserName, postID, editPostData)
+    } else {
+      console.log("Cancel Edit Post Handler")
+    }
+  }
+
   useEffect(() => {
     getPostsByUser()
-  }, [deleteToggle])
+  }, [actionToggle])
 
   console.log("What is userName: ", userName, userExists, postsExists)
 
@@ -92,11 +126,12 @@ export const UserPage = () => {
         postsExists &&
         posts.map((post: PostProps, index: number) => {
           return (
-            <PostByUser post={post} key={index} onDelete={deletePostHandler} />
-            // <div style={{ backgroundColor: "orange" }} key={index}>
-            //   {post.userName}
-            //   {post.question}
-            // </div>
+            <PostByUser
+              post={post}
+              key={index}
+              onDelete={deletePostHandler}
+              onEdit={editPostHandler}
+            />
           )
         })}
       {userExists && !postsExists && <div> No posts by this user</div>}

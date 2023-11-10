@@ -3,8 +3,8 @@ import { Button } from "../../UI/Button"
 import { Answer } from "./Answer"
 import { useUserApi } from "../../hooks/useUserApi"
 export type PostProps = {
-  id: number
-  userName: number
+  id: string
+  userName: string
   question: string
   answerType?: string
   answers?: Array<string>
