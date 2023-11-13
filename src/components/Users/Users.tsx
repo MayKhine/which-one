@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { User, UserProps } from "./User"
 
+import { MenuBar } from "../../UI/MenuBar"
 export const Users = () => {
   const [users, setUsers] = useState<Array<UserProps>>([])
 
@@ -9,12 +10,15 @@ export const Users = () => {
       const result = await fetch("http://localhost:3300/users")
       const resultJson = await result.json()
       setUsers(resultJson)
+      console.log("Users: ", users)
     }
     getUsers()
   }, [])
 
   return (
     <div>
+      {/* <MenuBar /> */}
+      Users Page
       {users.map((user) => {
         return (
           <User

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button } from "./Button"
 import { Navigate } from "react-router-dom"
 import { useUserApi } from "../hooks/useUserApi"
+import { NavBarButtons } from "./NavBarButtons"
 export const MenuBar = () => {
   const { user } = useUserApi("user1")
   const userName = user?.name
@@ -22,6 +23,7 @@ export const MenuBar = () => {
       <Button onClickFn={navButtonHandler} text="createpost" />
       <Button onClickFn={navButtonHandler} text="colortest" />
 
+      <NavBarButtons />
       <p>Current User: {userName}</p>
       {navigate && <Navigate to={navigate} replace={true}></Navigate>}
     </div>
