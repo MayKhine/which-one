@@ -6,12 +6,9 @@ export type UserProps = {
   _id: string
   name: string
   email: string
-  id: number
-  year: number
-  password: string
 }
 
-export const User = ({ name, email, id, year, password }: UserProps) => {
+export const User = ({ name, email }: UserProps) => {
   const [navigate, setNavigate] = useState("")
 
   const userClickHandler = () => {
@@ -28,10 +25,8 @@ export const User = ({ name, email, id, year, password }: UserProps) => {
         onClickFn={userClickHandler}
         bgColor={ocean}
       ></Button>
-      <p>{id}</p>
       <p>{email}</p>
-      <p>{year}</p>
-      <p>{password}</p>
+
       <div>
         {navigate && <Navigate to={navigate} replace={true}></Navigate>}
       </div>

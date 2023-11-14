@@ -3,15 +3,23 @@ import { LoginButton } from "./LoginButton"
 import { LogoutButton } from "./LogoutButton"
 export const NavBarButtons = () => {
   const { isAuthenticated, loginWithRedirect, user, isLoading } = useAuth0()
-  // console.log(
-  //   isAuthenticated,
-  //   "Loginwith Redir: ",
-  //   loginWithRedirect,
-  //   "User: ",
-  //   user,
-  //   JSON.stringify(user, null, 2),
-  //   isLoading
-  // )
+
+  const checkUserInDb = async (user) => {
+    console.log("USER: ", user)
+    const result = await fetch("http://localhost:3300/register", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+    const response = await result.json()
+
+    const responseResult = response
+    console.log("RESPONSE RESULT: ", responseResult)
+  }
+  checkUserInDb(user)
+
   return (
     <div className="nav-bar__buttons">
       {!isAuthenticated && (

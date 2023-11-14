@@ -6,9 +6,6 @@ import { NoUser } from "../components/Users/NoUser"
 import { PostByUser } from "../components/Post/PostByUser"
 import { UserPageLayout } from "../layout/UserPageLayout"
 export const UserPage = () => {
-  // const { user } = useUserApi("user1")
-  // const currentUserName = user?.name
-
   const [userExists, setUserExists] = useState<boolean>()
   const [postsExists, setPostsExists] = useState<boolean>(false)
   const [posts, setPosts] = useState()

@@ -8,16 +8,9 @@ type Auth0ProviderWithNavigateProps = {
   children: ReactNode
 }
 
-// export const AuthVal = () => {
-//   const { isAuthenticated, user } = useAuth0()
-//   return isAuthenticated, user
-// }
-
 export const Auth0ProviderWithNavigate = ({
   children,
 }: Auth0ProviderWithNavigateProps) => {
-  const { user } = useAuth0()
-
   const navigate = useNavigate()
 
   const domain = configJson.REACT_APP_AUTH0_DOMAIN
@@ -35,20 +28,6 @@ export const Auth0ProviderWithNavigate = ({
 
   // add user to db if it has not exist yet
   console.log("TO DO: add user to DB ")
-  const checkUserInDb = async (user) => {
-    const result = await fetch("http://localhost:3300/register", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-    const response = await result.json()
-
-    const responseResult = response
-    console.log("RESPONSE RESULT: ", responseResult)
-  }
-  checkUserInDb(user)
 
   return (
     <Auth0Provider
