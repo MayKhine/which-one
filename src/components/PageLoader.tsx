@@ -1,1 +1,1 @@
-export const PageLoader = () => <div>Loading</div>
+export const PageLoader = () => <div>Loading Page</div>

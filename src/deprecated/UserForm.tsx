@@ -34,16 +34,17 @@ export const UserForm = ({ registerNewUser }: UserFormProps) => {
   }
 
   const validateUserName = (name: string) => {
-    const notNameRegex = /[^a-z0-9]/
-    if (!notNameRegex.test(name) && name.length >= 3) {
-      setNameError("")
-      return true
-    } else {
-      setNameError(
-        "Name needs to be longer than 3 characters, and contains only small letters and numbers"
-      )
-      return false
-    }
+    // const notNameRegex = /[^a-z0-9]/
+    // if (!notNameRegex.test(name) && name.length >= 3) {
+    //   setNameError("")
+    //   return true
+    // } else {
+    //   setNameError(
+    //     "Name needs to be longer than 3 characters, and contains only small letters and numbers"
+    //   )
+    //   return false
+    // }
+    return true
   }
 
   const validateYearBorn = (year: string) => {

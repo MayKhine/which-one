@@ -1,13 +1,16 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react"
-import React, { ReactNode } from "react"
-import { PageLoader } from "./PageLoader"
+import { ReactNode } from "react"
+import { PageLoader } from "../PageLoader"
 
 type AuthenticationGuardProps = {
-  component: any
+  component: ReactNode
+  // children: ReactNode
 }
+
 export const AuthenticationGuard = ({
   component,
-}: AuthenticationGuardProps) => {
+}: // children,
+AuthenticationGuardProps) => {
   const Component = withAuthenticationRequired(component, {
     onRedirecting: () => (
       <div className="page-layout">

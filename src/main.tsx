@@ -3,18 +3,15 @@ import ReactDOM from "react-dom/client"
 import "./index.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import App from "./App.tsx"
-import { Register } from "./components/Users/Register.tsx"
+// import { Register } from "./components/Users/Register.tsx"
 import { Posts } from "./components/Post/Posts.tsx"
 import { CreatePost } from "./components/Post/CreatePost.tsx"
 import { UserPage } from "./pages/UserPage.tsx"
 import { UsersPage } from "./pages/UsersPage.tsx"
 import { ColorTest } from "./pages/ColorTest.tsx"
-import { ProtectedPage } from "./pages/ProtectedPage.tsx"
-// import { Users } from "./components/Users/Users.tsx"
-// import { Auth0Provider } from "@auth0/auth0-react"
 
-import { Auth0ProviderWithNavigate } from "./Auth0ProviderWithNavigate.tsx"
-import { AuthenticationGuard } from "./components/AuthenticationGuard.tsx"
+import { Auth0ProviderWithNavigate } from "./components/Auth/Auth0ProviderWithNavigate.tsx"
+import { AuthenticationGuard } from "./components/Auth/AuthenticationGuard.tsx"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -26,7 +23,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:userName" element={<UserPage />} />
 
-          <Route path="/register" element={<Register />} />
           <Route path="/posts" element={<Posts />} />
           <Route path="/createpost" element={<CreatePost />} /> */}
           <Route path="/" element={<AuthenticationGuard component={App} />} />
@@ -43,10 +39,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             element={<AuthenticationGuard component={UserPage} />}
           />
 
-          <Route
-            path="/register"
-            element={<AuthenticationGuard component={Register} />}
-          />
           <Route
             path="/posts"
             element={<AuthenticationGuard component={Posts} />}

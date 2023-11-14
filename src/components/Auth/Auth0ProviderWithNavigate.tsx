@@ -1,26 +1,24 @@
 import { Auth0Provider } from "@auth0/auth0-react"
 import { ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
-import configJson from "../auth_config.json"
+import configJson from "../../../auth_config.json"
 import { useAuth0 } from "@auth0/auth0-react"
 
 type Auth0ProviderWithNavigateProps = {
   children: ReactNode
 }
 
-export const AuthVal = () => {
-  const { isAuthenticated } = useAuth0()
-  return isAuthenticated
-}
+// export const AuthVal = () => {
+//   const { isAuthenticated, user } = useAuth0()
+//   return isAuthenticated, user
+// }
 
 export const Auth0ProviderWithNavigate = ({
   children,
 }: Auth0ProviderWithNavigateProps) => {
-  const navigate = useNavigate()
+  const { user } = useAuth0()
 
-  // const domain = process.env.REACT_APP_AUTH0_DOMAIN
-  // const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
-  // const redirectUri = process.env.REACT_APP_AUTH0_CALLBACK_URL
+  const navigate = useNavigate()
 
   const domain = configJson.REACT_APP_AUTH0_DOMAIN
   const clientId = configJson.REACT_APP_AUTH0_CLIENT_ID
@@ -34,6 +32,23 @@ export const Auth0ProviderWithNavigate = ({
   if (!(domain && clientId && redirectUri)) {
     return null
   }
+
+  // add user to db if it has not exist yet
+  console.log("TO DO: add user to DB ")
+  const checkUserInDb = async (user) => {
+    const result = await fetch("http://localhost:3300/register", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+    const response = await result.json()
+
+    const responseResult = response
+    console.log("RESPONSE RESULT: ", responseResult)
+  }
+  checkUserInDb(user)
 
   return (
     <Auth0Provider

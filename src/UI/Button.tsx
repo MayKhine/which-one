@@ -1,4 +1,5 @@
 import { persimmon, ocean } from "./Colors"
+
 type ButtonProps = {
   text: string
   type: string

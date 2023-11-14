@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { MenuBar } from "../../UI/MenuBar"
+import { MenuBar } from "../UI/MenuBar"
 import { UserForm } from "./UserForm"
 
 export type NewUserProps = {
