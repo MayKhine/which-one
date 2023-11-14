@@ -13,8 +13,7 @@ export const NavBarButtons = () => {
     loginWithRedirect,
     "User: ",
     user,
-    "IsLoaging: ",
-    isLoading
+    JSON.stringify(user, null, 2)
   )
   return (
     <div className="nav-bar__buttons">

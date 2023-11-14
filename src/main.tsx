@@ -9,6 +9,7 @@ import { CreatePost } from "./components/Post/CreatePost.tsx"
 import { UserPage } from "./pages/UserPage.tsx"
 import { UsersPage } from "./pages/UsersPage.tsx"
 import { ColorTest } from "./pages/ColorTest.tsx"
+import { ProtectedPage } from "./pages/ProtectedPage.tsx"
 // import { Users } from "./components/Users/Users.tsx"
 // import { Auth0Provider } from "@auth0/auth0-react"
 
