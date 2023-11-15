@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { LoginButton } from "./LoginButton"
 import { LogoutButton } from "./LogoutButton"
-export const NavBarButtons = () => {
-  const { isAuthenticated, loginWithRedirect, user, isLoading } = useAuth0()
+export const AuthButtons = () => {
+  const { isAuthenticated, user } = useAuth0()
 
   const checkUserInDb = async (user) => {
     console.log("USER: ", user)

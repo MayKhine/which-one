@@ -26,9 +26,6 @@ export const Auth0ProviderWithNavigate = ({
     return null
   }
 
-  // add user to db if it has not exist yet
-  console.log("TO DO: add user to DB ")
-
   return (
     <Auth0Provider
       domain={domain}
