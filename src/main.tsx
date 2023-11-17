@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import "./index.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import App from "./App.tsx"
+import { Home } from "./Home.tsx"
 // import { Register } from "./components/Users/Register.tsx"
 import { Posts } from "./components/Post/Posts.tsx"
 import { CreatePost } from "./components/Post/CreatePost.tsx"
@@ -25,10 +25,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
           <Route path="/posts" element={<Posts />} />
           <Route path="/createpost" element={<CreatePost />} /> */}
-          <Route path="/" element={<AuthenticationGuard component={App} />} />
+          <Route path="/" element={<AuthenticationGuard component={Home} />} />
           <Route
             path="/home"
-            element={<AuthenticationGuard component={App} />}
+            element={<AuthenticationGuard component={Home} />}
           />
           <Route
             path="/users"

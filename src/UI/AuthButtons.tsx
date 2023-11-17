@@ -18,6 +18,7 @@ export const AuthButtons = () => {
     const responseResult = response
     console.log("RESPONSE RESULT: ", responseResult)
   }
+  
   checkUserInDb(user)
 
   return (
