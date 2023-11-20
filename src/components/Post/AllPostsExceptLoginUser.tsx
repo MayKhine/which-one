@@ -1,31 +1,37 @@
 import { useEffect, useState } from "react"
 import { Post, PostProps } from "./Post"
 
-export const Posts = () => {
+type AllPostsExceptLoginUserProps = {
+  loginUserEmail?: string
+}
+export const AllPostsExceptLoginUser = ({
+  loginUserEmail,
+}: AllPostsExceptLoginUserProps) => {
   const [posts, setPosts] = useState<Array<PostProps>>([])
 
   useEffect(() => {
     const getPosts = async () => {
-      const result = await fetch("http://localhost:3300/posts")
+      const result = await fetch(
+        `http://localhost:3300/posts-except-login-user?userEmail=${loginUserEmail}`
+      )
+
       const response = await result.json()
       if (response.success) {
         setPosts(response.result)
       }
-      console.log("result Json: ", response)
+      console.log("result Json: ", response.result)
     }
     getPosts()
   }, [])
 
   return (
     <div>
-      This is posts components
       {posts.map((post: PostProps, index) => {
         return (
           <Post
             key={index}
-            id={post.id}
             question={post.question}
-            userName={post.userName}
+            postCreater={post.postCreater}
             answers={post.answers}
           ></Post>
         )

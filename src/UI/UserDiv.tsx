@@ -3,18 +3,21 @@ type UserDivProps = {
   name: string
   email: string
   pic: string
+  width: string
 }
 
-export const UserDiv = ({ name, email, pic }: UserDivProps) => {
+export const UserDiv = ({ name, email, pic, width }: UserDivProps) => {
   return (
     <div
       style={{
-        maxWidth: "300px",
+        width: width,
+        height: "100%",
         backgroundColor: ocean,
         color: "white",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        // justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <img src={pic} style={{ borderRadius: "50%", maxWidth: "150px" }}></img>

@@ -15,7 +15,7 @@ export const MenuBar = () => {
   }
 
   return (
-    <div style={{ backgroundColor: "pink" }}>
+    <div style={{ backgroundColor: "pink", height: "70px" }}>
       <Button onClickFn={navButtonHandler} text="home" />
       <Button onClickFn={navButtonHandler} text="users" />
       {/* <Button onClickFn={navButtonHandler} text="register" /> */}
