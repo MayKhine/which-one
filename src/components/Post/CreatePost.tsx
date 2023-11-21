@@ -133,7 +133,6 @@ export const CreatePost = () => {
 
   return (
     <div>
-      <MenuBar />
       <form onSubmit={submitButtonHandler}>
         <div>
           <label>UserName</label>
@@ -177,14 +176,16 @@ export const CreatePost = () => {
           }}
         />
 
-        <Button type="submit" text="Create" />
-        <Button
-          type="reset"
-          text="Cancel"
-          onClickFn={() => {
-            setAnswerArr(["", ""])
-          }}
-        />
+        <div>
+          <Button
+            type="reset"
+            text="Clear"
+            onClickFn={() => {
+              setAnswerArr(["", ""])
+            }}
+          />
+          <Button type="submit" text="Create" />
+        </div>
       </form>
       {createPostResult}
     </div>
