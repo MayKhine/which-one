@@ -1,131 +1,67 @@
-import { useEffect, useState } from "react"
-import { PostProps } from "../components/Post/Post"
-import { MenuBar } from "../UI/MenuBar"
 import { useParams } from "react-router-dom"
-import { NoUser } from "../components/Users/NoUser"
-import { PostByUser } from "../components/Post/PostByUser"
-import { UserPageLayout } from "../layout/UserPageLayout"
+import { UserDiv } from "../UI/UserDiv"
+import { useEffect, useState } from "react"
+import { MenuBar } from "../UI/MenuBar"
+import { Post } from "../components/Post/Post"
+
 export const UserPage = () => {
-  const [userExists, setUserExists] = useState<boolean>()
-  const [postsExists, setPostsExists] = useState<boolean>(false)
-  const [posts, setPosts] = useState()
-  const [actionToggle, setActionToggle] = useState<boolean>(false)
-  const { userName } = useParams<{ userName: string }>()
+  const { userEmail } = useParams<{ userEmail: string }>()
+  const [user, setUser] = useState({})
 
-  const getPostsByUser = async () => {
-    const result = await fetch(
-      `http://localhost:3300/users/${userName}/posts`,
-      {
-        method: "Get",
-      }
-    )
+  const getUserInfoAndPosts = async () => {
+    const result = await fetch(`http://localhost:3300/users/${userEmail}`)
     const response = await result.json()
-    console.log(response)
+
+    console.log("USER PAGE RESPONSE : ", response)
     if (response.success) {
-      setPostsExists(true)
-      setPosts(response.result)
-    } else {
-      setPostsExists(false)
-    }
-  }
-
-  const deletePost = async (postUserName: string, postID: string) => {
-    const result = await fetch(
-      `http://localhost:3300/users/${postUserName}/posts/${postID}?delete=true`,
-      {
-        method: "Delete",
-      }
-    )
-    const response = await result.json()
-    setActionToggle(!actionToggle)
-    console.log("Delete Response: ", response)
-  }
-
-  const deletePostHandler = (
-    curUserName: string,
-    postUserName: string,
-    postID: string
-  ) => {
-    console.log("Delete Post Handler is called")
-    if (curUserName == postUserName) {
-      console.log("Delete Post Handler")
-      deletePost(postUserName, postID)
-      // deletePost()
-    } else {
-      console.log("Cancel Delete Post Handler")
-    }
-  }
-
-  const editPost = async (
-    postUserName: string,
-    postID: string,
-    editPostData: any
-  ) => {
-    //get current post data
-    //edit then
-    //send put
-
-    const result = await fetch(
-      `http://localhost:3300/users/${postUserName}/posts/${postID}?delete=true`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editPostData),
-      }
-    )
-    const response = await result.json()
-    setActionToggle(!actionToggle)
-    console.log("Edit Response: ", response)
-  }
-
-  const editPostHandler = (
-    curUserName: string,
-    postUserName: string,
-    postID: string
-  ) => {
-    console.log("Edit Post Handler is called")
-    if (curUserName == postUserName) {
-      console.log("Edit Post Handler")
-      const editPostData = {
-        question: "NEW QUESTIONS",
-      }
-      editPost(postUserName, postID, editPostData)
-    } else {
-      console.log("Cancel Edit Post Handler")
+      // return response.result
+      setUser(response.result)
     }
   }
 
   useEffect(() => {
-    getPostsByUser()
-  }, [actionToggle])
+    getUserInfoAndPosts()
+  }, [])
 
-  console.log("What is userName: ", userName, userExists, postsExists)
+  // const userEmail = user[0].email
+  const userName = user[0]?.name
+  const userPic = user[0]?.picture
+  const userPosts = user[0]?.postsArr
 
+  console.log("Email: ", userEmail, "posts: ", userPosts)
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100vh", backgroundColor: "gray" }}>
       <MenuBar />
-      User Page User is {userName}
-      <UserPageLayout
-        userName={userName}
-        children={
-          <div>
-            {!userExists && <NoUser userName={userName} />}
-            {userExists &&
-              postsExists &&
-              posts.map((post: PostProps, index: number) => {
-                return (
-                  <PostByUser
-                    post={post}
-                    key={index}
-                    onDelete={deletePostHandler}
-                    onEdit={editPostHandler}
-                  />
-                )
-              })}
-            {userExists && !postsExists && <div> No posts by this user</div>}
-          </div>
-        }
-      />
+      This is individual user page
+      <div
+        style={{
+          height: "calc(100% - 70px)",
+          backgroundColor: "lightgray",
+          display: "flex",
+        }}
+      >
+        <UserDiv
+          width="250px"
+          name={userName}
+          email={userEmail}
+          pic={userPic}
+        />
+        <div style={{ width: "100vw", backgroundColor: "darkgreen" }}>
+          {userPosts?.map((post, index) => {
+            return (
+              <Post
+                key={index}
+                postCreater={userEmail}
+                postCreaterPic={userPic}
+                question={post.question}
+                answerType={post.answerType}
+                answers={post.answers}
+                voting={post.voting}
+              />
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }

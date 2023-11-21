@@ -21,7 +21,6 @@ export const UserDiv = ({ name, email, pic, width }: UserDivProps) => {
         alignItems: "center",
       }}
     >
-      {/* <img src={pic} style={{ borderRadius: "50%", maxWidth: "150px" }}></img> */}
       <ProfileImg image={pic} size="120px" />
       <div>{name}</div>
       <div>{email}</div>

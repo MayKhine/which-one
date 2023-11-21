@@ -31,6 +31,7 @@ export const Post = ({
             const urlStr = `/users/${postCreater}`
             setNavigate(urlStr)
           }}
+          style={{ cursor: "pointer" }}
         >
           {postCreater}
         </div>

@@ -11,7 +11,7 @@ import { ColorTest } from "./pages/ColorTest.tsx"
 
 import { Auth0ProviderWithNavigate } from "./components/Auth/Auth0ProviderWithNavigate.tsx"
 import { AuthenticationGuard } from "./components/Auth/AuthenticationGuard.tsx"
-import { AllPostsExceptLoginUser } from "./components/Post/AllPostsExceptLoginUser.tsx"
+import { Posts } from "./components/Post/Posts.tsx"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -28,15 +28,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             element={<AuthenticationGuard component={UsersPage} />}
           />
           <Route
-            path="/users/:userName"
+            path="/users/:userEmail"
             element={<AuthenticationGuard component={UserPage} />}
           />
 
           <Route
             path="/posts"
-            element={
-              <AuthenticationGuard component={AllPostsExceptLoginUser} />
-            }
+            element={<AuthenticationGuard component={Posts} />}
           />
           <Route
             path="/createpost"
