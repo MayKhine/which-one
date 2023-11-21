@@ -12,35 +12,20 @@ export const UserPage = () => {
   const [actionToggle, setActionToggle] = useState<boolean>(false)
   const { userName } = useParams<{ userName: string }>()
 
-  const checkUserExist = async () => {
-    const result = await fetch(`http://localhost:3300/users/${userName}`, {
-      method: "Get",
-    })
-
-    const response = await result.json()
-    setUserExists(response.success)
-    return response.success
-  }
-
   const getPostsByUser = async () => {
-    const result = await checkUserExist()
-    if (result) {
-      const result = await fetch(
-        `http://localhost:3300/users/${userName}/posts`,
-        {
-          method: "Get",
-        }
-      )
-      const response = await result.json()
-      console.log(response)
-      if (response.success) {
-        setPostsExists(true)
-        setPosts(response.result)
-      } else {
-        setPostsExists(false)
+    const result = await fetch(
+      `http://localhost:3300/users/${userName}/posts`,
+      {
+        method: "Get",
       }
+    )
+    const response = await result.json()
+    console.log(response)
+    if (response.success) {
+      setPostsExists(true)
+      setPosts(response.result)
     } else {
-      console.log("User does not have any posts", userExists)
+      setPostsExists(false)
     }
   }
 
@@ -62,7 +47,6 @@ export const UserPage = () => {
     postID: string
   ) => {
     console.log("Delete Post Handler is called")
-    // if (userName == post.userName) {
     if (curUserName == postUserName) {
       console.log("Delete Post Handler")
       deletePost(postUserName, postID)
@@ -142,20 +126,6 @@ export const UserPage = () => {
           </div>
         }
       />
-      {/* {!userExists && <NoUser userName={userName} />}
-      {userExists &&
-        postsExists &&
-        posts.map((post: PostProps, index: number) => {
-          return (
-            <PostByUser
-              post={post}
-              key={index}
-              onDelete={deletePostHandler}
-              onEdit={editPostHandler}
-            />
-          )
-        })}
-      {userExists && !postsExists && <div> No posts by this user</div>} */}
     </div>
   )
 }

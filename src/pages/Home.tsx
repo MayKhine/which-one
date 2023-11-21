@@ -1,12 +1,9 @@
-import { MenuBar } from "./UI/MenuBar"
+import { MenuBar } from "../UI/MenuBar"
 import { useAuth0 } from "@auth0/auth0-react"
-import { UserDiv } from "./UI/UserDiv"
-import { Posts } from "./components/Post/Posts"
-// import { AllPostsExceptLoginUser } from "./components/Post/AllPostsExceptLoginUser"
+import { UserDiv } from "../UI/UserDiv"
+import { Posts } from "../components/Post/Posts"
 export const Home = () => {
-  const { isAuthenticated, user } = useAuth0()
-  console.log("Is ", isAuthenticated, user)
-  console.log("HOMMEE")
+  const { user } = useAuth0()
 
   return (
     <div style={{ height: "100vh", backgroundColor: "gray" }}>

@@ -1,4 +1,4 @@
-import App from "../Home"
+import App from "../pages/Home"
 import { Users } from "../components/Users/Users"
 import { Route, Routes } from "react-router-dom"
 

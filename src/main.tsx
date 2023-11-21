@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import "./index.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import { Home } from "./Home.tsx"
+import { Home } from "./pages/Home.tsx"
 
 import { CreatePost } from "./components/Post/CreatePost.tsx"
 import { UserPage } from "./pages/UserPage.tsx"

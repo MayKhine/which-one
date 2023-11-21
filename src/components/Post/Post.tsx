@@ -1,3 +1,6 @@
+import { useState } from "react"
+import { Navigate } from "react-router-dom"
+
 import { ProfileImg } from "../../UI/ProfilePic"
 export type PostProps = {
   postCreater: string
@@ -17,16 +20,30 @@ export const Post = ({
   answers,
   postCreaterPic,
 }: PostProps) => {
-  console.log("What is pic: ", postCreaterPic)
+  const [navigate, setNavigate] = useState("")
+
   return (
     <div style={{ backgroundColor: "gray", marginBottom: "10px" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <ProfileImg image={postCreaterPic} size="30px" />
+        <div
+          onClick={() => {
+            const urlStr = `/users/${postCreater}`
+            setNavigate(urlStr)
+          }}
+        >
+          {postCreater}
+        </div>
+      </div>
       <div>{question}</div>
-      <ProfileImg image={postCreaterPic} size="30px" />
-      <div>Post by {postCreater}</div>
+
       <div>
         {answers.map((ans, index) => {
           return <li key={index}>{ans}</li>
         })}
+      </div>
+      <div>
+        {navigate && <Navigate to={navigate} replace={true}></Navigate>}
       </div>
     </div>
   )

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { Post, PostProps } from "./Post"
-// import profilePic from "../components/img/profilePic.png"
 import img from "../../img/profilePic.png"
+import { useAuth0 } from "@auth0/auth0-react"
 export const Posts = () => {
   const [posts, setPosts] = useState<Array<PostProps>>([])
+  const { isAuthenticated, user } = useAuth0()
+  console.log("Is ", isAuthenticated, user)
 
   useEffect(() => {
     const getPosts = async () => {
@@ -17,11 +19,12 @@ export const Posts = () => {
     getPosts()
   }, [])
 
+  // show other poe
+
   return (
     <div>
-      This is posts components
-      {posts.map((post, index) => {
-        console.log("What is in post: ", post.postCreater)
+      This is evryone's posts
+      {posts.map((post: PostProps, index) => {
         return (
           <Post
             key={index}
