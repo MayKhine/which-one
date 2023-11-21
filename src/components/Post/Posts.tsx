@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Post, PostProps } from "./Post"
-
+// import profilePic from "../components/img/profilePic.png"
+import img from "../../img/profilePic.png"
 export const Posts = () => {
   const [posts, setPosts] = useState<Array<PostProps>>([])
 
@@ -19,14 +20,17 @@ export const Posts = () => {
   return (
     <div>
       This is posts components
-      {posts.map((post: PostProps, index) => {
+      {posts.map((post, index) => {
+        console.log("What is in post: ", post.postCreater)
         return (
           <Post
             key={index}
-            id={post.id}
+            postCreater={post.postCreater}
+            postCreaterPic={post?.postCreaterInfo[0]?.picture || img}
             question={post.question}
-            userName={post.userName}
+            answerType={post.answerType}
             answers={post.answers}
+            voting={post.voting}
           ></Post>
         )
       })}

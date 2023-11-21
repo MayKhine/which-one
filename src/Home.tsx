@@ -1,7 +1,8 @@
 import { MenuBar } from "./UI/MenuBar"
 import { useAuth0 } from "@auth0/auth0-react"
 import { UserDiv } from "./UI/UserDiv"
-import { AllPostsExceptLoginUser } from "./components/Post/AllPostsExceptLoginUser"
+import { Posts } from "./components/Post/Posts"
+// import { AllPostsExceptLoginUser } from "./components/Post/AllPostsExceptLoginUser"
 export const Home = () => {
   const { isAuthenticated, user } = useAuth0()
   console.log("Is ", isAuthenticated, user)
@@ -24,7 +25,7 @@ export const Home = () => {
           pic={user?.picture}
         />
         <div style={{ width: "100vw" }}>
-          <AllPostsExceptLoginUser loginUserEmail={user?.email} />
+          <Posts />
         </div>
       </div>
     </div>
