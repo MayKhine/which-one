@@ -1,16 +1,9 @@
-import { persimmon, ocean } from "./Colors"
+import { ButtonProps } from "./Button"
+import { persimmon } from "./Colors"
 
-export type ButtonProps = {
-  text: string
-  type: string
-  onClickFn: () => void
-  bgColor?: string
-  fontColor?: string
-}
-
-export const Button = ({
+export const RoundButton = ({
   text,
-  type,
+  // type,
   onClickFn,
   fontColor,
   bgColor,
@@ -18,18 +11,17 @@ export const Button = ({
   return (
     <button
       style={{
-        borderRadius: "0.25rem",
+        width: "1.5rem",
+        height: "1.5rem",
+        borderRadius: "50%",
         backgroundColor: bgColor ? bgColor : persimmon,
         color: fontColor ? fontColor : "white",
         border: "1px solid transparent",
         fontSize: "1rem",
         cursor: "pointer",
-        padding: ".3rem",
-        marginLeft: "0.3rem",
-        marginRight: "0.3rem",
       }}
       onClick={onClickFn}
-      type={type}
+      // type={type}
     >
       {text}
     </button>

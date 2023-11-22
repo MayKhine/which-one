@@ -1,6 +1,5 @@
 import { Button } from "../../UI/Button"
 import { useState } from "react"
-import { MenuBar } from "../../UI/MenuBar"
 import { InputDiv } from "../../UI/InputDiv"
 import { DateTime } from "luxon"
 

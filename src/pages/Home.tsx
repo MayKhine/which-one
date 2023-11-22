@@ -3,9 +3,9 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { UserDiv } from "../UI/UserDiv"
 import { Posts } from "../components/Post/Posts"
 import { Button } from "../UI/Button"
-import { CreatePost } from "../components/Post/CreatePost"
+// import { CreatePost } from "../components/Post/CreatePost"
 import { useState } from "react"
-
+import { PostForm } from "../components/Post/PostForm"
 export const Home = () => {
   const { user } = useAuth0()
   const [createPost, setCreatePost] = useState(false)
@@ -31,18 +31,24 @@ export const Home = () => {
           pic={user?.picture}
         />
         <div style={{ width: "100vw" }}>
-          {!createPost && (
-            <Button
-              type="submit"
-              text="Add a new post"
-              onClickFn={createPostHandler}
-            />
-          )}
-          {createPost && (
-            <div>
-              <CreatePost />
-            </div>
-          )}
+          <div style={{ backgroundColor: "lightyellow" }}>
+            {!createPost && (
+              <div>
+                <div> What's your question? </div>
+                {/* <input type="text" onChange={createPostHandler}></input> */}
+                <Button
+                  type="submit"
+                  text="Add a new post"
+                  onClickFn={createPostHandler}
+                />
+              </div>
+            )}
+            {createPost && (
+              <div>
+                <PostForm />
+              </div>
+            )}
+          </div>
           <Posts />
         </div>
       </div>
