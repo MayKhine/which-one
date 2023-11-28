@@ -5,13 +5,33 @@ import { Posts } from "../components/Post/Posts"
 import { Button } from "../UI/Button"
 // import { CreatePost } from "../components/Post/CreatePost"
 import { useState } from "react"
-import { PostForm } from "../components/Post/PostForm"
+import { PostForm, enteredValuesType } from "../components/Post/PostForm"
 export const Home = () => {
   const { user } = useAuth0()
   const [createPost, setCreatePost] = useState(false)
   const createPostHandler = () => {
     console.log("Create post is clicked")
     setCreatePost(!createPost)
+  }
+
+  const postQuestion = async (enteredValues: enteredValuesType) => {
+    const result = await fetch(`http://localhost:3300/${user?.email}/post`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(enteredValues),
+    })
+
+    const response = await result.json()
+    console.log("RESPONSE FROM DB AFTER POST QUESTIONS: ", response)
+  }
+
+  const formSubmitHandler = (enteredValues: enteredValuesType) => {
+    console.log("FORM SUBMIT HANDLER FROM HOMEEEE", enteredValues)
+    //check if the same questions is created by the poster
+    // if not, create the post
+    postQuestion(enteredValues)
   }
 
   return (
@@ -45,7 +65,7 @@ export const Home = () => {
             )}
             {createPost && (
               <div>
-                <PostForm />
+                <PostForm onFormSubmit={formSubmitHandler} />
               </div>
             )}
           </div>

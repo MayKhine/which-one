@@ -3,18 +3,26 @@ import { Button } from "../../UI/Button"
 import { InputDiv } from "../../UI/InputDiv"
 import { RoundButton } from "../../UI/RoundButton"
 type PostFormProps = {
-  formSubmitHandler: () => void
+  onFormSubmit: (val: enteredValuesType) => void
 }
 
-export const PostForm = () => {
-  const [enteredValues, setEnteredValues] = useState({})
+export type enteredValuesType = {
+  question: string
+  ans: Array<string>
+}
+
+export const PostForm = ({ onFormSubmit }: PostFormProps) => {
+  const [enteredValues, setEnteredValues] = useState({
+    question: "",
+    ans: ["", ""],
+  })
   const [answerArr, setAnswerArr] = useState(["", ""])
 
   // const [createPostResult, setCreatePostResult] = useState("")
 
   const inputChangeHandler = (
-    identifier: string | number,
-    value: string | number,
+    identifier: string,
+    value: string,
     ansIndex?: number
   ) => {
     // setCreatePostResult("")
@@ -45,10 +53,32 @@ export const PostForm = () => {
     }
   }
 
+  const checkAnswerArry = () => {
+    const ansArryLength = enteredValues.ans.length
+    if (ansArryLength < 2) {
+      return false
+    }
+    for (let i = 0; i < ansArryLength; i++) {
+      for (let y = 1; y < ansArryLength; y++) {
+        const ansA = enteredValues.ans[i]
+        const ansB = enteredValues.ans[y]
+
+        if (i == y) {
+          break
+        }
+        if (ansA.toLowerCase() == ansB.toLowerCase()) {
+          return false
+        }
+      }
+    }
+    return true
+  }
+
   const formSubmitHandler = () => {
     event?.preventDefault()
-
-    console.log("Form Submit Handler is clicked: ", enteredValues)
+    if (checkAnswerArry()) {
+      onFormSubmit(enteredValues)
+    }
   }
   return (
     <div>
@@ -94,8 +124,8 @@ export const PostForm = () => {
             }}
           />
           <Button
-            type="submit"
             text="Create"
+            type="submit"
             onClickFn={() => {
               console.log("Submit Button is clciked")
             }}
@@ -103,8 +133,8 @@ export const PostForm = () => {
         </div>
         <div>
           <Button
-            type="reset"
             text="Cancel"
+            type="reset"
             onClickFn={() => {
               console.log("Cancel Button is clciked")
             }}

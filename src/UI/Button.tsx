@@ -2,8 +2,8 @@ import { persimmon, ocean } from "./Colors"
 
 export type ButtonProps = {
   text: string
-  type: string
-  onClickFn: () => void
+  type?: string
+  onClickFn?: () => void
   bgColor?: string
   fontColor?: string
 }
