@@ -26,15 +26,24 @@ export const Posts = () => {
       This is evryone's posts
       {posts.map((post: PostProps, index) => {
         return (
-          <Post
-            key={index}
-            postCreater={post.postCreater}
-            postCreaterPic={post?.postCreaterInfo[0]?.picture || img}
-            question={post.question}
-            answerType={post.answerType}
-            answers={post.answers}
-            voting={post.voting}
-          ></Post>
+          // <Post
+          //   key={index}
+          //   postCreater={post.postCreater}
+          //   postCreaterPic={post?.postCreaterInfo[0]?.picture || img}
+          //   question={post.question}
+          //   answerType={post.answerType}
+          //   answers={post.answers}
+          //   voting={post.voting}
+          // ></Post>
+          <div style={{ backgroundColor: "lightblue", marginBottom: "2rem" }}>
+            <p>{post.postCreater}</p>
+            <p>{post.question}</p>
+            <p>
+              {post.answers?.map((ans) => {
+                return <div>{ans}</div>
+              })}
+            </p>
+          </div>
         )
       })}
     </div>

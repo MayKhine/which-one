@@ -15,23 +15,32 @@ export const Home = () => {
   }
 
   const postQuestion = async (enteredValues: enteredValuesType) => {
-    const result = await fetch(`http://localhost:3300/${user?.email}/post`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(enteredValues),
-    })
+    const result = await fetch(
+      `http://localhost:3300/${user?.email}/createpost`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(enteredValues),
+      }
+    )
 
     const response = await result.json()
-    console.log("RESPONSE FROM DB AFTER POST QUESTIONS: ", response)
+    return response
   }
 
-  const formSubmitHandler = (enteredValues: enteredValuesType) => {
+  const formSubmitHandler = async (enteredValues: enteredValuesType) => {
     console.log("FORM SUBMIT HANDLER FROM HOMEEEE", enteredValues)
     //check if the same questions is created by the poster
     // if not, create the post
-    postQuestion(enteredValues)
+    const response = await postQuestion(enteredValues)
+    if (response.success) {
+      console.log("CLOSE THE POST FORM")
+      setCreatePost(!createPost)
+    } else {
+      console.log("SHOW ERROR")
+    }
   }
 
   return (
@@ -69,7 +78,7 @@ export const Home = () => {
               </div>
             )}
           </div>
-          <Posts />
+          {/* <Posts /> */}
         </div>
       </div>
     </div>

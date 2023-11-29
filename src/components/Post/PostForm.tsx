@@ -8,13 +8,13 @@ type PostFormProps = {
 
 export type enteredValuesType = {
   question: string
-  ans: Array<string>
+  answers: Array<string>
 }
 
 export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const [enteredValues, setEnteredValues] = useState({
     question: "",
-    ans: ["", ""],
+    answers: ["", ""],
   })
   const [answerArr, setAnswerArr] = useState(["", ""])
 
@@ -23,12 +23,12 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const inputChangeHandler = (
     identifier: string,
     value: string,
-    ansIndex?: number
+    ansIndex: number
   ) => {
     // setCreatePostResult("")
 
-    if (identifier == "ans") {
-      const curAnsArr = enteredValues.ans
+    if (identifier == "answers") {
+      const curAnsArr = enteredValues.answers
 
       //if ans arrr ald exist and go to its index
       if (curAnsArr?.length > 0 && ansIndex) {
@@ -37,12 +37,12 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
 
         setEnteredValues((preVal) => ({
           ...preVal,
-          ans: [...curAnsArrUpdated],
+          answers: [...curAnsArrUpdated],
         }))
       } else {
         setEnteredValues((prevVal) => ({
           ...prevVal,
-          ans: [value],
+          answers: [value],
         }))
       }
     } else {
@@ -54,14 +54,14 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   }
 
   const checkAnswerArry = () => {
-    const ansArryLength = enteredValues.ans.length
+    const ansArryLength = enteredValues.answers.length
     if (ansArryLength < 2) {
       return false
     }
     for (let i = 0; i < ansArryLength; i++) {
       for (let y = 1; y < ansArryLength; y++) {
-        const ansA = enteredValues.ans[i]
-        const ansB = enteredValues.ans[y]
+        const ansA = enteredValues.answers[i]
+        const ansB = enteredValues.answers[y]
 
         if (i == y) {
           break
@@ -94,13 +94,13 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
           />
         </div>
         <div style={{ backgroundColor: "green" }}>
-          {answerArr.map((ans, index) => {
+          {answerArr.map((answer, index) => {
             const label = "answer " + index.toString()
             return (
               <InputDiv
                 key={index}
                 index={index}
-                identifier="ans"
+                identifier="answers"
                 label={label}
                 onChangeFn={inputChangeHandler}
                 type="text"
