@@ -27,7 +27,8 @@ export const Home = () => {
   //   getPosts()
   // }, [])
 
-  const [posts] = useGetPosts()
+  const [posts, refetch] = useGetPosts()
+
   console.log("Posts: from useGetPosts: ", posts)
   const postQuestion = async (enteredValues: enteredValuesType) => {
     const result = await fetch(
@@ -51,6 +52,7 @@ export const Home = () => {
     // if not, create the post
     const response = await postQuestion(enteredValues)
     if (response.success) {
+      refetch()
       console.log("CLOSE THE POST FORM")
       setCreatePost(!createPost)
     } else {
