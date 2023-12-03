@@ -6,6 +6,7 @@ import { Button } from "../UI/Button"
 // import { CreatePost } from "../components/Post/CreatePost"
 import { useState } from "react"
 import { PostForm, enteredValuesType } from "../components/Post/PostForm"
+import { useGetPosts } from "../hooks/useGetPosts"
 export const Home = () => {
   const { user } = useAuth0()
   const [createPost, setCreatePost] = useState(false)
@@ -14,6 +15,20 @@ export const Home = () => {
     setCreatePost(!createPost)
   }
 
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     const result = await fetch("http://localhost:3300/posts")
+  //     const response = await result.json()
+  //     if (response.success) {
+  //       setPosts(response.result)
+  //     }
+  //     console.log("result Json: ", response)
+  //   }
+  //   getPosts()
+  // }, [])
+
+  const [posts] = useGetPosts()
+  console.log("Posts: from useGetPosts: ", posts)
   const postQuestion = async (enteredValues: enteredValuesType) => {
     const result = await fetch(
       `http://localhost:3300/${user?.email}/createpost`,
@@ -78,7 +93,7 @@ export const Home = () => {
               </div>
             )}
           </div>
-          {/* <Posts /> */}
+          <Posts posts={posts} />
         </div>
       </div>
     </div>
