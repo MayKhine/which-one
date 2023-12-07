@@ -1,27 +1,37 @@
 import { useState } from "react"
 import { Navigate } from "react-router-dom"
-
+import img from "../../img/profilePic.png"
 import { ProfileImg } from "../../UI/ProfilePic"
-export type PostProps = {
-  postCreater: string
-  postCreaterPic: string
-  // postCreaterInfo: any
-  question: string
-  answerType?: string
 
-  answers?: Array<string>
-  voting?: Array<string>
-  imgDesc?: Array<string>
+type postCreaterInfoType = {
+  _id: string
+  name: string
+  email: string
+  picture: string
+}
+
+export type PostProps = {
+  key: number
+  postCreater: string
+  // postCreaterPic: string
+  postCreaterInfo: Array<postCreaterInfoType>
+  question: string
+  answers: Array<string>
+
+  // answerType?: string
+  // voting?: Array<string>
+  // imgDesc?: Array<string>
 }
 
 export const Post = ({
   question,
   postCreater,
   answers,
-  postCreaterPic,
-}: PostProps) => {
+  postCreaterInfo,
+}: // postCreaterPic,
+PostProps) => {
   const [navigate, setNavigate] = useState("")
-
+  const postCreaterPic = postCreaterInfo[0].picture || img
   return (
     <div style={{ backgroundColor: "gray", marginBottom: "10px" }}>
       <div style={{ display: "flex", alignItems: "center" }}>

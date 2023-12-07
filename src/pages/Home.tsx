@@ -10,22 +10,15 @@ import { useGetPosts } from "../hooks/useGetPosts"
 export const Home = () => {
   const { user } = useAuth0()
   const [createPost, setCreatePost] = useState(false)
+
+  const cancelPostHandler = () => {
+    console.log("Cancle Post Form")
+    setCreatePost(!createPost)
+  }
   const createPostHandler = () => {
     console.log("Create post is clicked")
     setCreatePost(!createPost)
   }
-
-  // useEffect(() => {
-  //   const getPosts = async () => {
-  //     const result = await fetch("http://localhost:3300/posts")
-  //     const response = await result.json()
-  //     if (response.success) {
-  //       setPosts(response.result)
-  //     }
-  //     console.log("result Json: ", response)
-  //   }
-  //   getPosts()
-  // }, [])
 
   const [posts, refetch] = useGetPosts()
 
@@ -77,7 +70,7 @@ export const Home = () => {
           pic={user?.picture}
         />
         <div style={{ width: "100vw" }}>
-          <div style={{ backgroundColor: "lightyellow" }}>
+          <div style={{ backgroundColor: "yellow", padding: "1rem" }}>
             {!createPost && (
               <div>
                 <div> What's your question? </div>
@@ -91,7 +84,10 @@ export const Home = () => {
             )}
             {createPost && (
               <div>
-                <PostForm onFormSubmit={formSubmitHandler} />
+                <PostForm
+                  onFormSubmit={formSubmitHandler}
+                  onCancel={cancelPostHandler}
+                />
               </div>
             )}
           </div>

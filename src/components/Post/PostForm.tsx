@@ -4,6 +4,7 @@ import { InputDiv } from "../../UI/InputDiv"
 import { RoundButton } from "../../UI/RoundButton"
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => void
+  onCancel: () => void
 }
 
 export type enteredValuesType = {
@@ -11,7 +12,7 @@ export type enteredValuesType = {
   answers: Array<string>
 }
 
-export const PostForm = ({ onFormSubmit }: PostFormProps) => {
+export const PostForm = ({ onFormSubmit, onCancel }: PostFormProps) => {
   const [enteredValues, setEnteredValues] = useState({
     question: "",
     answers: ["", ""],
@@ -116,27 +117,20 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
           />
         </div>
         <div>
-          <Button
+          {/* <Button
             type="reset"
             text="Reset"
             onClickFn={() => {
               setAnswerArr(["", ""])
             }}
-          />
+          /> */}
+          <Button text="Cancel" type="reset" onClickFn={onCancel} />
+
           <Button
             text="Create"
             type="submit"
             onClickFn={() => {
               console.log("Submit Button is clciked")
-            }}
-          />
-        </div>
-        <div>
-          <Button
-            text="Cancel"
-            type="reset"
-            onClickFn={() => {
-              console.log("Cancel Button is clciked")
             }}
           />
         </div>
