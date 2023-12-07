@@ -1,5 +1,4 @@
 import { Post, PostProps } from "./Post"
-import img from "../../img/profilePic.png"
 import { useAuth0 } from "@auth0/auth0-react"
 
 type PostsProps = {

@@ -13,7 +13,6 @@ type postCreaterInfoType = {
 export type PostProps = {
   key: number
   postCreater: string
-  // postCreaterPic: string
   postCreaterInfo: Array<postCreaterInfoType>
   question: string
   answers: Array<string>
