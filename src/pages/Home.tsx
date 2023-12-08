@@ -12,17 +12,18 @@ export const Home = () => {
   const [createPost, setCreatePost] = useState(false)
 
   const cancelPostHandler = () => {
-    console.log("Cancle Post Form")
+    // console.log("Cancle Post Form")
     setCreatePost(!createPost)
   }
   const createPostHandler = () => {
-    console.log("Create post is clicked")
+    // console.log("Create post is clicked")
     setCreatePost(!createPost)
   }
 
   const [posts, refetch] = useGetPosts()
 
-  console.log("Posts: from useGetPosts: ", posts)
+  // console.log("Posts: from useGetPosts: ", posts)
+
   const postQuestion = async (enteredValues: enteredValuesType) => {
     const result = await fetch(
       `http://localhost:3300/${user?.email}/createpost`,

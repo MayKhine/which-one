@@ -9,7 +9,7 @@ export const Users = () => {
       const result = await fetch("http://localhost:3300/users")
       const resultJson = await result.json()
       setUsers(resultJson)
-      console.log("Users: ", users)
+      // console.log("Users: ", users)
     }
     getUsers()
   }, [])

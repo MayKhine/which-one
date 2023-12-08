@@ -10,7 +10,6 @@ export const MenuBar = () => {
   const [navigate, setNavigate] = useState("")
   const navButtonHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const urlStr = "/".concat(event.target.innerHTML.trim())
-    console.log("URL Str: ", urlStr)
     setNavigate(urlStr)
   }
 

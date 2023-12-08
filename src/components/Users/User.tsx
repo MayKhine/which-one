@@ -12,8 +12,8 @@ export const User = ({ name, email }: UserProps) => {
   const [navigate, setNavigate] = useState("")
 
   const userClickHandler = () => {
-    console.log("This user is selected: ", name)
-    const urlStr = `/users/${name}`
+    // console.log("This user is selected: ", name, email)
+    const urlStr = `/users/${email}`
     setNavigate(urlStr)
   }
 

@@ -1,34 +1,18 @@
 import { useParams } from "react-router-dom"
 import { UserDiv } from "../UI/UserDiv"
-import { useEffect, useState } from "react"
 import { MenuBar } from "../UI/MenuBar"
 import { Post, PostProps } from "../components/Post/Post"
-import { useGetPosts } from "../hooks/useGetPosts"
+import { useGetPostsByEmail } from "../hooks/useGetPostsByEmail"
 
 export const UserPage = () => {
   const { userEmail } = useParams<{ userEmail: string }>()
-  // const [user, setUser] = useState({})
-  const [posts, refetch] = useGetPosts()
-  // const getUserInfoAndPosts = async () => {
-  //   const result = await fetch(`http://localhost:3300/users/${userEmail}`)
-  //   const response = await result.json()
+  console.log("INID user page: ", userEmail)
+  const [posts, refetch] = useGetPostsByEmail(userEmail)
 
-  //   console.log("USER PAGE RESPONSE : ", response)
-  //   if (response.success) {
-  //     // return response.result
-  //     setUser(response.result)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getUserInfoAndPosts()
-  // }, [])
-
-  // const userEmail = posts[0].postCreater
   const userName = posts[0]?.postCreaterInfo[0].name
   const userPic = posts[0]?.postCreaterInfo[0].picture
   // const userPosts = user[0]?.postsArr
-  console.log("What is posts: ", posts)
+  // console.log("What is posts: ", posts)
 
   const userPosts = posts.filter((post) => {
     if (post.postCreater == userEmail) {
@@ -37,12 +21,12 @@ export const UserPage = () => {
     return false
   })
 
-  console.log("User posts: ", userPosts)
+  // console.log("User posts: ", userPosts)
 
   return (
     <div style={{ height: "100vh", backgroundColor: "gray" }}>
       <MenuBar />
-      This is individual user page
+      This is individual user page - update
       <div
         style={{
           height: "calc(100% - 70px)",
@@ -56,6 +40,7 @@ export const UserPage = () => {
           email={userEmail}
           pic={userPic}
         />
+
         <div style={{ width: "100vw", backgroundColor: "darkgreen" }}>
           {userPosts?.map((post: PostProps, index: number) => {
             console.log("WHat is in a post: ", post)
