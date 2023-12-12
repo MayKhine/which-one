@@ -1,35 +1,25 @@
-import { persimmon, ocean } from "./Colors"
-
 export type ButtonProps = {
   text: string
-  type?: string
   onClickFn?: () => void
   bgColor?: string
-  fontColor?: string
 }
 
-export const Button = ({
-  text,
-  type,
-  onClickFn,
-  fontColor,
-  bgColor,
-}: ButtonProps) => {
+export const Button = ({ text, onClickFn, bgColor }: ButtonProps) => {
   return (
     <button
       style={{
-        borderRadius: "0.25rem",
-        backgroundColor: bgColor ? bgColor : persimmon,
-        color: fontColor ? fontColor : "white",
-        border: "1px solid transparent",
-        fontSize: "1rem",
+        borderRadius: "0.3rem",
+        backgroundColor: bgColor || "white",
+        border: "3px solid black",
+        fontSize: "1.3rem",
         cursor: "pointer",
-        padding: ".3rem",
-        marginLeft: "0.3rem",
-        marginRight: "0.3rem",
+        padding: ".5rem",
+        margin: "1rem",
+        boxShadow:
+          " 12px 8px 0 0px white, 14px 6px 0 0px black,14px 10px 0 0px black,10px 10px 0 0px black", //"8px 8px 0px rgba(0, 0, 0, 1)" /* Adjust values as needed */,
       }}
       onClick={onClickFn}
-      type={type}
+      type="submit"
     >
       {text}
     </button>
