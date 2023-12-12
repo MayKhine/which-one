@@ -2,9 +2,11 @@ import { useState } from "react"
 import { Button } from "../../UI/Button"
 import { InputDiv } from "../../UI/InputDiv"
 import { RoundButton } from "../../UI/RoundButton"
+import { colors } from "../../UI/Colors"
+import { inputStyle, labelStyle } from "../../UI/Styles"
+
 type PostFormProps = {
-  onFormSubmit: (val: enteredValuesType) => void
-  onCancel: () => void
+  onFormSubmit: (val: enteredValuesType) => boolean
 }
 
 export type enteredValuesType = {
@@ -12,22 +14,28 @@ export type enteredValuesType = {
   answers: Array<string>
 }
 
-export const PostForm = ({ onFormSubmit, onCancel }: PostFormProps) => {
+export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const [enteredValues, setEnteredValues] = useState({
     question: "",
     answers: ["", ""],
   })
   const [answerArr, setAnswerArr] = useState(["", ""])
 
-  // const [createPostResult, setCreatePostResult] = useState("")
+  const [createPost, setCreatePost] = useState(false)
+
+  const cancelPostHandler = () => {
+    setCreatePost(!createPost)
+    setEnteredValues({
+      question: "",
+      answers: ["", ""],
+    })
+  }
 
   const inputChangeHandler = (
     identifier: string,
     value: string,
     ansIndex: number
   ) => {
-    // setCreatePostResult("")
-
     if (identifier == "answers") {
       const curAnsArr = enteredValues.answers
 
@@ -75,66 +83,83 @@ export const PostForm = ({ onFormSubmit, onCancel }: PostFormProps) => {
     return true
   }
 
-  const formSubmitHandler = () => {
-    event?.preventDefault()
+  const formSubmitHandler = async (event: any) => {
+    event.preventDefault()
+    console.log("IN THE FORM SUBMIT HANDLER", enteredValues)
+
     if (checkAnswerArry()) {
-      onFormSubmit(enteredValues)
+      const postSuccess = await onFormSubmit(enteredValues)
+
+      console.log("WAS SUBMIT SUCCESS: ", postSuccess)
+      if (!postSuccess) {
+        console.log("SHOW POST ERROR")
+      } else {
+        console.log("CLEAR THE FORM ")
+        event?.target.reset()
+        cancelPostHandler()
+      }
     }
   }
   return (
-    <div>
-      <form onSubmit={formSubmitHandler}>
-        <div>
-          <InputDiv
-            key={"question"}
-            index={342}
-            identifier="question"
-            label={"Questions"}
-            onChangeFn={inputChangeHandler}
-            type="text"
-          />
-        </div>
-        <div style={{ backgroundColor: "green" }}>
-          {answerArr.map((answer, index) => {
-            const label = "answer " + index.toString()
-            return (
-              <InputDiv
-                key={index}
-                index={index}
-                identifier="answers"
-                label={label}
-                onChangeFn={inputChangeHandler}
-                type="text"
-              />
-            )
-          })}
-          <RoundButton
-            type="add"
-            text="+"
-            onClickFn={() => {
-              setAnswerArr((prevVal) => [...prevVal, ""])
-            }}
-          />
-        </div>
-        <div>
-          {/* <Button
-            type="reset"
-            text="Reset"
-            onClickFn={() => {
-              setAnswerArr(["", ""])
-            }}
-          /> */}
-          <Button text="Cancel" type="reset" onClickFn={onCancel} />
+    <form onSubmit={formSubmitHandler} style={{ padding: "1.5rem" }}>
+      <div>
+        <div style={labelStyle}>What's your question?</div>
+        <input
+          style={inputStyle}
+          required
+          type="text"
+          value={enteredValues.question}
+          onSelect={() => {
+            if (!createPost) {
+              setCreatePost(!createPost)
+            }
+          }}
+          onChange={(event) => {
+            inputChangeHandler("question", event?.target.value, 121)
+          }}
+        ></input>
+      </div>
 
-          <Button
-            text="Create"
-            type="submit"
-            onClickFn={() => {
-              console.log("Submit Button is clciked")
-            }}
-          />
+      {createPost && (
+        <div>
+          <div>
+            {answerArr.map((answer, index) => {
+              const label = "Option " + (index + 1).toString()
+              return (
+                <>
+                  <div style={labelStyle}>{label}</div>
+                  <InputDiv
+                    style={inputStyle}
+                    key={index}
+                    index={index}
+                    identifier="answers"
+                    onChangeFn={inputChangeHandler}
+                    type="text"
+                  />
+                </>
+              )
+            })}
+            <RoundButton
+              type="add"
+              text="+"
+              onClickFn={() => {
+                setAnswerArr((prevVal) => [...prevVal, ""])
+              }}
+            />
+          </div>
+          <div>
+            <Button text="Cancel" type="reset" onClickFn={cancelPostHandler} />
+            <Button
+              text="Create"
+              type="submit"
+              onClickFn={() => {
+                console.log("Submit Button is clciked")
+                // formSubmitHandler()
+              }}
+            />
+          </div>
         </div>
-      </form>
-    </div>
+      )}
+    </form>
   )
 }

@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom"
 import { AuthButtons } from "./AuthButtons"
 import { MenuButton } from "./MenuButton"
 import { colors } from "./Colors"
+import styles from "./UI.module.css"
 export const MenuBar = () => {
   const [navigate, setNavigate] = useState("")
   const navButtonHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -12,8 +13,9 @@ export const MenuBar = () => {
 
   return (
     <div
+      className={styles.menubar}
       style={{
-        height: "70px",
+        // height: "70px",
         display: "flex",
         justifyContent: "space-between",
       }}
@@ -22,7 +24,7 @@ export const MenuBar = () => {
         style={{
           fontWeight: "800",
           fontSize: "3rem",
-          marginLeft: "1.5rem",
+          // marginLeft: "1.5rem",
         }}
       >
         WHICH ONE
@@ -32,7 +34,8 @@ export const MenuBar = () => {
         style={{
           display: "flex",
           alignSelf: "center",
-          marginRight: ".5rem",
+          marginBottom: ".5rem",
+          // marginRight: ".5rem",
         }}
       >
         <div>
@@ -43,7 +46,7 @@ export const MenuBar = () => {
           ></input>
           <MenuButton onClickFn={navButtonHandler} text="HOME" />
           <MenuButton onClickFn={navButtonHandler} text="USERS" />
-          <MenuButton onClickFn={navButtonHandler} text="COLOR" />
+          <MenuButton onClickFn={navButtonHandler} text="ME" />
         </div>
         <AuthButtons />
       </div>
@@ -53,11 +56,12 @@ export const MenuBar = () => {
 }
 
 const searchBarStyle = {
-  backgroundColor: colors.yellow,
+  backgroundColor: colors.orange,
   height: "2rem",
   width: "17rem",
   border: ".2rem solid black",
   borderRadius: "0.4rem",
   paddingLeft: ".5rem",
+  marginLeft: "1rem",
   marginRight: "0.5rem",
 }

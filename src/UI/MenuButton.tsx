@@ -14,7 +14,7 @@ export const MenuButton = ({ text, onClickFn }: MenuButtonProps) => {
         cursor: "pointer",
         padding: ".3rem",
         marginLeft: "0.5rem",
-        marginRight: "0.5rem",
+        // marginRight: "0.5rem",
       }}
       onClick={onClickFn}
     >

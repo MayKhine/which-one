@@ -1,28 +1,15 @@
 import { MenuBar } from "../UI/MenuBar"
 import { useAuth0 } from "@auth0/auth0-react"
-import { UserDiv } from "../UI/UserDiv"
 import { Posts } from "../components/Post/Posts"
-import { Button } from "../UI/Button"
 // import { CreatePost } from "../components/Post/CreatePost"
 import { useState } from "react"
 import { PostForm, enteredValuesType } from "../components/Post/PostForm"
 import { useGetPosts } from "../hooks/useGetPosts"
+
 export const Home = () => {
   const { user } = useAuth0()
-  const [createPost, setCreatePost] = useState(false)
-
-  const cancelPostHandler = () => {
-    // console.log("Cancle Post Form")
-    setCreatePost(!createPost)
-  }
-  const createPostHandler = () => {
-    // console.log("Create post is clicked")
-    setCreatePost(!createPost)
-  }
 
   const [posts, refetch] = useGetPosts()
-
-  // console.log("Posts: from useGetPosts: ", posts)
 
   const postQuestion = async (enteredValues: enteredValuesType) => {
     const result = await fetch(
@@ -48,52 +35,54 @@ export const Home = () => {
     if (response.success) {
       refetch()
       console.log("CLOSE THE POST FORM")
-      setCreatePost(!createPost)
+      // setCreatePost(!createPost)
+      return true
     } else {
       console.log("SHOW ERROR")
+      return false
     }
   }
 
   return (
-    <div style={{ height: "100vh" }}>
+    <div>
       <MenuBar />
-      <div
-        style={{
-          height: "calc(100% - 70px)",
-          backgroundColor: "lightgray",
-          display: "flex",
-        }}
-      >
-        <UserDiv
-          width="250px"
-          name={user?.nickname}
-          email={user?.email}
-          pic={user?.picture}
+
+      <div>
+        {/* <div
+          style={{
+            // backgroundColor: "yellow",
+            marginTop: ".5rem",
+            padding: "1rem",
+          }}
+        >
+          {!createPost && (
+            <div>
+              <div style={{ fontWeight: "600", fontSize: "2rem" }}>
+                What's your question?
+              </div>
+
+              <input
+                style={createPostBarStyle}
+                type="text"
+                placeholder="What should .."
+                onSelect={createPostHandler}
+              ></input>
+            </div>
+          )}
+          {createPost && (
+            <div>
+              <PostForm
+                onFormSubmit={formSubmitHandler}
+                onCancel={cancelPostHandler}
+              />
+            </div>
+          )}
+        </div> */}
+        <PostForm
+          onFormSubmit={formSubmitHandler}
+          // onCancel={cancelPostHandler}
         />
-        <div style={{ width: "100vw" }}>
-          <div style={{ backgroundColor: "yellow", padding: "1rem" }}>
-            {!createPost && (
-              <div>
-                <div> What's your question? </div>
-                {/* <input type="text" onChange={createPostHandler}></input> */}
-                <Button
-                  type="submit"
-                  text="Add a new post"
-                  onClickFn={createPostHandler}
-                />
-              </div>
-            )}
-            {createPost && (
-              <div>
-                <PostForm
-                  onFormSubmit={formSubmitHandler}
-                  onCancel={cancelPostHandler}
-                />
-              </div>
-            )}
-          </div>
-          <Posts posts={posts} />
-        </div>
+        <Posts posts={posts} />
       </div>
     </div>
   )

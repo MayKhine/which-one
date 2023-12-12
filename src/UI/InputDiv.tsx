@@ -1,32 +1,29 @@
+import { inputStyle } from "./Styles"
+
 export type InputDivProps = {
-  label: string
   type: string
   identifier: string | number
   index: number
-  onChangeFn: (
-    identifier: string | number,
-    value: string | number,
-    index: number
-  ) => void
+  onChangeFn: (identifier: string, value: string, index: number) => void
+  onSelectFn?: () => void
 }
 
 export const InputDiv = ({
-  label,
   type,
   index,
   onChangeFn,
+  onSelectFn,
   identifier,
 }: InputDivProps) => {
   return (
-    <div>
-      <label>{label}</label>
-      <input
-        required
-        type={type}
-        onChange={(event) => {
-          onChangeFn(identifier, event?.target.value, index)
-        }}
-      ></input>
-    </div>
+    <input
+      required
+      style={inputStyle}
+      type={type}
+      onSelect={onSelectFn}
+      onChange={(event) => {
+        onChangeFn(identifier, event?.target.value, index)
+      }}
+    ></input>
   )
 }
