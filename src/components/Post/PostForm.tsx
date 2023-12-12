@@ -1,9 +1,10 @@
 import { useState } from "react"
+import * as stylex from "@stylexjs/stylex"
+
 import { Button } from "../../UI/Button"
 import { InputDiv } from "../../UI/InputDiv"
 import { RoundButton } from "../../UI/RoundButton"
-import { colors } from "../../UI/Colors"
-import { inputStyle, labelStyle } from "../../UI/Styles"
+import { textStyles } from "../../styleX/textStyles"
 
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
@@ -13,6 +14,13 @@ export type enteredValuesType = {
   question: string
   answers: Array<string>
 }
+
+const PostFormStyles = stylex.create({
+  base: {
+    margin: "1.5rem",
+    marginLeft: "3rem",
+  },
+})
 
 export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const [enteredValues, setEnteredValues] = useState({
@@ -101,11 +109,14 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     }
   }
   return (
-    <form onSubmit={formSubmitHandler} style={{ padding: "1.5rem" }}>
+    <form
+      onSubmit={formSubmitHandler}
+      {...stylex.props(PostFormStyles.base, textStyles.label)}
+    >
       <div>
-        <div style={labelStyle}>What's your question?</div>
+        <div>What's your question?</div>
         <input
-          style={inputStyle}
+          {...stylex.props(textStyles.input)}
           required
           type="text"
           value={enteredValues.question}
@@ -127,9 +138,8 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
               const label = "Option " + (index + 1).toString()
               return (
                 <>
-                  <div style={labelStyle}>{label}</div>
+                  <div>{label}</div>
                   <InputDiv
-                    style={inputStyle}
                     key={index}
                     index={index}
                     identifier="answers"

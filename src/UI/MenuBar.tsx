@@ -2,8 +2,31 @@ import { ChangeEvent, useState } from "react"
 import { Navigate } from "react-router-dom"
 import { AuthButtons } from "./AuthButtons"
 import { MenuButton } from "./MenuButton"
-import { colors } from "./Colors"
-import styles from "./UI.module.css"
+import * as stylex from "@stylexjs/stylex"
+import { textStyles } from "../styleX/textStyles"
+
+const menuStyles = stylex.create({
+  logo: {
+    fontSize: "3rem",
+    fontWeight: "800",
+    marginBottom: ".3rem",
+  },
+  base: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    // backgroundColor: {
+    //   default: "pink",
+    //   "@media (max-width: 800px)": "red",
+    // },
+  },
+
+  menu: {
+    display: "flex",
+    alignItems: "center",
+  },
+})
+
 export const MenuBar = () => {
   const [navigate, setNavigate] = useState("")
   const navButtonHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -12,35 +35,13 @@ export const MenuBar = () => {
   }
 
   return (
-    <div
-      className={styles.menubar}
-      style={{
-        // height: "70px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <div
-        style={{
-          fontWeight: "800",
-          fontSize: "3rem",
-          // marginLeft: "1.5rem",
-        }}
-      >
-        WHICH ONE
-      </div>
+    <div {...stylex.props(menuStyles.base)}>
+      <div {...stylex.props(menuStyles.logo)}>WHICH ONE</div>
 
-      <div
-        style={{
-          display: "flex",
-          alignSelf: "center",
-          marginBottom: ".5rem",
-          // marginRight: ".5rem",
-        }}
-      >
+      <div {...stylex.props(menuStyles.menu)}>
         <div>
           <input
-            style={searchBarStyle}
+            {...stylex.props(textStyles.searchInput)}
             type="text"
             placeholder="Search.."
           ></input>
@@ -53,15 +54,4 @@ export const MenuBar = () => {
       {navigate && <Navigate to={navigate} replace={true}></Navigate>}
     </div>
   )
-}
-
-const searchBarStyle = {
-  backgroundColor: colors.orange,
-  height: "2rem",
-  width: "17rem",
-  border: ".2rem solid black",
-  borderRadius: "0.4rem",
-  paddingLeft: ".5rem",
-  marginLeft: "1rem",
-  marginRight: "0.5rem",
 }

@@ -1,4 +1,5 @@
-import { inputStyle } from "./Styles"
+import * as stylex from "@stylexjs/stylex"
+import { textStyles } from "../styleX/textStyles"
 
 export type InputDivProps = {
   type: string
@@ -17,8 +18,8 @@ export const InputDiv = ({
 }: InputDivProps) => {
   return (
     <input
+      {...stylex.props(textStyles.input)}
       required
-      style={inputStyle}
       type={type}
       onSelect={onSelectFn}
       onChange={(event) => {

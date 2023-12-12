@@ -3,15 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { Posts } from "../components/Post/Posts"
 import { PostForm, enteredValuesType } from "../components/Post/PostForm"
 import { useGetPosts } from "../hooks/useGetPosts"
+import { textStyles } from "../styleX/textStyles"
 import * as stylex from "@stylexjs/stylex"
-
-const styles = stylex.create({
-  base: {
-    fontSize: 16,
-    lineHeight: 1.5,
-    color: "gray",
-  },
-})
 
 export const Home = () => {
   const { user } = useAuth0()
@@ -51,7 +44,7 @@ export const Home = () => {
   }
 
   return (
-    <div {...stylex.props(styles.base)}>
+    <div {...stylex.props(textStyles.base)}>
       <MenuBar />
 
       <div>
