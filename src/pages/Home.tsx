@@ -55,7 +55,7 @@ export const Home = () => {
   }
 
   return (
-    <div style={{ height: "100vh", backgroundColor: "gray" }}>
+    <div style={{ height: "100vh" }}>
       <MenuBar />
       <div
         style={{

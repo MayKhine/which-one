@@ -4,14 +4,12 @@ import "./index.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { Home } from "./pages/Home.tsx"
 
-import { CreatePost } from "./components/Post/CreatePost.tsx"
 import { UserPage } from "./pages/UserPage.tsx"
 import { UsersPage } from "./pages/UsersPage.tsx"
 import { ColorTest } from "./pages/ColorTest.tsx"
 
 import { Auth0ProviderWithNavigate } from "./components/Auth/Auth0ProviderWithNavigate.tsx"
 import { AuthenticationGuard } from "./components/Auth/AuthenticationGuard.tsx"
-import { Posts } from "./components/Post/Posts.tsx"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -30,15 +28,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route
             path="/users/:userEmail"
             element={<AuthenticationGuard component={UserPage} />}
-          />
-
-          <Route
-            path="/posts"
-            element={<AuthenticationGuard component={Posts} />}
-          />
-          <Route
-            path="/createpost"
-            element={<AuthenticationGuard component={CreatePost} />}
           />
 
           <Route path="/colortest" element={<ColorTest />} />

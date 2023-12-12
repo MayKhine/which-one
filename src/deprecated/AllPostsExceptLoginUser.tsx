@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Post, PostProps } from "./Post"
+import { Post, PostProps } from "../components/Post/Post"
 
 type AllPostsExceptLoginUserProps = {
   loginUserEmail?: string

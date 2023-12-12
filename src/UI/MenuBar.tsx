@@ -1,12 +1,9 @@
 import { ChangeEvent, useState } from "react"
-import { Button } from "./Button"
 import { Navigate } from "react-router-dom"
-import { useUserApi } from "../hooks/useUserApi"
 import { AuthButtons } from "./AuthButtons"
+import { MenuButton } from "./MenuButton"
+import { colors } from "./Colors"
 export const MenuBar = () => {
-  // const { user } = useUserApi()
-  // const userName = user?.name
-
   const [navigate, setNavigate] = useState("")
   const navButtonHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const urlStr = "/".concat(event.target.innerHTML.trim())
@@ -14,17 +11,53 @@ export const MenuBar = () => {
   }
 
   return (
-    <div style={{ backgroundColor: "pink", height: "70px" }}>
-      <Button onClickFn={navButtonHandler} text="home" />
-      <Button onClickFn={navButtonHandler} text="users" />
-      {/* <Button onClickFn={navButtonHandler} text="register" /> */}
-      <Button onClickFn={navButtonHandler} text="posts" />
-      <Button onClickFn={navButtonHandler} text="createpost" />
-      <Button onClickFn={navButtonHandler} text="colortest" />
+    <div
+      style={{
+        height: "70px",
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      <div
+        style={{
+          fontWeight: "800",
+          fontSize: "3rem",
+          marginLeft: "1.5rem",
+        }}
+      >
+        WHICH ONE
+      </div>
 
-      <AuthButtons />
-      {/* <p>Current User: {userName}</p> */}
+      <div
+        style={{
+          display: "flex",
+          alignSelf: "center",
+          marginRight: ".5rem",
+        }}
+      >
+        <div>
+          <input
+            style={searchBarStyle}
+            type="text"
+            placeholder="Search.."
+          ></input>
+          <MenuButton onClickFn={navButtonHandler} text="HOME" />
+          <MenuButton onClickFn={navButtonHandler} text="USERS" />
+          <MenuButton onClickFn={navButtonHandler} text="COLOR" />
+        </div>
+        <AuthButtons />
+      </div>
       {navigate && <Navigate to={navigate} replace={true}></Navigate>}
     </div>
   )
+}
+
+const searchBarStyle = {
+  backgroundColor: colors.yellow,
+  height: "2rem",
+  width: "17rem",
+  border: ".2rem solid black",
+  borderRadius: "0.4rem",
+  paddingLeft: ".5rem",
+  marginRight: "0.5rem",
 }
