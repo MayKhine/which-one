@@ -1,10 +1,11 @@
 import { useState } from "react"
 import * as stylex from "@stylexjs/stylex"
-
+import axios from "axios"
 import { Button } from "../../UI/Button"
-import { InputDiv } from "../../UI/InputDiv"
 import { textStyles } from "../../styleX/textStyles"
 import { buttonStyles } from "../../styleX/buttonStyles"
+import { useAuth0 } from "@auth0/auth0-react"
+
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
 }
@@ -43,12 +44,14 @@ const postFormStyles = stylex.create({
 })
 
 export const PostForm = ({ onFormSubmit }: PostFormProps) => {
+  const { user } = useAuth0()
+
   const [enteredValues, setEnteredValues] = useState({
     question: "",
     answers: ["", ""],
   })
   const [answerArr, setAnswerArr] = useState(["", ""])
-
+  // const [images, setImages] = useState<File | undefined>()
   const [createPost, setCreatePost] = useState(false)
 
   const cancelPostHandler = () => {
@@ -58,6 +61,34 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       answers: ["", ""],
     })
     setAnswerArr(["", ""])
+  }
+
+  const imageUploadHandle = async (
+    event: React.FormEvent<HTMLInputElement>
+  ) => {
+    const target = event.target as HTMLInputElement & { files: FileList }
+    const image = target.files[0]
+    console.log("WHAT IS Image Uplaod target:", image, image.type) //image/jpeg , image/png
+
+    const formData = new FormData()
+    formData.append("image", image)
+    console.log("WHAT IS FORM DAT: ", formData)
+
+    // const result = await fetch(
+    //   `http://localhost:3300/${user?.email}/createpost/image`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   }
+    // )
+
+    const result = axios.post(
+      `http://localhost:3300/${user?.email}/createpost/image`,
+      formData
+    )
+    console.log("RETURN Result: ", result)
   }
 
   const inputChangeHandler = (
@@ -178,14 +209,19 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         inputChangeHandler("answers", event.target.value, index)
                       }}
                     ></input>
-                    <button
+                    {/* <button
                       {...stylex.props(buttonStyles.base, buttonStyles.attach)}
                       onClick={() => {
                         console.log("NEED TO WORK ON THIS")
                       }}
                     >
                       A
-                    </button>
+                    </button> */}
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={imageUploadHandle}
+                    ></input>
                   </div>
                 </>
               )
