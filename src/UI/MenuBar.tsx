@@ -14,11 +14,12 @@ const menuStyles = stylex.create({
   base: {
     display: "flex",
     justifyContent: "space-between",
+
     alignItems: "center",
-    // backgroundColor: {
-    //   default: "pink",
-    //   "@media (max-width: 800px)": "red",
-    // },
+
+    "@media (max-width: 800px)": {
+      backgroundColor: "red",
+    },
   },
 
   menu: {

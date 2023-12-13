@@ -5,3 +5,8 @@ body {
   margin-right: 1rem;
   font-family: "Darker Grotesque", sans-serif;
 }
+input {
+  margin: 0%;
+  padding: 0%;
+  border: 0;
+}

@@ -3,9 +3,8 @@ import * as stylex from "@stylexjs/stylex"
 
 import { Button } from "../../UI/Button"
 import { InputDiv } from "../../UI/InputDiv"
-import { RoundButton } from "../../UI/RoundButton"
 import { textStyles } from "../../styleX/textStyles"
-
+import { buttonStyles } from "../../styleX/buttonStyles"
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
 }
@@ -15,10 +14,31 @@ export type enteredValuesType = {
   answers: Array<string>
 }
 
-const PostFormStyles = stylex.create({
+const postFormStyles = stylex.create({
   base: {
+    display: "flex",
+    flexDirection: "column",
+    // backgroundColor: "pink",
+    width: "60vw",
     margin: "1.5rem",
     marginLeft: "3rem",
+  },
+
+  buttonsDiv: {
+    // marginRight: "-.8rem",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    paddingTop: "1rem",
+  },
+
+  inputDiv: {
+    display: "flex",
+    width: "100%",
+    flexGrow: "1",
+    height: "3rem",
+    marginBottom: ".5rem",
   },
 })
 
@@ -37,6 +57,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       question: "",
       answers: ["", ""],
     })
+    setAnswerArr(["", ""])
   }
 
   const inputChangeHandler = (
@@ -109,26 +130,25 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     }
   }
   return (
-    <form
-      onSubmit={formSubmitHandler}
-      {...stylex.props(PostFormStyles.base, textStyles.label)}
-    >
+    <form onSubmit={formSubmitHandler} {...stylex.props(postFormStyles.base)}>
       <div>
         <div>What's your question?</div>
-        <input
-          {...stylex.props(textStyles.input)}
-          required
-          type="text"
-          value={enteredValues.question}
-          onSelect={() => {
-            if (!createPost) {
-              setCreatePost(!createPost)
-            }
-          }}
-          onChange={(event) => {
-            inputChangeHandler("question", event?.target.value, 121)
-          }}
-        ></input>
+        <div {...stylex.props(postFormStyles.inputDiv)}>
+          <input
+            {...stylex.props(textStyles.input, textStyles.inputQuesion)}
+            required
+            type="text"
+            value={enteredValues.question}
+            onSelect={() => {
+              if (!createPost) {
+                setCreatePost(!createPost)
+              }
+            }}
+            onChange={(event) => {
+              inputChangeHandler("question", event?.target.value, 121)
+            }}
+          ></input>
+        </div>
       </div>
 
       {createPost && (
@@ -139,34 +159,59 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
               return (
                 <>
                   <div>{label}</div>
-                  <InputDiv
-                    key={index}
-                    index={index}
-                    identifier="answers"
-                    onChangeFn={inputChangeHandler}
-                    type="text"
-                  />
+                  <div {...stylex.props(postFormStyles.inputDiv)}>
+                    {/* <InputDiv
+                      key={index}
+                      index={index}
+                      identifier="answers"
+                      onChangeFn={inputChangeHandler}
+                      type="text"
+                    /> */}
+                    <input
+                      required
+                      {...stylex.props(
+                        textStyles.input,
+                        textStyles.inputQuesion
+                      )}
+                      type="text"
+                      onChange={(event) => {
+                        inputChangeHandler("answers", event.target.value, index)
+                      }}
+                    ></input>
+                    <button
+                      {...stylex.props(buttonStyles.base, buttonStyles.attach)}
+                      onClick={() => {
+                        console.log("NEED TO WORK ON THIS")
+                      }}
+                    >
+                      A
+                    </button>
+                  </div>
                 </>
               )
             })}
-            <RoundButton
-              type="add"
-              text="+"
-              onClickFn={() => {
-                setAnswerArr((prevVal) => [...prevVal, ""])
-              }}
-            />
           </div>
-          <div>
-            <Button text="Cancel" type="reset" onClickFn={cancelPostHandler} />
-            <Button
-              text="Create"
-              type="submit"
-              onClickFn={() => {
-                console.log("Submit Button is clciked")
-                // formSubmitHandler()
-              }}
-            />
+          <div {...stylex.props(postFormStyles.buttonsDiv)}>
+            <div>
+              <button
+                {...stylex.props(buttonStyles.base, buttonStyles.addAnswer)}
+                onClick={() => {
+                  setAnswerArr((prevVal) => [...prevVal, ""])
+                }}
+              >
+                +
+              </button>
+            </div>
+            <div>
+              <Button text="Cancel" onClickFn={cancelPostHandler} />
+              <Button
+                text="Create"
+                onClickFn={() => {
+                  console.log("Submit Button is clciked")
+                  // formSubmitHandler()
+                }}
+              />
+            </div>
           </div>
         </div>
       )}

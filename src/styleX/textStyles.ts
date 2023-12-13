@@ -13,11 +13,15 @@ export const textStyles = stylex.create({
 
   input: {
     backgroundColor: colors.yellow,
-    width: "50vw",
+    width: "100%",
     border: ".2rem solid black",
     borderRadius: "0.4rem",
-    marginTop: ".5rem",
+    // marginTop: ".5rem",
     padding: ".5rem",
+  },
+
+  inputQuesion: {
+    width: "calc(100% - 1.3rem)",
   },
 
   searchInput: {
