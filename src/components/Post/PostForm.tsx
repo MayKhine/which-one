@@ -84,10 +84,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     //   }
     // )
 
-    const result = axios.post(
-      `http://localhost:3300/${user?.email}/createpost/image`,
-      formData
-    )
+    const result = await axios.post("http://localhost:3300/image", formData)
     console.log("RETURN Result: ", result)
   }
 
