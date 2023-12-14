@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import img from "../../img/profilePic.png"
 import { ProfileImg } from "../../UI/ProfilePic"
+import axios from "axios"
 
 type postCreaterInfoType = {
   _id: string
@@ -33,27 +34,31 @@ export const Post = ({
 PostProps) => {
   const [navigate, setNavigate] = useState("")
   const postCreaterPic = postCreaterInfo[0].picture || img
-  // const [imgArr, setImgArr] = useState([])
-  const imgArr = []
 
   const getImgFromBE = async (imgFileName: string) => {
     const result = await fetch(
       `http://localhost:3300/getimage?img=${imgFileName}`
     )
     const response = await result.json()
-    // setImgArr((preImg) => [...preImg, response.image])
-
-    return response.image
+    console.log("what responst: ", response)
+    // return response.imageBuffer
   }
 
-  useEffect(() => {
-    for (let i = 0; i < images.length; i++) {
-      console.log("call getimgfrom BD : ", images[i])
-      const img = getImgFromBE(images[i])
+  // useEffect(() => {
+  //   for (let i = 0; i < images.length; i++) {
+  //     console.log("call getimgfrom BD : ", images[i])
+  //     // const img = getImgFromBE(images[i])
+  //     // imgArr.push(img)
 
-      imgArr.push(img)
-    }
-  }, [])
+  //     axios
+  //       .get(`http://localhost:3300/getimage?img=${images[i]}`)
+  //       .then((res) => {
+  //         setBeimg(res.data.image)
+  //         console.log(res.data.image)
+  //       })
+  //       .catch((err) => console.log(err))
+  //   }
+  // }, [])
 
   return (
     <div style={{ backgroundColor: "gray", marginBottom: "10px" }}>
@@ -78,13 +83,8 @@ PostProps) => {
       </div>
       <div>
         {images.map((img, index) => {
-          return (
-            <img
-              key={index}
-              src={`http://localhost:3300/getimage?img=${img}`}
-              alt={`Image ${index}`}
-            />
-          ) //<img key={index} src={img} alt={`Image ${index}`} />
+          const imgSrc = `http://localhost:3300/${img}`
+          return <img key={index} src={imgSrc} alt={`Image ${index}`} /> //<img key={index} src={img} alt={`Image ${index}`} />
         })}
       </div>
       <div>
