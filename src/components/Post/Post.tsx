@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Navigate } from "react-router-dom"
 import img from "../../img/profilePic.png"
 import { ProfileImg } from "../../UI/ProfilePic"
-import axios from "axios"
-
+import { ImageCard } from "../../UI/ImageCard"
+import * as stylex from "@stylexjs/stylex"
+import { colors } from "../../styleX/tokens.stylex"
 type postCreaterInfoType = {
   _id: string
   name: string
@@ -30,38 +31,12 @@ export const Post = ({
   answers,
   images,
   postCreaterInfo,
-}: // postCreaterPic,
-PostProps) => {
+}: PostProps) => {
   const [navigate, setNavigate] = useState("")
   const postCreaterPic = postCreaterInfo[0].picture || img
 
-  const getImgFromBE = async (imgFileName: string) => {
-    const result = await fetch(
-      `http://localhost:3300/getimage?img=${imgFileName}`
-    )
-    const response = await result.json()
-    console.log("what responst: ", response)
-    // return response.imageBuffer
-  }
-
-  // useEffect(() => {
-  //   for (let i = 0; i < images.length; i++) {
-  //     console.log("call getimgfrom BD : ", images[i])
-  //     // const img = getImgFromBE(images[i])
-  //     // imgArr.push(img)
-
-  //     axios
-  //       .get(`http://localhost:3300/getimage?img=${images[i]}`)
-  //       .then((res) => {
-  //         setBeimg(res.data.image)
-  //         console.log(res.data.image)
-  //       })
-  //       .catch((err) => console.log(err))
-  //   }
-  // }, [])
-
   return (
-    <div style={{ backgroundColor: "gray", marginBottom: "10px" }}>
+    <div {...stylex.props(postStyles.base)}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <ProfileImg image={postCreaterPic} size="30px" />
         <div
@@ -74,22 +49,55 @@ PostProps) => {
           {postCreater}
         </div>
       </div>
-      <div>{question}</div>
+      <div {...stylex.props(postStyles.question)}>{question}</div>
 
-      <div>
-        {answers.map((ans, index) => {
-          return <li key={index}>{ans}</li>
-        })}
-      </div>
-      <div>
-        {images.map((img, index) => {
-          const imgSrc = `http://localhost:3300/${img}`
-          return <img key={index} src={imgSrc} alt={`Image ${index}`} /> //<img key={index} src={img} alt={`Image ${index}`} />
-        })}
-      </div>
+      {images.length == 0 && (
+        <div>
+          {answers.map((ans, index) => {
+            return <li key={index}>{ans}</li>
+          })}
+        </div>
+      )}
+
+      {images.length != 0 && (
+        <div {...stylex.props(postStyles.imagesDiv)}>
+          {images.map((img, index) => {
+            const imgSrc = `http://localhost:3300/${img}`
+            return (
+              <ImageCard
+                imgSrc={imgSrc}
+                key={index}
+                index={index}
+                text={answers[index]}
+              />
+            )
+          })}
+        </div>
+      )}
       <div>
         {navigate && <Navigate to={navigate} replace={true}></Navigate>}
       </div>
     </div>
   )
 }
+
+const postStyles = stylex.create({
+  base: {
+    // display: "flex",
+    // flexDirection: "column",
+    // justifyContent: "center",
+    // asignItems: "baseline",
+    // alignContent: "center",
+    // alignSelf: "center",
+    backgroundColor: colors.orange,
+    margin: "3rem",
+  },
+  question: { fontSize: "2rem" },
+
+  imagesDiv: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "4rem",
+    backgroundColor: colors.red,
+  },
+})

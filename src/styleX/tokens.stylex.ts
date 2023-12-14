@@ -19,4 +19,5 @@ export const colors = stylex.defineVars({
   orange: "#FFC875",
   red: "#FF8989",
   purple: "#E6A0FF",
+  offwhite: "#FAF7F0",
 })
