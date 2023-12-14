@@ -48,40 +48,7 @@ export const Home = () => {
       <MenuBar />
 
       <div>
-        {/* <div
-          style={{
-            // backgroundColor: "yellow",
-            marginTop: ".5rem",
-            padding: "1rem",
-          }}
-        >
-          {!createPost && (
-            <div>
-              <div style={{ fontWeight: "600", fontSize: "2rem" }}>
-                What's your question?
-              </div>
-
-              <input
-                style={createPostBarStyle}
-                type="text"
-                placeholder="What should .."
-                onSelect={createPostHandler}
-              ></input>
-            </div>
-          )}
-          {createPost && (
-            <div>
-              <PostForm
-                onFormSubmit={formSubmitHandler}
-                onCancel={cancelPostHandler}
-              />
-            </div>
-          )}
-        </div> */}
-        <PostForm
-          onFormSubmit={formSubmitHandler}
-          // onCancel={cancelPostHandler}
-        />
+        <PostForm onFormSubmit={formSubmitHandler} />
         <Posts posts={posts} />
       </div>
     </div>

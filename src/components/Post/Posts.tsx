@@ -20,6 +20,7 @@ export const Posts = ({ posts }: PostsProps) => {
             // postCreaterPic={post.postCreaterInfo[0]?.picture || img}
             question={post.question}
             answers={post.answers}
+            images={post.images}
           ></Post>
         )
       })}

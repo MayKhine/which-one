@@ -4,15 +4,15 @@ import axios from "axios"
 import { Button } from "../../UI/Button"
 import { textStyles } from "../../styleX/textStyles"
 import { buttonStyles } from "../../styleX/buttonStyles"
-import { useAuth0 } from "@auth0/auth0-react"
 
 type PostFormProps = {
-  onFormSubmit: (val: enteredValuesType) => boolean
+  onFormSubmit: (val: enteredValuesType) => void
 }
 
 export type enteredValuesType = {
   question: string
   answers: Array<string>
+  images: Array<string>
 }
 
 const postFormStyles = stylex.create({
@@ -44,13 +44,13 @@ const postFormStyles = stylex.create({
 })
 
 export const PostForm = ({ onFormSubmit }: PostFormProps) => {
-  const { user } = useAuth0()
-
   const [enteredValues, setEnteredValues] = useState({
     question: "",
     answers: ["", ""],
+    images: [],
   })
   const [answerArr, setAnswerArr] = useState(["", ""])
+  // const [imageArr, setImageArr] = useState([])
   // const [images, setImages] = useState<File | undefined>()
   const [createPost, setCreatePost] = useState(false)
 
@@ -59,12 +59,15 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     setEnteredValues({
       question: "",
       answers: ["", ""],
+      images: [],
     })
     setAnswerArr(["", ""])
+    // setImageArr([])
   }
 
-  const imageUploadHandle = async (
-    event: React.FormEvent<HTMLInputElement>
+  const imageUploadHandler = async (
+    event: React.FormEvent<HTMLInputElement>,
+    index: number
   ) => {
     const target = event.target as HTMLInputElement & { files: FileList }
     const image = target.files[0]
@@ -74,18 +77,16 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     formData.append("image", image)
     console.log("WHAT IS FORM DAT: ", formData)
 
-    // const result = await fetch(
-    //   `http://localhost:3300/${user?.email}/createpost/image`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   }
-    // )
-
     const result = await axios.post("http://localhost:3300/image", formData)
-    console.log("RETURN Result: ", result)
+    console.log(
+      "RETURN Result: ",
+      result.data.success,
+      result.data.image,
+      index
+    )
+    if (result.data.success) {
+      inputChangeHandler("images", result.data.image, index)
+    }
   }
 
   const inputChangeHandler = (
@@ -97,21 +98,33 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       const curAnsArr = enteredValues.answers
 
       //if ans arrr ald exist and go to its index
-      if (curAnsArr?.length > 0 && ansIndex) {
-        const curAnsArrUpdated = [...curAnsArr]
-        curAnsArrUpdated[ansIndex] = value
+      // if (curAnsArr?.length > 0 && ansIndex) {
+      const curAnsArrUpdated = [...curAnsArr]
+      curAnsArrUpdated[ansIndex] = value
 
-        setEnteredValues((preVal) => ({
-          ...preVal,
-          answers: [...curAnsArrUpdated],
-        }))
-      } else {
-        setEnteredValues((prevVal) => ({
-          ...prevVal,
-          answers: [value],
-        }))
-      }
-    } else {
+      setEnteredValues((preVal) => ({
+        ...preVal,
+        answers: [...curAnsArrUpdated],
+      }))
+      // } else {
+      //   setEnteredValues((prevVal) => ({
+      //     ...prevVal,
+      //     answers: [value],
+      //   }))
+      // }
+    } else if (identifier == "images") {
+      const curImgArr = enteredValues.images
+
+      const curImgArrUpdated = [...curImgArr]
+      curImgArrUpdated[ansIndex] = value
+
+      setEnteredValues((preVal) => ({
+        ...preVal,
+        images: [...curImgArrUpdated],
+      }))
+    }
+    // for  not answers
+    else {
       setEnteredValues((preVal) => ({
         ...preVal,
         [identifier]: value,
@@ -140,21 +153,26 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     return true
   }
 
-  const formSubmitHandler = async (event: any) => {
+  const formSubmitHandler = async (
+    event: React.FormEvent<HTMLInputElement>
+  ) => {
     event.preventDefault()
-    console.log("IN THE FORM SUBMIT HANDLER", enteredValues)
 
     if (checkAnswerArry()) {
+      // console.log("IN THE FORM SUBMIT HANDLER SUCCESS", enteredValues)
+
       const postSuccess = await onFormSubmit(enteredValues)
 
       console.log("WAS SUBMIT SUCCESS: ", postSuccess)
-      if (!postSuccess) {
-        console.log("SHOW POST ERROR")
-      } else {
+      if (postSuccess) {
         console.log("CLEAR THE FORM ")
         event?.target.reset()
         cancelPostHandler()
+      } else {
+        console.log("SHOW POST ERROR")
       }
+    } else {
+      console.log("SHOW POST ERROR: Not right ans checkAnswerArry")
     }
   }
   return (
@@ -188,13 +206,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                 <>
                   <div>{label}</div>
                   <div {...stylex.props(postFormStyles.inputDiv)}>
-                    {/* <InputDiv
-                      key={index}
-                      index={index}
-                      identifier="answers"
-                      onChangeFn={inputChangeHandler}
-                      type="text"
-                    /> */}
                     <input
                       required
                       {...stylex.props(
@@ -206,18 +217,13 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         inputChangeHandler("answers", event.target.value, index)
                       }}
                     ></input>
-                    {/* <button
-                      {...stylex.props(buttonStyles.base, buttonStyles.attach)}
-                      onClick={() => {
-                        console.log("NEED TO WORK ON THIS")
-                      }}
-                    >
-                      A
-                    </button> */}
+
                     <input
                       type="file"
                       name="image"
-                      onChange={imageUploadHandle}
+                      onChange={(event) => {
+                        imageUploadHandler(event, index)
+                      }}
                     ></input>
                   </div>
                 </>
