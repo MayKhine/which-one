@@ -61,10 +61,10 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   })
   const [imgArr, setImgArr] = useState<Array<imgProps>>([])
 
-  // const [imgArr, setImgArr] = useState([""])
   const [answerArr, setAnswerArr] = useState(["", ""])
   const [createPost, setCreatePost] = useState(false)
-
+  // let curIndex = 0
+  const [curIndexForImgUpload, setCurIndexForImgUpload] = useState(0)
   const cancelPostHandler = () => {
     setCreatePost(!createPost)
     setEnteredValues({
@@ -73,7 +73,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       images: [],
     })
     setAnswerArr(["", ""])
-    // setImageArr([])
   }
 
   const imageUploadHandler = async (
@@ -106,37 +105,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     }
 
     setImgArr([...curImgArr])
-
-    // const allowedImageTypes = [
-    //   "image/jpeg",
-    //   "image.gif",
-    //   "image/webp",
-    //   "image/png",
-    //   "image/svg",
-    // ]
-
-    // if (allowedImageTypes.includes(image.type)) {
-    //   const formData = new FormData()
-    //   formData.append("image", image)
-    //   console.log("WHAT IS FORM DAT: ", formData)
-
-    //   const result = await axios.post("http://localhost:3300/image", formData)
-    //   console.log(
-    //     "RETURN Result: ",
-    //     result.data.success,
-    //     result.data.image,
-    //     index
-    //   )
-    //   if (result.data.success) {
-    //     inputChangeHandler("images", result.data.image, index)
-    //   }
-
-    // } else {
-    //   console.log("Invalid image type. Please choose a different image.")
-    //   const curImgArr = [...imgArr]
-    //   curImgArr[index] = ""
-    //   setImgArr(curImgArr)
-    // }
   }
 
   const inputChangeHandler = (
@@ -194,7 +162,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     }
     return true
   }
-  let curIndex = 0
+
   const formSubmitHandler = async (
     event: React.FormEvent<HTMLInputElement>
   ) => {
@@ -266,7 +234,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         htmlFor="inputFile"
                         onClick={(event) => {
                           console.log("event; ", event, index)
-                          curIndex = index
+                          setCurIndexForImgUpload(index)
                         }}
                       >
                         image
@@ -277,10 +245,10 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         type="file"
                         name="image"
                         accept="image/png, image/jpeg,image.gif, image/webp,image/svg"
-                        onChange={(event) => {
+                        onClick={(event) => {
                           console.log("index in input: ", index)
 
-                          imageUploadHandler(event, curIndex)
+                          imageUploadHandler(event, curIndexForImgUpload)
                         }}
                       ></input>
                     </div>
