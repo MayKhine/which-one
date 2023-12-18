@@ -5,6 +5,7 @@ import { Button } from "../../UI/Button"
 import { textStyles } from "../../styleX/textStyles"
 import { buttonStyles } from "../../styleX/buttonStyles"
 import imgUpload from "../../images/image-upload.svg"
+import { ImageUpload } from "../../UI/ImageUpload"
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => void
 }
@@ -80,6 +81,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       images: [],
     })
     setAnswerArr(["", ""])
+    setImgArr([])
   }
 
   const imageUploadHandler = async (
@@ -255,25 +257,20 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         id="inputFile"
                         type="file"
                         name="image"
-                        accept="image/png, image/jpeg,image.gif, image/webp,image/svg"
-                        onClick={(event) => {
+                        accept="image/png, image/jpeg, image.gif, image/webp, image/svg"
+                        onChange={(event) => {
                           console.log("index in input: ", index)
-
                           imageUploadHandler(event, curIndexForImgUpload)
                         }}
                       ></input>
                     </div>
                   </div>
                   {imgArr[index] && imgArr[index].img && (
-                    <div>
-                      <img
-                        style={{ width: "7rem" }}
-                        key={index}
-                        src={imgArr[index].img}
-                        alt={`image + ${index}`}
-                      ></img>
-                      <p>{imgArr[index].fileName}</p>
-                    </div>
+                    <ImageUpload
+                      index={index}
+                      image={imgArr[index].img}
+                      fileName={imgArr[index].fileName}
+                    />
                   )}
                 </div>
               )
