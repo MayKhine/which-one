@@ -4,7 +4,7 @@ import axios from "axios"
 import { Button } from "../../UI/Button"
 import { textStyles } from "../../styleX/textStyles"
 import { buttonStyles } from "../../styleX/buttonStyles"
-
+import imgUpload from "../../images/image-upload.svg"
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => void
 }
@@ -41,11 +41,17 @@ const postFormStyles = stylex.create({
     height: "3rem",
     marginBottom: ".5rem",
   },
-  imageUpload: {
+  imageInput: {
     width: "0",
   },
   imageUploadLabel: {
-    background: "pink",
+    // background: "red",
+    // width: "3rem",
+    cursor: "pointer",
+  },
+  imageLogo: {
+    // background: "pink",
+    width: "3rem",
   },
 })
 
@@ -65,6 +71,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const [createPost, setCreatePost] = useState(false)
   // let curIndex = 0
   const [curIndexForImgUpload, setCurIndexForImgUpload] = useState(0)
+
   const cancelPostHandler = () => {
     setCreatePost(!createPost)
     setEnteredValues({
@@ -81,7 +88,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   ) => {
     const target = event.target as HTMLInputElement & { files: FileList }
     const image = target.files[0]
-    console.log("WHAT IS Image Uplaod target:", image.name, image.type) //image/jpeg , image/png
 
     const formData = new FormData()
     formData.append("image", image)
@@ -94,17 +100,18 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       result.data.image,
       index
     )
+
     if (result.data.success) {
       inputChangeHandler("images", result.data.image, index)
-    }
 
-    const curImgArr = [...imgArr]
-    curImgArr[index] = {
-      fileName: image.name,
-      img: `http://localhost:3300/${result.data.image}`,
-    }
+      const curImgArr = [...imgArr]
+      curImgArr[index] = {
+        fileName: image.name,
+        img: `http://localhost:3300/${result.data.image}`,
+      }
 
-    setImgArr([...curImgArr])
+      setImgArr([...curImgArr])
+    }
   }
 
   const inputChangeHandler = (
@@ -232,15 +239,19 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                       <label
                         {...stylex.props(postFormStyles.imageUploadLabel)}
                         htmlFor="inputFile"
-                        onClick={(event) => {
-                          console.log("event; ", event, index)
+                        onClick={() => {
                           setCurIndexForImgUpload(index)
                         }}
                       >
-                        image
+                        <img
+                          {...stylex.props(postFormStyles.imageLogo)}
+                          src={imgUpload}
+                          alt="my img"
+                        ></img>
                       </label>
+
                       <input
-                        {...stylex.props(postFormStyles.imageUpload)}
+                        {...stylex.props(postFormStyles.imageInput)}
                         id="inputFile"
                         type="file"
                         name="image"
