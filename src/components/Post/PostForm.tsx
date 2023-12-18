@@ -73,20 +73,47 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     const image = target.files[0]
     console.log("WHAT IS Image Uplaod target:", image, image.type) //image/jpeg , image/png
 
-    const formData = new FormData()
-    formData.append("image", image)
-    console.log("WHAT IS FORM DAT: ", formData)
+    const allowedImageTypes = [
+      "image/jpeg",
+      "image.gif",
+      "image/webp",
+      "image/png",
+      "image/svg",
+    ]
 
-    const result = await axios.post("http://localhost:3300/image", formData)
-    console.log(
-      "RETURN Result: ",
-      result.data.success,
-      result.data.image,
-      index
-    )
-    if (result.data.success) {
-      inputChangeHandler("images", result.data.image, index)
+    if (allowedImageTypes.includes(image.type)) {
+      const formData = new FormData()
+      formData.append("image", image)
+      console.log("WHAT IS FORM DAT: ", formData)
+
+      const result = await axios.post("http://localhost:3300/image", formData)
+      console.log(
+        "RETURN Result: ",
+        result.data.success,
+        result.data.image,
+        index
+      )
+      if (result.data.success) {
+        inputChangeHandler("images", result.data.image, index)
+      }
+    } else {
+      console.log("Invalid image type. Please choose a different image.")
     }
+
+    // const formData = new FormData()
+    // formData.append("image", image)
+    // console.log("WHAT IS FORM DAT: ", formData)
+
+    // const result = await axios.post("http://localhost:3300/image", formData)
+    // console.log(
+    //   "RETURN Result: ",
+    //   result.data.success,
+    //   result.data.image,
+    //   index
+    // )
+    // if (result.data.success) {
+    //   inputChangeHandler("images", result.data.image, index)
+    // }
   }
 
   const inputChangeHandler = (
@@ -97,8 +124,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     if (identifier == "answers") {
       const curAnsArr = enteredValues.answers
 
-      //if ans arrr ald exist and go to its index
-      // if (curAnsArr?.length > 0 && ansIndex) {
       const curAnsArrUpdated = [...curAnsArr]
       curAnsArrUpdated[ansIndex] = value
 
@@ -106,12 +131,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
         ...preVal,
         answers: [...curAnsArrUpdated],
       }))
-      // } else {
-      //   setEnteredValues((prevVal) => ({
-      //     ...prevVal,
-      //     answers: [value],
-      //   }))
-      // }
     } else if (identifier == "images") {
       const curImgArr = enteredValues.images
 
@@ -203,7 +222,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
             {answerArr.map((answer, index) => {
               const label = "Option " + (index + 1).toString()
               return (
-                <>
+                <div key={index}>
                   <div>{label}</div>
                   <div {...stylex.props(postFormStyles.inputDiv)}>
                     <input
@@ -226,7 +245,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                       }}
                     ></input>
                   </div>
-                </>
+                </div>
               )
             })}
           </div>

@@ -14,6 +14,7 @@ export const Posts = ({ posts }: PostsProps) => {
         return (
           <Post
             key={index}
+            index={index}
             postCreater={post.postCreater}
             postCreaterInfo={post.postCreaterInfo}
             question={post.question}

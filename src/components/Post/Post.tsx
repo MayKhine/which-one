@@ -5,6 +5,7 @@ import { ProfileImg } from "../../UI/ProfilePic"
 import { ImageCard } from "../../UI/ImageCard"
 import * as stylex from "@stylexjs/stylex"
 import { colors } from "../../styleX/tokens.stylex"
+
 type postCreaterInfoType = {
   _id: string
   name: string
@@ -13,12 +14,12 @@ type postCreaterInfoType = {
 }
 
 export type PostProps = {
-  key: number
   postCreater: string
   postCreaterInfo: Array<postCreaterInfoType>
   question: string
   answers: Array<string>
   images: Array<string>
+  index: number
 
   // answerType?: string
   // voting?: Array<string>
@@ -31,12 +32,12 @@ export const Post = ({
   answers,
   images,
   postCreaterInfo,
+  index,
 }: PostProps) => {
   const [navigate, setNavigate] = useState("")
   const postCreaterPic = postCreaterInfo[0].picture || img
-
   return (
-    <div {...stylex.props(postStyles.base)}>
+    <div key={index} {...stylex.props(postStyles.base)}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <ProfileImg image={postCreaterPic} size="30px" />
         <div
