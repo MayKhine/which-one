@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Navigate } from "react-router-dom"
-import img from "../../img/profilePic.png"
+import img from "../../images/profilePic.png"
 import { ProfileImg } from "../../UI/ProfilePic"
 import { ImageCard } from "../../UI/ImageCard"
 import * as stylex from "@stylexjs/stylex"
@@ -20,10 +20,6 @@ export type PostProps = {
   answers: Array<string>
   images: Array<string>
   index: number
-
-  // answerType?: string
-  // voting?: Array<string>
-  // imgDesc?: Array<string>
 }
 
 export const Post = ({

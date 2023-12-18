@@ -5,6 +5,7 @@ import { Button } from "../../UI/Button"
 import { textStyles } from "../../styleX/textStyles"
 import { buttonStyles } from "../../styleX/buttonStyles"
 import imgUpload from "../../images/image-upload.svg"
+import deleteImg from "../../images/delete.svg"
 import { ImageUpload } from "../../UI/ImageUpload"
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => void
@@ -53,6 +54,31 @@ const postFormStyles = stylex.create({
   imageLogo: {
     // background: "pink",
     width: "3rem",
+  },
+  imageUploadDiv: {
+    display: "flex",
+  },
+  deleteIcon1: {
+    width: "1.5rem",
+    // alignSelf: "flex-start",
+    // margin: ".3rem",
+    // color: "red",
+    marginLeft: "1rem",
+    cursor: "pointer",
+    marginRight: "-2.5rem",
+  },
+  deleteIcon2: {
+    width: "1.5rem",
+    alignSelf: "flex-start",
+    margin: ".3rem",
+    color: "red",
+    cursor: "pointer",
+  },
+  actionBase: {
+    display: "flex",
+    // background: "pink",
+    // gap: "1rem",
+    // marginRight: "-10rem",
   },
 })
 
@@ -114,6 +140,39 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
 
       setImgArr([...curImgArr])
     }
+  }
+
+  const removeImage = (index: number) => {
+    const curImgArr = [...imgArr]
+    // curImgArr.splice(index, 1)
+    curImgArr[index] = { fileName: "", img: "" }
+
+    setImgArr([...curImgArr])
+
+    const curEnteredImgArr = enteredValues.images
+    console.log("before entered img arr: ", [...curEnteredImgArr])
+    curEnteredImgArr[index] = ""
+    setEnteredValues((preVal) => ({
+      ...preVal,
+      images: [...curEnteredImgArr],
+    }))
+    console.log("After entered img arr: ", [...enteredValues.images])
+  }
+
+  const removeAnswerDiv = (index: number) => {
+    console.log("INDEX TO REMOVE: ", index)
+    const curEnteredAnsArr = enteredValues.answers
+    curEnteredAnsArr[index] = ""
+    setEnteredValues((preVal) => ({
+      ...preVal,
+      answers: [...curEnteredAnsArr],
+    }))
+
+    removeImage(index)
+
+    const curAnsArr = [...answerArr]
+    curAnsArr.pop()
+    setAnswerArr([...curAnsArr])
   }
 
   const inputChangeHandler = (
@@ -237,7 +296,10 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                       }}
                     ></input>
 
-                    <div key={index}>
+                    <div
+                      key={index}
+                      {...stylex.props(postFormStyles.actionBase)}
+                    >
                       <label
                         {...stylex.props(postFormStyles.imageUploadLabel)}
                         htmlFor="inputFile"
@@ -251,7 +313,20 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                           alt="my img"
                         ></img>
                       </label>
-
+                      {index > 1 && index == answerArr.length - 1 && (
+                        <img
+                          {...stylex.props(postFormStyles.deleteIcon1)}
+                          src={deleteImg}
+                          alt="my img"
+                          onClick={() => {
+                            console.log(
+                              "work on removing the answer div",
+                              index
+                            )
+                            removeAnswerDiv(index)
+                          }}
+                        ></img>
+                      )}
                       <input
                         {...stylex.props(postFormStyles.imageInput)}
                         id="inputFile"
@@ -266,11 +341,21 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                     </div>
                   </div>
                   {imgArr[index] && imgArr[index].img && (
-                    <ImageUpload
-                      index={index}
-                      image={imgArr[index].img}
-                      fileName={imgArr[index].fileName}
-                    />
+                    <div {...stylex.props(postFormStyles.imageUploadDiv)}>
+                      <ImageUpload
+                        index={index}
+                        image={imgArr[index].img}
+                        fileName={imgArr[index].fileName}
+                      />
+                      <img
+                        {...stylex.props(postFormStyles.deleteIcon2)}
+                        src={deleteImg}
+                        alt="my img"
+                        onClick={() => {
+                          removeImage(index)
+                        }}
+                      ></img>
+                    </div>
                   )}
                 </div>
               )
@@ -293,7 +378,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                 text="Create"
                 onClickFn={() => {
                   console.log("Submit Button is clciked")
-                  // formSubmitHandler()
                 }}
               />
             </div>

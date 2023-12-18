@@ -24,14 +24,11 @@ export const ImageUpload = ({ index, image, fileName }: ImageUploadProps) => {
 
 const ImageUploadStyles = stylex.create({
   base: {
-    // backgroundColor: "pink",
     width: "max-content",
     margin: "0px",
     borderRadius: "0.5rem",
     backgroundColor: colors.offwhite,
     border: "3px solid black",
-    padding: "1rem",
-    // boxShadow: "4px 4px 0px black",
   },
   text: {
     margin: "0px",
