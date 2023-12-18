@@ -1,10 +1,10 @@
 import * as stylex from "@stylexjs/stylex"
 import { colors } from "../styleX/tokens.stylex"
+
 export type ImageCard = {
   imgSrc: string
   index: number
   text: string
-  // desc: string
 }
 export const ImageCard = ({ imgSrc, index, text }: ImageCard) => {
   return (
@@ -57,5 +57,8 @@ const imgCardStyles = stylex.create({
     marginTop: ".5rem",
     marginBottom: "2.5rem",
     justifyContent: "center",
+  },
+  small: {
+    width: "10rem",
   },
 })

@@ -41,12 +41,6 @@ const postFormStyles = stylex.create({
     height: "3rem",
     marginBottom: ".5rem",
   },
-  imageUpload: {
-    width: "0",
-  },
-  imageUploadLabel: {
-    background: "pink",
-  },
 })
 
 type imgProps = {
@@ -59,9 +53,10 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     answers: ["", ""],
     images: [""],
   })
-  const [imgArr, setImgArr] = useState<Array<imgProps>>([])
+  const [imgArr, setImgArr] = useState<Array<imgProps>>([
+    { fileName: "", img: "" },
+  ])
 
-  // const [imgArr, setImgArr] = useState([""])
   const [answerArr, setAnswerArr] = useState(["", ""])
   const [createPost, setCreatePost] = useState(false)
 
@@ -104,8 +99,9 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       fileName: image.name,
       img: `http://localhost:3300/${result.data.image}`,
     }
+    setImgArr(curImgArr)
 
-    setImgArr([...curImgArr])
+    console.log("what is in the imgarrr: ", imgArr[0])
 
     // const allowedImageTypes = [
     //   "image/jpeg",
@@ -194,7 +190,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     }
     return true
   }
-  let curIndex = 0
+
   const formSubmitHandler = async (
     event: React.FormEvent<HTMLInputElement>
   ) => {
@@ -244,6 +240,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
           <div>
             {answerArr.map((answer, index) => {
               const label = "Option " + (index + 1).toString()
+              console.log("WHAT IS IN IMG ARR: ", imgArr[index])
               return (
                 <div key={index}>
                   <div>{label}</div>
@@ -259,34 +256,23 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         inputChangeHandler("answers", event.target.value, index)
                       }}
                     ></input>
+                    <label htmlFor="inputFile"> Attach</label>
 
-                    <div key={index}>
-                      <label
-                        {...stylex.props(postFormStyles.imageUploadLabel)}
-                        htmlFor="inputFile"
-                        onClick={(event) => {
-                          console.log("event; ", event, index)
-                          curIndex = index
-                        }}
-                      >
-                        image
-                      </label>
-                      <input
-                        {...stylex.props(postFormStyles.imageUpload)}
-                        id="inputFile"
-                        type="file"
-                        name="image"
-                        accept="image/png, image/jpeg,image.gif, image/webp,image/svg"
-                        onChange={(event) => {
-                          console.log("index in input: ", index)
-
-                          imageUploadHandler(event, curIndex)
-                        }}
-                      ></input>
-                    </div>
+                    <input
+                      id="inputFile"
+                      style={{ visibility: "hidden" }}
+                      type="file"
+                      name="image"
+                      accept="image/png, image/jpeg,image.gif, image/webp,image/svg"
+                      onChange={(event) => {
+                        imageUploadHandler(event, index)
+                      }}
+                    ></input>
                   </div>
+
                   {imgArr[index] && imgArr[index].img && (
                     <div>
+                      {" "}
                       <img
                         style={{ width: "7rem" }}
                         key={index}
