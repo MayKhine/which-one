@@ -139,40 +139,54 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
       }
 
       setImgArr([...curImgArr])
+      event.target.value = ""
     }
   }
 
-  const removeImage = (index: number) => {
-    const curImgArr = [...imgArr]
-    // curImgArr.splice(index, 1)
-    curImgArr[index] = { fileName: "", img: "" }
+  const removeImage = (indexToRemove: number) => {
+    // const curImgArr = [...imgArr]
+    // curImgArr[indexToRemove] = { fileName: "", img: "" }
+    // setImgArr([...curImgArr])
 
-    setImgArr([...curImgArr])
+    const updatedImgArr = imgArr.filter((_, index) => index !== indexToRemove)
+    setImgArr([...updatedImgArr])
 
-    const curEnteredImgArr = enteredValues.images
-    console.log("before entered img arr: ", [...curEnteredImgArr])
-    curEnteredImgArr[index] = ""
+    // const curEnteredImgArr = enteredValues.images
+    // curEnteredImgArr[indexToRemove] = ""
+    // setEnteredValues((preVal) => ({
+    //   ...preVal,
+    //   images: [...curEnteredImgArr],
+    // }))
+
+    const updatedEnteredAnsArr = enteredValues.images.filter(
+      (_, index) => index !== indexToRemove
+    )
     setEnteredValues((preVal) => ({
       ...preVal,
-      images: [...curEnteredImgArr],
+      images: [...updatedEnteredAnsArr],
     }))
-    console.log("After entered img arr: ", [...enteredValues.images])
   }
 
-  const removeAnswerDiv = (index: number) => {
-    console.log("INDEX TO REMOVE: ", index)
-    const curEnteredAnsArr = enteredValues.answers
-    curEnteredAnsArr[index] = ""
+  const removeAnswerDiv = (indexToRemove: number) => {
+    console.log("INDEX TO REMOVE: ", indexToRemove)
+
+    const updatedEnteredAnsArr = enteredValues.answers.filter(
+      (_, index) => index !== indexToRemove
+    )
     setEnteredValues((preVal) => ({
       ...preVal,
-      answers: [...curEnteredAnsArr],
+      answers: [...updatedEnteredAnsArr],
     }))
 
-    removeImage(index)
+    removeImage(indexToRemove)
 
-    const curAnsArr = [...answerArr]
-    curAnsArr.pop()
-    setAnswerArr([...curAnsArr])
+    // const curAnsArr = [...answerArr]
+    // curAnsArr.pop()
+    // setAnswerArr([...curAnsArr])
+    const updatedAnsArr = answerArr.filter(
+      (_, index) => index !== indexToRemove
+    )
+    setAnswerArr([...updatedAnsArr])
   }
 
   const inputChangeHandler = (
@@ -333,6 +347,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         type="file"
                         name="image"
                         accept="image/png, image/jpeg, image.gif, image/webp, image/svg"
+                        // value={inputVal}
                         onChange={(event) => {
                           console.log("index in input: ", index)
                           imageUploadHandler(event, curIndexForImgUpload)
