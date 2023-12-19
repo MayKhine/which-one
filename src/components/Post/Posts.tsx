@@ -15,11 +15,13 @@ export const Posts = ({ posts }: PostsProps) => {
           <Post
             key={index}
             index={index}
+            id={post.id}
             postCreater={post.postCreater}
             postCreaterInfo={post.postCreaterInfo}
             question={post.question}
             answers={post.answers}
             images={post.images}
+            voting={post.voting}
           ></Post>
         )
       })}

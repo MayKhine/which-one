@@ -1,5 +1,5 @@
 import { ocean, persimmon } from "./Colors"
-import { ProfileImg } from "./ProfilePic"
+import { ProfilePic } from "./ProfilePic"
 type UserDivProps = {
   name: string
   email: string
@@ -21,7 +21,7 @@ export const UserDiv = ({ name, email, pic, width }: UserDivProps) => {
         alignItems: "center",
       }}
     >
-      <ProfileImg image={pic} size="120px" />
+      <ProfilePic image={pic} size="120px" />
       <div>{name}</div>
       <div>{email}</div>
     </div>
