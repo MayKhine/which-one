@@ -8,7 +8,7 @@ import imgUpload from "../../images/image-upload.svg"
 import deleteImg from "../../images/delete.svg"
 import { ImageUpload } from "../../UI/ImageUpload"
 type PostFormProps = {
-  onFormSubmit: (val: enteredValuesType) => void
+  onFormSubmit: (val: enteredValuesType) => boolean
 }
 
 export type enteredValuesType = {
@@ -90,7 +90,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const [enteredValues, setEnteredValues] = useState({
     question: "",
     answers: ["", ""],
-    images: [""],
+    images: [],
   })
   const [imgArr, setImgArr] = useState<Array<imgProps>>([])
 
@@ -251,8 +251,6 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     event.preventDefault()
 
     if (checkAnswerArry()) {
-      // console.log("IN THE FORM SUBMIT HANDLER SUCCESS", enteredValues)
-
       const postSuccess = await onFormSubmit(enteredValues)
 
       console.log("WAS SUBMIT SUCCESS: ", postSuccess)
@@ -327,7 +325,8 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                           alt="my img"
                         ></img>
                       </label>
-                      {index > 1 && index == answerArr.length - 1 && (
+                      {/* {index > 1 && index == answerArr.length - 1 && ( */}
+                      {index > 1 && (
                         <img
                           {...stylex.props(postFormStyles.deleteIcon1)}
                           src={deleteImg}
@@ -348,7 +347,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
                         name="image"
                         accept="image/png, image/jpeg, image.gif, image/webp, image/svg"
                         // value={inputVal}
-                        onChange={(event) => {
+                        onInput={(event) => {
                           console.log("index in input: ", index)
                           imageUploadHandler(event, curIndexForImgUpload)
                         }}
