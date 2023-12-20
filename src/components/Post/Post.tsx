@@ -42,7 +42,7 @@ export const Post = ({
   const postCreaterPic = postCreaterInfo[0].picture || img
   const postCreaterName = postCreaterInfo[0].name || postCreater
 
-  console.log("voting: question: ", question, voting)
+  // console.log("voting: question: ", question, voting)
 
   const checkUserVoted = (
     voterData: Array<Array<string>>,
@@ -50,7 +50,7 @@ export const Post = ({
   ) => {
     for (let i = 0; i <= voterData.length; i++) {
       for (let j = 0; j <= voterData[i]?.length; j++) {
-        console.log("Current Checking: ", voterData[i][j], curVoterEmail)
+        // console.log("Current Checking: ", voterData[i][j], curVoterEmail)
         if (voterData[i][j] == curVoterEmail) {
           return true
           // setUserVoted(true)
@@ -63,7 +63,7 @@ export const Post = ({
 
   const userVotedOnThisPost = checkUserVoted(voting, user.name)
 
-  console.log("is User voted: ", userVotedOnThisPost)
+  // console.log("is User voted: ", userVotedOnThisPost)
 
   const voteHandler = (index: number) => {
     const votingData = {

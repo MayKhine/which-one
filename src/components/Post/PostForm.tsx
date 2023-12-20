@@ -7,11 +7,16 @@ import { buttonStyles } from "../../styleX/buttonStyles"
 import imgUpload from "../../images/image-upload.svg"
 import deleteImg from "../../images/delete.svg"
 import { ImageUpload } from "../../UI/ImageUpload"
+import { useAuth0 } from "@auth0/auth0-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { postQuestion } from "../api/posts"
+
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
 }
 
 export type enteredValuesType = {
+  postCreater: string
   question: string
   answers: Array<string>
   images: Array<string>
@@ -86,8 +91,11 @@ type imgProps = {
   fileName: string
   img: string
 }
-export const PostForm = ({ onFormSubmit }: PostFormProps) => {
+export const PostForm = () => {
+  const { user } = useAuth0()
+
   const [enteredValues, setEnteredValues] = useState({
+    postCreater: user?.email,
     question: "",
     answers: ["", ""],
     images: [],
@@ -102,6 +110,7 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
   const cancelPostHandler = () => {
     setCreatePost(!createPost)
     setEnteredValues({
+      postCreater: user?.email,
       question: "",
       answers: ["", ""],
       images: [],
@@ -245,22 +254,32 @@ export const PostForm = ({ onFormSubmit }: PostFormProps) => {
     return true
   }
 
+  const queryClient = useQueryClient()
+
+  const newPostMutation = useMutation({
+    mutationFn: postQuestion,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries(["posts"])
+    },
+  })
+
   const formSubmitHandler = async (
     event: React.FormEvent<HTMLInputElement>
   ) => {
     event.preventDefault()
 
     if (checkAnswerArry()) {
-      const postSuccess = await onFormSubmit(enteredValues)
+      // const postSuccess = await onFormSubmit(enteredValues)
+      newPostMutation.mutate(enteredValues)
 
-      console.log("WAS SUBMIT SUCCESS: ", postSuccess)
-      if (postSuccess) {
-        console.log("CLEAR THE FORM ")
-        event?.target.reset()
-        cancelPostHandler()
-      } else {
-        console.log("SHOW POST ERROR")
-      }
+      // console.log("WAS SUBMIT SUCCESS: ", postSuccess)
+      // if (postSuccess) {
+      //   console.log("CLEAR THE FORM ")
+      //   // event?.target.reset()
+      //   cancelPostHandler()
+      // } else {
+      //   console.log("SHOW POST ERROR")
+      // }
     } else {
       console.log("SHOW POST ERROR: Not right ans checkAnswerArry")
     }
