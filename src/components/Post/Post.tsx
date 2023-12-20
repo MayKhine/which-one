@@ -90,7 +90,7 @@ export const Post = ({
     <motion.div
       {...stylex.props(postStyles.base)}
       transition={{
-        duration: 0.2,
+        duration: 0.05,
         type: "spring",
         damping: 10,
         stiffness: 100,
