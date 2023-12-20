@@ -242,7 +242,7 @@ export const PostForm = () => {
   }
 
   const queryClient = useQueryClient()
-  const [clearForm, setClearForm] = useState(false)
+
   const newPostMutation = useMutation({
     mutationFn: postQuestion,
     onSuccess: (response) => {
@@ -285,6 +285,7 @@ export const PostForm = () => {
       console.log("SHOW POST ERROR: Not right ans checkAnswerArry")
     }
   }
+
   return (
     <form onSubmit={formSubmitHandler} {...stylex.props(postFormStyles.base)}>
       <div>

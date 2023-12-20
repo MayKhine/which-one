@@ -7,6 +7,8 @@ import * as stylex from "@stylexjs/stylex"
 import { colors } from "../../styleX/tokens.stylex"
 import { motion } from "framer-motion"
 import { useAuth0 } from "@auth0/auth0-react"
+import { voteOnPost } from "../api/posts"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 type postCreaterInfoType = {
   _id: string
@@ -50,7 +52,6 @@ export const Post = ({
   ) => {
     for (let i = 0; i <= voterData.length; i++) {
       for (let j = 0; j <= voterData[i]?.length; j++) {
-        // console.log("Current Checking: ", voterData[i][j], curVoterEmail)
         if (voterData[i][j] == curVoterEmail) {
           return true
           // setUserVoted(true)
@@ -64,6 +65,15 @@ export const Post = ({
   const userVotedOnThisPost = checkUserVoted(voting, user.name)
 
   // console.log("is User voted: ", userVotedOnThisPost)
+  const queryClient = useQueryClient()
+
+  const voteOnPostMutation = useMutation({
+    mutationFn: voteOnPost,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries(["posts"])
+      console.log("WHAT IS RESPONE AFTER VOTE", response)
+    },
+  })
 
   const voteHandler = (index: number) => {
     const votingData = {
@@ -73,17 +83,18 @@ export const Post = ({
     }
 
     //send vote data to db
-    const sendVoteToServer = async () => {
-      const result = await fetch(`http://localhost:3300/vote`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(votingData),
-      })
-      const response = await result.json()
-      console.log("Post RESPONSE: ", response)
-    }
+    // const sendVoteToServer = async () => {
+    //   const result = await fetch(`http://localhost:3300/vote`, {
+    //     method: "PUT",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(votingData),
+    //   })
+    //   const response = await result.json()
+    //   console.log("Post RESPONSE: ", response)
+    // }
 
-    sendVoteToServer()
+    // sendVoteToServer()
+    voteOnPostMutation.mutate(votingData)
   }
 
   return (
@@ -126,9 +137,9 @@ export const Post = ({
                     {...stylex.props(postStyles.pointer)}
                     key={index}
                     onClick={() => {
-                      if (userVotedOnThisPost === false) {
-                        voteHandler(index)
-                      }
+                      // if (userVotedOnThisPost === false) {
+                      voteHandler(index)
+                      // }
                     }}
                   >
                     {ans}
