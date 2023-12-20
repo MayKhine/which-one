@@ -10,6 +10,7 @@ import { ImageUpload } from "../../UI/ImageUpload"
 import { useAuth0 } from "@auth0/auth0-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { postQuestion } from "../api/posts"
+import { clear } from "console"
 
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
@@ -153,19 +154,8 @@ export const PostForm = () => {
   }
 
   const removeImage = (indexToRemove: number) => {
-    // const curImgArr = [...imgArr]
-    // curImgArr[indexToRemove] = { fileName: "", img: "" }
-    // setImgArr([...curImgArr])
-
     const updatedImgArr = imgArr.filter((_, index) => index !== indexToRemove)
     setImgArr([...updatedImgArr])
-
-    // const curEnteredImgArr = enteredValues.images
-    // curEnteredImgArr[indexToRemove] = ""
-    // setEnteredValues((preVal) => ({
-    //   ...preVal,
-    //   images: [...curEnteredImgArr],
-    // }))
 
     const updatedEnteredAnsArr = enteredValues.images.filter(
       (_, index) => index !== indexToRemove
@@ -189,9 +179,6 @@ export const PostForm = () => {
 
     removeImage(indexToRemove)
 
-    // const curAnsArr = [...answerArr]
-    // curAnsArr.pop()
-    // setAnswerArr([...curAnsArr])
     const updatedAnsArr = answerArr.filter(
       (_, index) => index !== indexToRemove
     )
@@ -255,11 +242,13 @@ export const PostForm = () => {
   }
 
   const queryClient = useQueryClient()
-
+  const [clearForm, setClearForm] = useState(false)
   const newPostMutation = useMutation({
     mutationFn: postQuestion,
     onSuccess: (response) => {
       queryClient.invalidateQueries(["posts"])
+      // console.log("Response: ", response)
+      // setClearForm(response.success)
     },
   })
 
@@ -270,10 +259,22 @@ export const PostForm = () => {
 
     if (checkAnswerArry()) {
       // const postSuccess = await onFormSubmit(enteredValues)
-      newPostMutation.mutate(enteredValues)
+
+      // newPostMutation.mutate(enteredValues)
+
+      await newPostMutation.mutate(enteredValues, {
+        onSuccess: (data) => {
+          if (data.success) {
+            event?.target.reset()
+            cancelPostHandler()
+          } else {
+            console.log("Post already exists or Show POST ERROR")
+          }
+        },
+      })
 
       // console.log("WAS SUBMIT SUCCESS: ", postSuccess)
-      // if (postSuccess) {
+      // if (clearForm) {
       //   console.log("CLEAR THE FORM ")
       //   // event?.target.reset()
       //   cancelPostHandler()
