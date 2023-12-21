@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { UserProps } from "../components/Users/User"
+import { UserProps } from "../components/Users/UserCard"
 import { useAuth0 } from "@auth0/auth0-react"
 
 export type useUserProps = {

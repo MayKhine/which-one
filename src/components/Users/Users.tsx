@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { User, UserProps } from "./User"
+import { User, UserProps } from "./UserCard"
 
 export const Users = () => {
   const [users, setUsers] = useState<Array<UserProps>>([])

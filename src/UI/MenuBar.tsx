@@ -46,8 +46,8 @@ export const MenuBar = () => {
             type="text"
             placeholder="Search.."
           ></input>
-          <MenuButton onClickFn={navButtonHandler} text="HOME" />
-          <MenuButton onClickFn={navButtonHandler} text="USERS" />
+          <MenuButton onClickFn={navButtonHandler} text="home" />
+          <MenuButton onClickFn={navButtonHandler} text="users" />
           <MenuButton onClickFn={navButtonHandler} text="ME" />
         </div>
         <AuthButtons />

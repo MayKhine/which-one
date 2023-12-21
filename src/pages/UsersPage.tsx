@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "../components/api/users"
-import { UserCard, UserCardProps } from "../components/Users/User"
+import { UserCard, UserCardProps } from "../components/Users/UserCard"
 import { MenuBar } from "../UI/MenuBar"
 import * as stylex from "@stylexjs/stylex"
 

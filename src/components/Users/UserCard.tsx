@@ -12,7 +12,7 @@ export type UserCardProps = {
   index: number
 }
 
-export const UserCard = ({ name, email, picture, index }: UserProps) => {
+export const UserCard = ({ name, email, picture, index }: UserCardProps) => {
   // console.log("bgColor: ", bgColor)
 
   const [navigate, setNavigate] = useState("")

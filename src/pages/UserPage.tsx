@@ -1,47 +1,43 @@
 import { useParams } from "react-router-dom"
-import { UserDiv } from "../UI/UserDiv"
 import { MenuBar } from "../UI/MenuBar"
-import { Post, PostProps } from "../components/Post/Post"
-import { useGetPostsByEmail } from "../hooks/useGetPostsByEmail"
+import { useQuery } from "@tanstack/react-query"
+import { getUserInfoAndPosts } from "../components/api/users"
+import { UserDiv } from "../UI/UserDiv"
+import * as stylex from "@stylexjs/stylex"
 
 export const UserPage = () => {
   const { userEmail } = useParams<{ userEmail: string }>()
-  console.log("INID user page: ", userEmail)
-  const [posts, refetch] = useGetPostsByEmail(userEmail)
+  console.log("usePrams", userEmail)
 
-  const userName = posts[0]?.postCreaterInfo[0].name
-  const userPic = posts[0]?.postCreaterInfo[0].picture
-  // const userPosts = user[0]?.postsArr
-  // console.log("What is posts: ", posts)
-
-  const userPosts = posts.filter((post) => {
-    if (post.postCreater == userEmail) {
-      return true
-    }
-    return false
+  const userInfoQuery = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserInfoAndPosts(userEmail),
   })
 
-  // console.log("User posts: ", userPosts)
-
   return (
-    <div style={{ height: "100vh", backgroundColor: "gray" }}>
+    <div>
       <MenuBar />
-      This is individual user page - update
       <div
-        style={{
-          height: "calc(100% - 70px)",
-          backgroundColor: "lightgray",
-          display: "flex",
-        }}
+        // style={{
+        //   height: "calc(100% - 70px)",
+        //   backgroundColor: "lightgray",
+        //   display: "flex",
+        // }}
+        {...stylex.props(userPageStyles.base)}
       >
-        <UserDiv
-          width="250px"
-          name={userName}
-          email={userEmail}
-          pic={userPic}
-        />
+        {userInfoQuery.isLoading && <div> Loading </div>}
+        {userInfoQuery.isError && <div> Error: no post data from server </div>}
+        {userInfoQuery.isSuccess && (
+          // <div>{userInfoQuery.data.result[0].name}</div>
+          <UserDiv
+            width="250px"
+            name={userInfoQuery.data.result[0].name}
+            email={userInfoQuery.data.result[0].email}
+            pic={userInfoQuery.data.result[0].picture}
+          />
+        )}
 
-        <div style={{ width: "100vw", backgroundColor: "darkgreen" }}>
+        {/* <div style={{ width: "100vw", backgroundColor: "darkgreen" }}>
           {userPosts?.map((post: PostProps, index: number) => {
             console.log("WHat is in a post: ", post)
 
@@ -55,8 +51,16 @@ export const UserPage = () => {
               />
             )
           })}
-        </div>
+        </div> */}
       </div>
     </div>
   )
 }
+
+const userPageStyles = stylex.create({
+  base: {
+    backgroundColor: "lightgreen",
+    height: "calc(100vh - 108px)",
+    // padding: "2rem",
+  },
+})
