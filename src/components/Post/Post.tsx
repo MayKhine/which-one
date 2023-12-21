@@ -128,9 +128,10 @@ export const Post = ({
       <div>
         <div {...stylex.props(postStyles.questionDiv)}>{question}</div>
         <div {...stylex.props(postStyles.answersDiv)}>
+          {userVotedOnThisPost && <p> you have voted</p>}
+
           {images.length == 0 && (
             <div>
-              {userVotedOnThisPost && <p> you alread voted</p>}
               {answers.map((ans, index) => {
                 return (
                   <li
@@ -157,7 +158,9 @@ export const Post = ({
                   <div
                     {...stylex.props(postStyles.pointer)}
                     key={index}
-                    onClick={voteHandler}
+                    onClick={() => {
+                      voteHandler(index)
+                    }}
                   >
                     <ImageCard
                       imgSrc={imgSrc}
