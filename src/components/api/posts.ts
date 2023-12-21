@@ -8,6 +8,15 @@ export const getPosts = async () => {
   }
 }
 
+export const getPostsByUser = async (email: string) => {
+  const result = await fetch(
+    `http://localhost:3300/postsbyemail?email=${email}`
+  )
+  const response = await result.json()
+  console.log("What is response from getPostsByUser", response)
+  return response
+}
+
 export const postQuestion = async (enteredValues: enteredValuesType) => {
   // const result = await fetch(`http://localhost:3300/${email}/createpost`, {
   const result = await fetch(`http://localhost:3300/createpost`, {

@@ -4,7 +4,7 @@ export const getUsers = async () => {
   return response
 }
 
-export const getUserInfoAndPosts = async (email: string) => {
+export const getUserInfo = async (email: string) => {
   // const result = await fetch(
   //   `http://localhost:3300/postsbyemail?email=${email}`
   // )

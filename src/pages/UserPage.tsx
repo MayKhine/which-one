@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom"
 import { MenuBar } from "../UI/MenuBar"
 import { useQuery } from "@tanstack/react-query"
-import { getUserInfoAndPosts } from "../components/api/users"
-import { UserDiv } from "../UI/UserDiv"
+import { getUserInfo } from "../components/api/users"
 import * as stylex from "@stylexjs/stylex"
+import { UserCard } from "../components/Users/UserCard"
+import { Posts } from "../components/Post/Posts"
+import { getPostsByUser } from "../components/api/posts"
 
 export const UserPage = () => {
   const { userEmail } = useParams<{ userEmail: string }>()
@@ -11,47 +13,45 @@ export const UserPage = () => {
 
   const userInfoQuery = useQuery({
     queryKey: ["user"],
-    queryFn: () => getUserInfoAndPosts(userEmail),
+    queryFn: () => getUserInfo(userEmail),
   })
+
+  const userPostsQuery = useQuery({
+    queryKey: ["userPosts"],
+    queryFn: () => getPostsByUser(userEmail),
+  })
+
+  console.log("userInfoQuery query: ", userInfoQuery.data)
 
   return (
     <div>
       <MenuBar />
-      <div
-        // style={{
-        //   height: "calc(100% - 70px)",
-        //   backgroundColor: "lightgray",
-        //   display: "flex",
-        // }}
-        {...stylex.props(userPageStyles.base)}
-      >
-        {userInfoQuery.isLoading && <div> Loading </div>}
-        {userInfoQuery.isError && <div> Error: no post data from server </div>}
-        {userInfoQuery.isSuccess && (
-          // <div>{userInfoQuery.data.result[0].name}</div>
-          <UserDiv
-            width="250px"
-            name={userInfoQuery.data.result[0].name}
-            email={userInfoQuery.data.result[0].email}
-            pic={userInfoQuery.data.result[0].picture}
-          />
-        )}
+      <div {...stylex.props(userPageStyles.base)}>
+        <div {...stylex.props(userPageStyles.left)}>
+          {userInfoQuery.isLoading && <div> Loading </div>}
+          {userInfoQuery.isError && (
+            <div> Error: no post data from server </div>
+          )}
+          {userInfoQuery.isSuccess && (
+            <UserCard
+              index={0}
+              _id={userInfoQuery.data.result._id}
+              name={userInfoQuery.data.result.name}
+              email={userInfoQuery.data.result.email}
+              picture={userInfoQuery.data.result.picture}
+              detail={true}
+            ></UserCard>
+          )}
+        </div>
 
-        {/* <div style={{ width: "100vw", backgroundColor: "darkgreen" }}>
-          {userPosts?.map((post: PostProps, index: number) => {
-            console.log("WHat is in a post: ", post)
-
-            return (
-              <Post
-                key={index}
-                postCreater={post.postCreater}
-                postCreaterInfo={post.postCreaterInfo}
-                question={post.question}
-                answers={post.answers}
-              />
-            )
-          })}
-        </div> */}
+        <div {...stylex.props(userPageStyles.right)}>
+          {userPostsQuery.isSuccess && userPostsQuery.data.success == false && (
+            <div>NO POSTS </div>
+          )}
+          {userPostsQuery.isSuccess && userPostsQuery.data.success && (
+            <Posts posts={userPostsQuery.data.result} />
+          )}
+        </div>
       </div>
     </div>
   )
@@ -59,8 +59,16 @@ export const UserPage = () => {
 
 const userPageStyles = stylex.create({
   base: {
-    backgroundColor: "lightgreen",
+    display: "flex",
+    // backgroundColor: "lightgreen",
     height: "calc(100vh - 108px)",
     // padding: "2rem",
+    // width: "0vw",
+    gap: "5rem",
+  },
+  left: { backgroundColor: "gray", width: "500px" },
+  right: {
+    backgroundColor: "lightblue",
+    //  width: "100%"
   },
 })

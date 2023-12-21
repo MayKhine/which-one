@@ -4,7 +4,7 @@ type UserDivProps = {
   name: string
   email: string
   pic: string
-  width: string
+  width?: string
 }
 
 export const UserDiv = ({ name, email, pic, width }: UserDivProps) => {

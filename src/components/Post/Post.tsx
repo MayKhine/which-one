@@ -186,14 +186,17 @@ const postStyles = stylex.create({
   base: {
     display: "flex",
     borderRadius: "0.5rem",
-    backgroundColor: colors.yellow,
-    margin: "3rem",
+    backgroundColor: colors.offwhite,
+    // margin: "3rem",
     border: "3px solid black",
     // boxShadow: {
     //   default: "0px",
     //   ":hover": "8px 8px 0px rgba(0, 0, 0, 1)",
     // },
     padding: "1rem",
+    // width: "60rem",
+    // gap: "3rem",
+    marginBottom: "2rem",
   },
 
   imagesDiv: {
@@ -201,6 +204,7 @@ const postStyles = stylex.create({
     flexDirection: "row",
     gap: "4rem",
     backgroundColor: colors.red,
+    flexWrap: "wrap",
   },
 
   postCreaterDiv: {
