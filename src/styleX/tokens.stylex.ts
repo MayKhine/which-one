@@ -11,7 +11,7 @@ export const tokens = stylex.defineVars({
   fontSize: "16px",
 })
 
-export const colors = stylex.defineVars({
+export const colorsObj = {
   yellow: "#FDFD96",
   green: "#BAFCA2",
   blue: "#8EE4FF",
@@ -20,4 +20,8 @@ export const colors = stylex.defineVars({
   red: "#FF8989",
   purple: "#E6A0FF",
   offwhite: "#FAF7F0",
-})
+} as const
+
+export type ColorsKey = keyof typeof colorsObj
+
+export const colors = stylex.defineVars(colorsObj)
