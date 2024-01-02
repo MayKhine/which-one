@@ -10,8 +10,7 @@ import { ImageUpload } from "../../UI/ImageUpload"
 import { useAuth0 } from "@auth0/auth0-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { postQuestion } from "../api/posts"
-import { clear } from "console"
-
+import { Error } from "../../UI/Error"
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
 }
@@ -95,6 +94,8 @@ type imgProps = {
 export const PostForm = () => {
   const { user } = useAuth0()
 
+  const [error, setError] = useState("")
+
   const [enteredValues, setEnteredValues] = useState({
     postCreater: user?.email,
     question: "",
@@ -118,6 +119,7 @@ export const PostForm = () => {
     })
     setAnswerArr(["", ""])
     setImgArr([])
+    setError("")
   }
 
   const imageUploadHandler = async (
@@ -190,6 +192,8 @@ export const PostForm = () => {
     value: string,
     ansIndex: number
   ) => {
+    setError("")
+
     if (identifier == "answers") {
       const curAnsArr = enteredValues.answers
 
@@ -227,13 +231,13 @@ export const PostForm = () => {
     }
     for (let i = 0; i < ansArryLength; i++) {
       for (let y = 1; y < ansArryLength; y++) {
-        const ansA = enteredValues.answers[i]
-        const ansB = enteredValues.answers[y]
+        const ansA = enteredValues.answers[i].toLowerCase()
+        const ansB = enteredValues.answers[y].toLowerCase()
 
         if (i == y) {
           break
         }
-        if (ansA.toLowerCase() == ansB.toLowerCase()) {
+        if (ansA == ansB) {
           return false
         }
       }
@@ -267,7 +271,9 @@ export const PostForm = () => {
           if (data.success) {
             event?.target.reset()
             cancelPostHandler()
+            setError()
           } else {
+            setError("Post error: this question has been asked by you before.")
             console.log("Post already exists or Show POST ERROR")
           }
         },
@@ -282,6 +288,7 @@ export const PostForm = () => {
       //   console.log("SHOW POST ERROR")
       // }
     } else {
+      setError("Post error: duplicate answers.")
       console.log("SHOW POST ERROR: Not right ans checkAnswerArry")
     }
   }
@@ -407,6 +414,7 @@ export const PostForm = () => {
                 +
               </button>
             </div>
+
             <div>
               <Button text="Cancel" onClickFn={cancelPostHandler} />
               <Button
@@ -416,6 +424,9 @@ export const PostForm = () => {
                 }}
               />
             </div>
+            {error && error.length > 1 && (
+              <Error error={error} text={"Error TEXT"}></Error>
+            )}
           </div>
         </div>
       )}

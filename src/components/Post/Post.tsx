@@ -82,7 +82,9 @@ export const Post = ({
       ansIndex: index,
       voterEmail: user?.name,
     }
-    voteOnPostMutation.mutate(votingData)
+    if (!userVotedOnThisPost) {
+      voteOnPostMutation.mutate(votingData)
+    }
   }
 
   // const barData = [
@@ -140,52 +142,53 @@ export const Post = ({
           <BarChart voting={voting} userVote={userVote} />
         )}
 
-        {!userVotedOnThisPost && (
-          <div {...stylex.props(postStyles.answersDiv)}>
-            {images.length == 0 && (
-              <div>
-                {answers.map((ans, index) => {
-                  return (
-                    <Answer
-                      {...stylex.props(postStyles.pointer)}
-                      index={index}
-                      answer={ans}
-                      voteFn={() => {
-                        // if (userVotedOnThisPost === false) {
-                        voteHandler(index)
-                        // }
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            )}
+        {/* !userVotedOnThisPost && ( */}
 
-            {images.length != 0 && (
-              <div {...stylex.props(postStyles.imagesDiv)}>
-                {images.map((img, index) => {
-                  const imgSrc = `http://localhost:3300/${img}`
-                  return (
-                    <div
-                      {...stylex.props(postStyles.pointer)}
+        <div {...stylex.props(postStyles.answersDiv)}>
+          {images.length == 0 && (
+            <div>
+              {answers.map((ans, index) => {
+                return (
+                  <Answer
+                    key={index}
+                    {...stylex.props(postStyles.pointer)}
+                    index={index}
+                    answer={ans}
+                    voteFn={() => {
+                      voteHandler(index)
+
+                      // }
+                    }}
+                  />
+                )
+              })}
+            </div>
+          )}
+
+          {images.length != 0 && (
+            <div {...stylex.props(postStyles.imagesDiv)}>
+              {images.map((img, index) => {
+                const imgSrc = `http://localhost:3300/${img}`
+                return (
+                  <div
+                    {...stylex.props(postStyles.pointer)}
+                    key={index}
+                    onClick={() => {
+                      voteHandler(index)
+                    }}
+                  >
+                    <ImageCard
+                      imgSrc={imgSrc}
                       key={index}
-                      onClick={() => {
-                        voteHandler(index)
-                      }}
-                    >
-                      <ImageCard
-                        imgSrc={imgSrc}
-                        key={index}
-                        index={index}
-                        text={answers[index]}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-        )}
+                      index={index}
+                      text={answers[index]}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </div>
       <div>
         {navigate && <Navigate to={navigate} replace={true}></Navigate>}

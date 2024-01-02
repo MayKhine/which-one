@@ -22,7 +22,7 @@ export const BarChart = ({ voting, userVote }: BarChartProps) => {
         const votePct = (barData.length / voteTotal) * 100
         console.log("vote pct: ", votePct)
         return (
-          <div {...stylex.props(barChartStyles.option)}>
+          <div {...stylex.props(barChartStyles.option)} key={index}>
             <div {...stylex.props(barChartStyles.label)}> {optionLabel}</div>
             <div {...stylex.props(barChartStyles.bar)}>
               <div {...stylex.props(barChartStyles.dynamicBar(votePct))}></div>
@@ -43,7 +43,7 @@ const barChartStyles = stylex.create({
     // width: votePct,
     // width: "calc(100% - 50%)",
     width: `${votePct}%`,
-    border: "2px solid black",
+    border: "3px solid black",
     borderRadius: "0.5rem",
     height: "2rem",
     backgroundColor: "lightgreen",

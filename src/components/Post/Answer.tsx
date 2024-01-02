@@ -32,7 +32,8 @@ export const Answer = ({ answer, voteFn, index }: AnswerProps) => {
 const answerStyles = stylex.create({
   base: {
     backgroundColor: "pink",
-    margin: "1rem",
+    // margin: "1rem",
+    marginBottom: "1rem",
     border: "3px solid black",
     borderRadius: ".5em",
     padding: ".4rem",
