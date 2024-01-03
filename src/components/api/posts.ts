@@ -46,3 +46,14 @@ export const voteOnPost = async (votingData: votingDataType) => {
   console.log("Post RESPONSE: ", response)
   return response
 }
+
+export const deleteOnPost = async (postID) => {
+  const result = await fetch(`http://localhost:3300/delete/${postID}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  })
+
+  const response = await result.json()
+  console.log("Post Delete Response: ", response)
+  return response
+}

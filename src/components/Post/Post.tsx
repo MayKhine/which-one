@@ -4,7 +4,7 @@ import * as stylex from "@stylexjs/stylex"
 import { colors } from "../../styleX/tokens.stylex"
 import { motion } from "framer-motion"
 import { useAuth0 } from "@auth0/auth0-react"
-import { voteOnPost } from "../api/posts"
+import { voteOnPost, deleteOnPost } from "../api/posts"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 // import { Chart } from "react-google-charts"
 
@@ -59,6 +59,7 @@ export const Post = ({
   const postCreaterName = postCreaterInfo[0].name || postCreater
 
   let userVote = 99
+
   const checkUserVoted = (
     voterData: Array<Array<string>>,
     curVoterEmail: string
@@ -86,6 +87,14 @@ export const Post = ({
     },
   })
 
+  const deleteOnPostMutation = useMutation({
+    mutationFn: deleteOnPost,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries(["posts"])
+      console.log("WHat is the response after delete: ", response)
+    },
+  })
+
   const voteHandler = (index: number) => {
     const votingData = {
       postID: id,
@@ -97,26 +106,10 @@ export const Post = ({
     }
   }
 
-  // const barData = [
-  //   ["Voting", "Option", "B"],
-  //   ["New York", 1, 2],
-  //   ["Los Angeles", [1, 1, 1].length, [1.1].length],
-  //   ["Chicago", 2, 3],
-  // ]
-
-  // const barOptions = {
-  //   title: "Title bar",
-  //   chartArea: { width: "50%" },
-  //   isStacked: true,
-  //   hAxis: {
-  //     title: "hAxis",
-  //     minValue: 0,
-  //   },
-  //   vAxis: {
-  //     title: "vAxis",
-  //   },
-  // }
-
+  const deleteHandler = () => {
+    console.log("Delete is clicked")
+    deleteOnPostMutation.mutate(id)
+  }
   return (
     <motion.div
       {...stylex.props(postStyles.base)}
@@ -144,7 +137,9 @@ export const Post = ({
           {postCreaterName}
         </div>
       </div>
-
+      {user?.email === postCreaterInfo[0].email && (
+        <div onClick={deleteHandler}> delete</div>
+      )}
       <div>
         <div {...stylex.props(postStyles.questionDiv)}>{question}</div>
 
