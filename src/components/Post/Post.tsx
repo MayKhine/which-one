@@ -14,7 +14,8 @@ import img from "../../images/profilePic.png"
 import { Answer } from "./Answer"
 import { BarChart } from "../Chart/BarChart"
 import { DateTime } from "luxon"
-
+import { PopUpModal } from "../../UI/PopUpModal"
+import { PostDeleteButton } from "../../UI/PostDeleteButton"
 type postCreaterInfoType = {
   _id: string
   name: string
@@ -54,6 +55,7 @@ export const Post = ({
   )
   const { user } = useAuth0()
 
+  const [popup, setPopup] = useState(false)
   const [navigate, setNavigate] = useState("")
   const postCreaterPic = postCreaterInfo[0].picture || img
   const postCreaterName = postCreaterInfo[0].name || postCreater
@@ -108,103 +110,120 @@ export const Post = ({
 
   const deleteHandler = () => {
     console.log("Delete is clicked")
-    deleteOnPostMutation.mutate(id)
+    setPopup(true)
+    // deleteOnPostMutation.mutate(id)
   }
   return (
-    <motion.div
-      {...stylex.props(postStyles.base)}
-      transition={{
-        duration: 0.05,
-        type: "spring",
-        damping: 10,
-        stiffness: 100,
-      }}
-      whileHover={{
-        x: "-3px",
-        y: "-3px",
-        boxShadow: "3px 3px 0 rgba(0, 0, 0, 1)",
-      }}
-      key={index}
-    >
-      <div {...stylex.props(postStyles.postCreaterDiv)}>
-        <ProfilePic image={postCreaterPic} size="4rem" />
-        <div
-          onClick={() => {
-            const urlStr = `/users/${postCreater}`
-            setNavigate(urlStr)
+    <div>
+      {popup && (
+        <PopUpModal
+          text={question}
+          button1Text="cancel"
+          button1Fn={() => {
+            setPopup(false)
           }}
-        >
-          {postCreaterName}
-        </div>
-      </div>
-      {user?.email === postCreaterInfo[0].email && (
-        <div onClick={deleteHandler}> delete</div>
+          button2Text="yes"
+          button2Fn={() => {
+            deleteOnPostMutation.mutate(id)
+            setPopup(false)
+          }}
+        />
       )}
-      <div>
-        <div {...stylex.props(postStyles.questionDiv)}>{question}</div>
-
-        {userVotedOnThisPost && (
-          <BarChart voting={voting} userVote={userVote} />
+      <motion.div
+        {...stylex.props(postStyles.base)}
+        transition={{
+          duration: 0.05,
+          type: "spring",
+          damping: 10,
+          stiffness: 100,
+        }}
+        whileHover={{
+          x: "-3px",
+          y: "-3px",
+          boxShadow: "3px 3px 0 rgba(0, 0, 0, 1)",
+        }}
+        key={index}
+      >
+        <div {...stylex.props(postStyles.postCreaterDiv)}>
+          <ProfilePic image={postCreaterPic} size="4rem" />
+          <div
+            onClick={() => {
+              const urlStr = `/users/${postCreater}`
+              setNavigate(urlStr)
+            }}
+          >
+            {postCreaterName}
+          </div>
+        </div>
+        {user?.email === postCreaterInfo[0].email && (
+          <PostDeleteButton text={"x"} onClickFn={deleteHandler} />
         )}
 
-        {/* !userVotedOnThisPost && ( */}
+        <div>
+          <div {...stylex.props(postStyles.questionDiv)}>{question}</div>
 
-        <div {...stylex.props(postStyles.answersDiv)}>
-          {images.length == 0 && (
-            <div>
-              {answers.map((ans, index) => {
-                return (
-                  <Answer
-                    key={index}
-                    {...stylex.props(postStyles.pointer)}
-                    index={index}
-                    answer={ans}
-                    voteFn={() => {
-                      voteHandler(index)
-
-                      // }
-                    }}
-                  />
-                )
-              })}
-            </div>
+          {userVotedOnThisPost && (
+            <BarChart voting={voting} userVote={userVote} />
           )}
 
-          {images.length != 0 && (
-            <div {...stylex.props(postStyles.imagesDiv)}>
-              {images.map((img, index) => {
-                const imgSrc = `http://localhost:3300/${img}`
-                return (
-                  <div
-                    {...stylex.props(postStyles.pointer)}
-                    key={index}
-                    onClick={() => {
-                      voteHandler(index)
-                    }}
-                  >
-                    <ImageCard
-                      imgSrc={imgSrc}
+          <div {...stylex.props(postStyles.answersDiv)}>
+            {images.length == 0 && (
+              <div>
+                {answers.map((ans, index) => {
+                  return (
+                    <Answer
                       key={index}
+                      {...stylex.props(postStyles.pointer)}
                       index={index}
-                      text={answers[index]}
+                      answer={ans}
+                      voteFn={() => {
+                        voteHandler(index)
+
+                        // }
+                      }}
                     />
-                  </div>
-                )
-              })}
-            </div>
-          )}
+                  )
+                })}
+              </div>
+            )}
+
+            {images.length != 0 && (
+              <div {...stylex.props(postStyles.imagesDiv)}>
+                {images.map((img, index) => {
+                  const imgSrc = `http://localhost:3300/${img}`
+                  return (
+                    <div
+                      {...stylex.props(postStyles.pointer)}
+                      key={index}
+                      onClick={() => {
+                        voteHandler(index)
+                      }}
+                    >
+                      <ImageCard
+                        imgSrc={imgSrc}
+                        key={index}
+                        index={index}
+                        text={answers[index]}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <div>
-        {navigate && <Navigate to={navigate} replace={true}></Navigate>}
-      </div>
-    </motion.div>
+        <div>
+          {navigate && <Navigate to={navigate} replace={true}></Navigate>}
+        </div>
+      </motion.div>
+    </div>
   )
 }
 
 const postStyles = stylex.create({
   base: {
     display: "flex",
+    position: "relative",
     borderRadius: "0.5rem",
     backgroundColor: colors.offwhite,
     border: "3px solid black",
