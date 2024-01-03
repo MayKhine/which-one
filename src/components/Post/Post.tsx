@@ -13,6 +13,7 @@ import { ImageCard } from "../../UI/ImageCard"
 import img from "../../images/profilePic.png"
 import { Answer } from "./Answer"
 import { BarChart } from "../Chart/BarChart"
+import { DateTime } from "luxon"
 
 type postCreaterInfoType = {
   _id: string
@@ -30,6 +31,7 @@ export type PostProps = {
   images: Array<string>
   index: number
   voting: Array<Array<string>>
+  createTime: string
 }
 
 export const Post = ({
@@ -41,7 +43,15 @@ export const Post = ({
   index,
   id,
   voting,
+  createTime,
 }: PostProps) => {
+  const luxonCreateTime = DateTime.fromISO(createTime)
+  console.log(
+    " QuetsioN: ",
+    question,
+    "...POST TIME: ",
+    luxonCreateTime.toFormat("LLL dd yyyy")
+  )
   const { user } = useAuth0()
 
   const [navigate, setNavigate] = useState("")

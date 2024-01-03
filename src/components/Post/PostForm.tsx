@@ -229,6 +229,7 @@ export const PostForm = () => {
     if (ansArryLength < 2) {
       return false
     }
+
     for (let i = 0; i < ansArryLength; i++) {
       for (let y = 1; y < ansArryLength; y++) {
         const ansA = enteredValues.answers[i].toLowerCase()
@@ -271,7 +272,7 @@ export const PostForm = () => {
           if (data.success) {
             event?.target.reset()
             cancelPostHandler()
-            setError()
+            setError("")
           } else {
             setError("Post error: this question has been asked by you before.")
             console.log("Post already exists or Show POST ERROR")
@@ -404,16 +405,18 @@ export const PostForm = () => {
             })}
           </div>
           <div {...stylex.props(postFormStyles.buttonsDiv)}>
-            <div>
-              <button
-                {...stylex.props(buttonStyles.base, buttonStyles.addAnswer)}
-                onClick={() => {
-                  setAnswerArr((prevVal) => [...prevVal, ""])
-                }}
-              >
-                +
-              </button>
-            </div>
+            {answerArr.length <= 9 && (
+              <div>
+                <button
+                  {...stylex.props(buttonStyles.base, buttonStyles.addAnswer)}
+                  onClick={() => {
+                    setAnswerArr((prevVal) => [...prevVal, ""])
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            )}
 
             <div>
               <Button text="Cancel" onClickFn={cancelPostHandler} />
@@ -424,9 +427,7 @@ export const PostForm = () => {
                 }}
               />
             </div>
-            {error && error.length > 1 && (
-              <Error error={error} text={"Error TEXT"}></Error>
-            )}
+            {error && error.length > 1 && <Error error={error}></Error>}
           </div>
         </div>
       )}
