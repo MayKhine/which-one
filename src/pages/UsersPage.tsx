@@ -25,7 +25,6 @@ export const UsersPage = () => {
                 name={user.name}
                 email={user.email}
                 picture={user.picture}
-                // bgColor={colorArr[index % 7]}
                 index={index}
               ></UserCard>
             )

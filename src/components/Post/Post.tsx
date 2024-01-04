@@ -57,7 +57,7 @@ export const Post = ({
   )
   const { user } = useAuth0()
 
-  const [popup, setPopup] = useState(0)
+  const [popup, setPopup] = useState(false)
   const [navigate, setNavigate] = useState("")
   const postCreaterPic = postCreaterInfo[0].picture || img
   const postCreaterName = postCreaterInfo[0].name || postCreater
@@ -112,44 +112,27 @@ export const Post = ({
 
   const deleteHandler = () => {
     console.log("Delete is clicked")
-    setPopup(2)
+    setPopup(true)
     // deleteOnPostMutation.mutate(id)
-  }
-
-  const editHandler = () => {
-    setPopup(1)
   }
 
   return (
     <div>
-      {popup == 2 && (
+      {popup && (
         <PopUpModal
           text={`Are you sure you want to delete '${question}'?`}
           button1Text="cancel"
           button1Fn={() => {
-            setPopup(0)
+            setPopup(false)
           }}
           button2Text="yes"
           button2Fn={() => {
             deleteOnPostMutation.mutate(id)
-            setPopup(0)
+            setPopup(false)
           }}
         />
       )}
-      {popup == 1 && (
-        <PopUpModal
-          text={`EDIT '${question}'?`}
-          button1Text="cancel"
-          button1Fn={() => {
-            setPopup(0)
-          }}
-          button2Text="yes"
-          button2Fn={() => {
-            // deleteOnPostMutation.mutate(id)
-            setPopup(0)
-          }}
-        />
-      )}
+
       <motion.div
         {...stylex.props(postStyles.base)}
         transition={{
@@ -179,11 +162,10 @@ export const Post = ({
         {user?.email === postCreaterInfo[0].email && (
           <div>
             <PostDeleteButton onClickFn={deleteHandler} />
-            <PostEditButton onClickFn={editHandler} />
           </div>
         )}
 
-        <div>
+        <div {...stylex.props(postStyles.postDiv)}>
           <div {...stylex.props(postStyles.questionDiv)}>{question}</div>
 
           {userVotedOnThisPost && (
@@ -197,7 +179,7 @@ export const Post = ({
                   return (
                     <Answer
                       key={index}
-                      {...stylex.props(postStyles.pointer)}
+                      // {...stylex.props(postStyles.pointer)}
                       index={index}
                       answer={ans}
                       voteFn={() => {
@@ -277,6 +259,9 @@ const postStyles = stylex.create({
     height: "max-content",
   },
 
+  postDiv: {
+    width: "100%",
+  },
   questionDiv: {
     fontSize: "2rem",
     marginBottom: ".8rem",
@@ -286,7 +271,7 @@ const postStyles = stylex.create({
 
   pointer: {
     cursor: "pointer",
-    backgroundColor: "lightpink",
+    backgroundColor: "red",
     marginBottom: "2rem",
   },
 })

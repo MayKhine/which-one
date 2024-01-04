@@ -1,10 +1,13 @@
 import * as stylex from "@stylexjs/stylex"
+import { ColorsKey, colors, colorsObj } from "../../styleX/tokens.stylex"
 
 type BarChartProps = {
   voting: Array<Array<string>>
   userVote: number //the index that userVoted
 }
 export const BarChart = ({ voting, userVote }: BarChartProps) => {
+  const colorArr = Object.keys(colorsObj) as Array<ColorsKey>
+
   console.log("IN THE BARCHAR: ", voting, userVote)
 
   let voteTotal = 0
@@ -25,7 +28,12 @@ export const BarChart = ({ voting, userVote }: BarChartProps) => {
           <div {...stylex.props(barChartStyles.option)} key={index}>
             <div {...stylex.props(barChartStyles.label)}> {optionLabel}</div>
             <div {...stylex.props(barChartStyles.bar)}>
-              <div {...stylex.props(barChartStyles.dynamicBar(votePct))}></div>
+              <div
+                {...stylex.props(
+                  barChartStyles.dynamicBar(votePct),
+                  barChartStyles.dynamicBgColor(colorArr[(index + 1) % 7])
+                )}
+              ></div>
             </div>
           </div>
         )
@@ -35,10 +43,18 @@ export const BarChart = ({ voting, userVote }: BarChartProps) => {
 }
 
 const barChartStyles = stylex.create({
-  base: { backgroundColor: "lightgray", width: "100%" },
-  option: { backgroundColor: "pink", display: "flex", flexGrow: "2" },
-  label: { width: "7rem", backgroundColor: "lightgray" },
-  bar: { backgroundColor: "lightyellow", display: "flex", width: "60rem" },
+  base: { backgroundColor: "gray", width: "100%" },
+  option: { backgroundColor: "red", display: "flex", flexGrow: "1" },
+  label: {
+    width: "7rem",
+    backgroundColor: "lightgray",
+  },
+  bar: {
+    backgroundColor: "lightyellow",
+    display: "flex",
+    width: "100%",
+  },
+
   dynamicBar: (votePct) => ({
     // width: votePct,
     // width: "calc(100% - 50%)",
@@ -47,5 +63,9 @@ const barChartStyles = stylex.create({
     borderRadius: "0.5rem",
     height: "2rem",
     backgroundColor: "lightgreen",
+  }),
+
+  dynamicBgColor: (color: ColorsKey) => ({
+    backgroundColor: colors[color],
   }),
 })
