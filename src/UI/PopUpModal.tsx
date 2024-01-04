@@ -1,4 +1,5 @@
 import { Button } from "./Button"
+import { colors } from "../styleX/tokens.stylex"
 import * as stylex from "@stylexjs/stylex"
 type PopUpModalProps = {
   text: string
@@ -18,9 +19,8 @@ export const PopUpModal = ({
   return (
     <div {...stylex.props(popUpModalStyles.base)}>
       <div {...stylex.props(popUpModalStyles.popup)}>
-        Are you sure you want to delete this question: '{text}'?
-        <div>
-          {" "}
+        <div> {text}</div>
+        <div {...stylex.props(popUpModalStyles.buttonDiv)}>
           <Button text={button1Text} onClickFn={button1Fn} />
           {button2Text && <Button text={button2Text} onClickFn={button2Fn} />}
         </div>
@@ -36,17 +36,26 @@ const popUpModalStyles = stylex.create({
     left: "0",
     width: "100%",
     height: "100vh",
-    background: "rgba(0, 0, 0, 0.75)",
+    background: "rgba(0, 0, 0, 0.5)",
+    zIndex: "99",
+    overflow: "hidden",
   },
   popup: {
     posision: "fixed",
     margin: "20%",
-    height: "10%",
+    // height: "10%",
     // width: "80%",
     zIndex: "100",
     overflow: "hidden",
-    background: "yellow",
+    background: colors.yellow,
     borderRadius: "1rem",
-    padding: "1rem",
+    padding: "1.5rem",
+    border: ".2rem solid black",
+    display: "flex",
+    flexDirection: "column",
+  },
+  buttonDiv: {
+    alignSelf: "flex-end",
+    marginTop: "1rem",
   },
 })

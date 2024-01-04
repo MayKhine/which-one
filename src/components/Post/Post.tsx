@@ -16,6 +16,8 @@ import { BarChart } from "../Chart/BarChart"
 import { DateTime } from "luxon"
 import { PopUpModal } from "../../UI/PopUpModal"
 import { PostDeleteButton } from "../../UI/PostDeleteButton"
+import { PostEditButton } from "../../UI/PostEditButton"
+
 type postCreaterInfoType = {
   _id: string
   name: string
@@ -55,7 +57,7 @@ export const Post = ({
   )
   const { user } = useAuth0()
 
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState(0)
   const [navigate, setNavigate] = useState("")
   const postCreaterPic = postCreaterInfo[0].picture || img
   const postCreaterName = postCreaterInfo[0].name || postCreater
@@ -110,22 +112,41 @@ export const Post = ({
 
   const deleteHandler = () => {
     console.log("Delete is clicked")
-    setPopup(true)
+    setPopup(2)
     // deleteOnPostMutation.mutate(id)
   }
+
+  const editHandler = () => {
+    setPopup(1)
+  }
+
   return (
     <div>
-      {popup && (
+      {popup == 2 && (
         <PopUpModal
-          text={question}
+          text={`Are you sure you want to delete '${question}'?`}
           button1Text="cancel"
           button1Fn={() => {
-            setPopup(false)
+            setPopup(0)
           }}
           button2Text="yes"
           button2Fn={() => {
             deleteOnPostMutation.mutate(id)
-            setPopup(false)
+            setPopup(0)
+          }}
+        />
+      )}
+      {popup == 1 && (
+        <PopUpModal
+          text={`EDIT '${question}'?`}
+          button1Text="cancel"
+          button1Fn={() => {
+            setPopup(0)
+          }}
+          button2Text="yes"
+          button2Fn={() => {
+            // deleteOnPostMutation.mutate(id)
+            setPopup(0)
           }}
         />
       )}
@@ -156,7 +177,10 @@ export const Post = ({
           </div>
         </div>
         {user?.email === postCreaterInfo[0].email && (
-          <PostDeleteButton text={"x"} onClickFn={deleteHandler} />
+          <div>
+            <PostDeleteButton onClickFn={deleteHandler} />
+            <PostEditButton onClickFn={editHandler} />
+          </div>
         )}
 
         <div>
@@ -178,8 +202,6 @@ export const Post = ({
                       answer={ans}
                       voteFn={() => {
                         voteHandler(index)
-
-                        // }
                       }}
                     />
                   )

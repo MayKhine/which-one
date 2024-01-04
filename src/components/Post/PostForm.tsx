@@ -11,6 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { postQuestion } from "../api/posts"
 import { Error } from "../../UI/Error"
+
 type PostFormProps = {
   onFormSubmit: (val: enteredValuesType) => boolean
 }
@@ -263,10 +264,6 @@ export const PostForm = () => {
     event.preventDefault()
 
     if (checkAnswerArry()) {
-      // const postSuccess = await onFormSubmit(enteredValues)
-
-      // newPostMutation.mutate(enteredValues)
-
       await newPostMutation.mutate(enteredValues, {
         onSuccess: (data) => {
           if (data.success) {

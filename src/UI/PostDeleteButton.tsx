@@ -1,13 +1,10 @@
 import * as stylex from "@stylexjs/stylex"
 import deleteImg from "../images/delete.svg"
+
 type PostDeleteButtonProps = {
-  text: string
   onClickFn: () => void
 }
-export const PostDeleteButton = ({
-  text,
-  onClickFn,
-}: PostDeleteButtonProps) => {
+export const PostDeleteButton = ({ onClickFn }: PostDeleteButtonProps) => {
   return (
     // <div {...stylex.props(postDeleteButtonStyles.base)} onClick={onClickFn}>
     //   {text}
