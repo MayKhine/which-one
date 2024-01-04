@@ -33,7 +33,11 @@ export const BarChart = ({ voting, userVote }: BarChartProps) => {
                   barChartStyles.dynamicBar(votePct),
                   barChartStyles.dynamicBgColor(colorArr[(index + 1) % 7])
                 )}
-              ></div>
+              >
+                <p {...stylex.props(barChartStyles.overflow)}>
+                  TESTTESTTESTTEST
+                </p>
+              </div>
             </div>
           </div>
         )
@@ -68,4 +72,14 @@ const barChartStyles = stylex.create({
   dynamicBgColor: (color: ColorsKey) => ({
     backgroundColor: colors[color],
   }),
+
+  overflow: {
+    position: "absolute",
+    marginTop: "-.1rem",
+    marginLeft: ".5rem",
+    // top: "0",
+    // left: "0",
+    zIndex: "1",
+    color: "black",
+  },
 })
