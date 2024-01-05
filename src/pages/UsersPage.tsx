@@ -40,5 +40,6 @@ const usersPageStyles = stylex.create({
     display: "flex",
     gap: "2rem",
     margin: "3rem",
+    flexWrap: "wrap",
   },
 })

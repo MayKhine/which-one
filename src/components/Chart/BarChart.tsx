@@ -4,82 +4,107 @@ import { ColorsKey, colors, colorsObj } from "../../styleX/tokens.stylex"
 type BarChartProps = {
   voting: Array<Array<string>>
   userVote: number //the index that userVoted
+  answers: Array<string>
 }
-export const BarChart = ({ voting, userVote }: BarChartProps) => {
+export const BarChart = ({ voting, userVote, answers }: BarChartProps) => {
   const colorArr = Object.keys(colorsObj) as Array<ColorsKey>
 
-  console.log("IN THE BARCHAR: ", voting, userVote)
+  console.log("IN THE BARCHART: ", voting, userVote, answers)
 
   let voteTotal = 0
   voting.map((voteOption) => {
     voteTotal = voteTotal + voteOption.length
   })
 
-  console.log("vote total: ", voteTotal)
-
   return (
     <div {...stylex.props(barChartStyles.base)}>
-      {userVote}
-      {voting.map((barData, index) => {
-        const optionLabel = `Option ${index + 1}`
-        const votePct = (barData.length / voteTotal) * 100
-        console.log("vote pct: ", votePct)
-        return (
-          <div {...stylex.props(barChartStyles.option)} key={index}>
-            <div {...stylex.props(barChartStyles.label)}> {optionLabel}</div>
-            <div {...stylex.props(barChartStyles.bar)}>
-              <div
-                {...stylex.props(
-                  barChartStyles.dynamicBar(votePct),
-                  barChartStyles.dynamicBgColor(colorArr[(index + 1) % 7])
-                )}
-              >
-                <p {...stylex.props(barChartStyles.overflow)}>
-                  TESTTESTTESTTEST
-                </p>
+      Current Result:
+      <div {...stylex.props(barChartStyles.chart)}>
+        {voting.map((barData, index) => {
+          const votePct = (barData.length / voteTotal) * 100
+
+          return (
+            <div {...stylex.props(barChartStyles.barChart)}>
+              <div {...stylex.props(barChartStyles.answerText)}>
+                {answers[index]}
+              </div>
+              <div {...stylex.props(barChartStyles.bar)}>
+                <div
+                  {...stylex.props(
+                    barChartStyles.dynamicBar(votePct),
+                    barChartStyles.dynamicBgColor(colorArr[(index + 1) % 7])
+                  )}
+                ></div>
               </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 const barChartStyles = stylex.create({
-  base: { backgroundColor: "gray", width: "100%" },
-  option: { backgroundColor: "red", display: "flex", flexGrow: "1" },
+  base: {
+    position: "relative",
+    // backgroundColor: "lightgray",
+    width: "100%",
+  },
+
+  chart: {
+    backgroundColor: "white",
+    // position: "relative",
+    border: "2px solid black",
+    borderRadius: "1rem",
+    padding: "1rem",
+    marginTop: ".5rem",
+    // width: "95%",
+    minWidth: "700px",
+    maxWidth: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+
+  option: { display: "flex", flexGrow: "1" },
   label: {
     width: "7rem",
     backgroundColor: "lightgray",
   },
+
   bar: {
-    backgroundColor: "lightyellow",
+    // backgroundColor: "lightyellow",
     display: "flex",
     width: "100%",
+    position: "relative",
   },
 
   dynamicBar: (votePct) => ({
-    // width: votePct,
-    // width: "calc(100% - 50%)",
     width: `${votePct}%`,
     border: "3px solid black",
     borderRadius: "0.5rem",
     height: "2rem",
-    backgroundColor: "lightgreen",
+    margin: "0.2rem",
+    display: "flex",
   }),
 
   dynamicBgColor: (color: ColorsKey) => ({
     backgroundColor: colors[color],
   }),
 
-  overflow: {
-    position: "absolute",
-    marginTop: "-.1rem",
-    marginLeft: ".5rem",
-    // top: "0",
-    // left: "0",
-    zIndex: "1",
-    color: "black",
+  answerText: {
+    width: "95%",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    // whiteSpace: "nowrap",
+    display: "block",
+    // wordBreak: "break-all",
+    // background: "pink",
+    fontSize: "1.5rem",
+  },
+  barChart: {
+    // backgroundColor: "red",
+    maxWidth: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
 })

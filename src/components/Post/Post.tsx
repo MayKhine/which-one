@@ -48,13 +48,8 @@ export const Post = ({
   voting,
   createTime,
 }: PostProps) => {
-  const luxonCreateTime = DateTime.fromISO(createTime)
-  console.log(
-    " QuetsioN: ",
-    question,
-    "...POST TIME: ",
-    luxonCreateTime.toFormat("LLL dd yyyy")
-  )
+  // const luxonCreateTime = DateTime.fromISO(createTime)
+
   const { user } = useAuth0()
 
   const [popup, setPopup] = useState(false)
@@ -169,11 +164,11 @@ export const Post = ({
           <div {...stylex.props(postStyles.questionDiv)}>{question}</div>
 
           {userVotedOnThisPost && (
-            <BarChart voting={voting} userVote={userVote} />
+            <BarChart voting={voting} userVote={userVote} answers={answers} />
           )}
 
           <div {...stylex.props(postStyles.answersDiv)}>
-            {images.length == 0 && (
+            {!userVotedOnThisPost && images.length == 0 && (
               <div>
                 {answers.map((ans, index) => {
                   return (
@@ -261,7 +256,9 @@ const postStyles = stylex.create({
 
   postDiv: {
     width: "100%",
+    // backgroundColor: "pink",
   },
+
   questionDiv: {
     fontSize: "2rem",
     marginBottom: ".8rem",
