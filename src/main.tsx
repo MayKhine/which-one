@@ -36,8 +36,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/users/:userEmail"
               element={<AuthenticationGuard component={UserPage} />}
             />
-
-            <Route path="/colortest" element={<ColorTest />} />
+            <Route
+              path="/profile"
+              element={<AuthenticationGuard component={UserPage} />}
+            />
           </Routes>
         </QueryClientProvider>
       </Auth0ProviderWithNavigate>

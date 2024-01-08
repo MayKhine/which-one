@@ -13,10 +13,8 @@ import { ImageCard } from "../../UI/ImageCard"
 import img from "../../images/profilePic.png"
 import { Answer } from "./Answer"
 import { BarChart } from "../Chart/BarChart"
-import { DateTime } from "luxon"
 import { PopUpModal } from "../../UI/PopUpModal"
 import { PostDeleteButton } from "../../UI/PostDeleteButton"
-import { PostEditButton } from "../../UI/PostEditButton"
 
 type postCreaterInfoType = {
   _id: string

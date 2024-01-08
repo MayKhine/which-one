@@ -6,11 +6,18 @@ import * as stylex from "@stylexjs/stylex"
 import { UserCard } from "../components/Users/UserCard"
 import { Posts } from "../components/Post/Posts"
 import { getPostsByUser } from "../components/api/posts"
+import { useAuth0 } from "@auth0/auth0-react"
 
 export const UserPage = () => {
-  const { userEmail } = useParams<{ userEmail: string }>()
+  let { userEmail } = useParams<{ userEmail: string }>()
+
   console.log("usePrams", userEmail)
 
+  if (userEmail == null) {
+    const { user } = useAuth0()
+
+    userEmail = user?.email
+  }
   const userInfoQuery = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserInfo(userEmail),

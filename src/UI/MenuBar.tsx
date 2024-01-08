@@ -41,14 +41,14 @@ export const MenuBar = () => {
 
       <div {...stylex.props(menuStyles.menu)}>
         <div>
-          <input
+          {/* <input
             {...stylex.props(textStyles.searchInput)}
             type="text"
             placeholder="Search.."
-          ></input>
+          ></input> */}
           <MenuButton onClickFn={navButtonHandler} text="home" />
           <MenuButton onClickFn={navButtonHandler} text="users" />
-          <MenuButton onClickFn={navButtonHandler} text="ME" />
+          <MenuButton onClickFn={navButtonHandler} text="profile" />
         </div>
         <AuthButtons />
       </div>
